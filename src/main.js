@@ -17,7 +17,8 @@ export default {
       'pages/user-info/main',
       'pages/merchant-edit/main',
       'pages/set-map/main',
-      '^pages/industry-select/main'
+      'pages/industry-select/main',
+      '^pages/merchant-info/main'
     ],
     window: {
       backgroundTextStyle: 'light',

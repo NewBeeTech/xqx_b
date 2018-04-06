@@ -68,8 +68,8 @@ export default {
   .scroll
     width 50vw
     height 100vh
-    font-size 14px
-    line-height 30px
+    font-size 16px
+    line-height 40px
     div
       padding-left 15px
     .active
