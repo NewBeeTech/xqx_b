@@ -1,4 +1,21 @@
-# 小确幸B端
-> 要求：
-1. 要参考墨刀原型的交互及设计图 界面要完全一样 
-2. 每半小时提交一次代码
+# public
+
+> A Mpvue project
+
+## Build Setup
+
+``` bash
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+
+# build for production and view the bundle analyzer report
+npm run build --report
+```
+
+For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
