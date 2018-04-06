@@ -33,22 +33,30 @@
     </section>
     <div class="user-from top sec">
       <div class="text">行业</div>
-      <div class="text-button">
+      <div class="text-button" @click="chooseIndustry">
         选择行业 >
       </div>
     </div>
     <div class="select-container">
       <div class="select-line">
         <div>所在地区</div>
-        <div>选择省／市／区</div>
+        <!-- <div>选择省／市／区</div> -->
+        <picker mode="region" @change="bindRegionChange" :value="region" :custom-item="customItem">
+          <div class="picker">
+            {{region[0]}}，{{region[1]}}，{{region[2]}}
+          </div>
+        </picker>
       </div>
+      
       <div class="select-line">
         <div>详细地址</div>
-        <div>请输入详细地址</div>
+        <div class="input">
+          <input type="text" placeholder="请输入详细地址" placeholder-style='font-size: 15px'>
+        </div>
       </div>
       <div class="select-line">
         <div>地图标记</div>
-        <div>去标记</div>
+        <a href="/pages/set-map/main"><div>去标记</div></a>
       </div>
       <div class="select-line">
         <div>所属商圈</div>
@@ -62,7 +70,8 @@
         <input type="text" placeholder="请输入推荐人编号" placeholder-style='font-size: 15px'>
       </div>
     </div>
-    <button class="button sub" size="default">下一步</button>
+    
+    <button class="button sub" size="default" @click="submit">下一步</button>
   </div>
 </template>
 
@@ -70,6 +79,7 @@
 export default {
   data () {
     return {
+      region: ['广东省', '广州市', '海珠区'],
       images: []
     }
   },
@@ -95,6 +105,21 @@ export default {
           that.images = [...that.images, ...tempFilePaths]
           console.log(that.images)
         }
+      })
+    },
+    chooseIndustry () {
+      wx.navigateTo({
+        url: '/pages/industry-select/main'
+      })
+    },
+    bindRegionChange (e) {
+      let that = this
+      // console.log('picker发送选择改变，携带值为', e)
+      that.region = e.mp.detail.value
+    },
+    submit () {
+      wx.navigateTo({
+        url: '/pages/merchant-info/main'
       })
     }
   }
@@ -169,8 +194,8 @@ export default {
     width 100%
     margin-top 10px
     background #fff
-    padding-left 6%
     .select-line  
+      margin-left 6%
       width 94%
       border-bottom 1px solid #ccc
       display flex

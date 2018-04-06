@@ -4,7 +4,7 @@
       <div @click="industryClick(item.name)" :class="{active: checked === item.name}" v-for="(item, index) in list" :key="index">{{item.name}}</div>
     </scroll-view>
     <scroll-view scroll-y class="scroll right">
-      <div @click="checkedRight = item" :class="{active: checkedRight === item}" v-for="(item, index) in leftList" :key="index">{{item}}</div>
+      <div @click="rightClick(item)" :class="{active: checkedRight === item}" v-for="(item, index) in leftList" :key="index">{{item}}</div>
     </scroll-view>
   </div>
 </template>
@@ -55,6 +55,13 @@ export default {
   methods: {
     industryClick (name) {
       this.checked = name
+    },
+    rightClick (item) {
+      let that = this
+      this.checkedRight = item
+      wx.navigateTo({
+        url: '/pages/merchant-edit/main?merchant=' + that.checkedRight
+      })
     }
   }
 }
