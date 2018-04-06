@@ -96,7 +96,7 @@ export default {
     chooseImage () {
       let that = this
       wx.chooseImage({
-        count: 1, // 默认9
+        count: 4, // 默认9
         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
         success: function (res) {
@@ -176,7 +176,7 @@ export default {
       .choose
         float left
         margin-right 5px
-        width 80px
+        width 23%
         height 57px
         line-height 57px
         text-align center

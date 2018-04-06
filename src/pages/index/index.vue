@@ -2,15 +2,15 @@
   <div>
     <header>
       <div>
-        <div></div>
+        <div><img src="/static/imgs/Artboard@2x.png" alt=""></div>
         <div>收款码</div>
       </div>
       <div @click="navationTo('/pages/collage-list/main')">
-        <div></div>
+        <div><img src="/static/imgs/Artboard Copy 6@2x.png" alt=""></div>
         <div>优惠券</div>
       </div>
       <div @click="scanCode">
-        <div></div>
+        <div><img src="/static/imgs/Artboard Copy 7@2x.png" alt=""></div>
         <div>扫一扫</div>
       </div>
     </header>
@@ -52,11 +52,11 @@
 
     <section class="jiehoug">
       <div @click="navationTo('/pages/merchant-edit/main')">
-        <span></span>
+        <span><img src="/static/imgs/Artboard Copy 9@2x.png" alt=""></span>
         <span>基本信息设置</span>
       </div>
       <div>
-        <span></span>
+        <span><img src="/static/imgs/Artboard Copy 10@2x.png" alt=""></span>
         <span>返金设置</span>
       </div>
     </section>
@@ -64,7 +64,7 @@
     <section class="footer">
       <div class="sec-lin">
         <div class="item">
-          <span class="icon"></span>
+          <span class="icon"><img src="/static/imgs/Artboard Copy 11@2x.png" alt=""></span>
           <span class="text">账户余额</span>
         </div>
         <div class="item">100</div>
@@ -108,21 +108,24 @@ header
     font-size 14px
     color #101010
   div:nth-child(1) 
+    img 
+      width 100%
+      height 100%
     width 46px
     height 46px
-    background #ccc
   div:nth-child(2)
     line-height 50px
 section   
   .sec-lin
     margin auto
+    border-radius 4px
     margin-top 10px
     width 346px
     height 69px
     left 14px
     background #fff
     text-align center
-    box-shadow 0px 0px 10px 0px rgba(217, 217, 217, 1)
+    box-shadow 0px 0px 3px 0px rgba(217, 217, 217, 1)
     display flex
     justify-content space-between
     align-items center
@@ -146,6 +149,7 @@ section
   display flex
   justify-content space-between
   div
+    border-radius 4px
     background #fff
     width 163px
     height 63px
@@ -153,16 +157,18 @@ section
     text-align center
     display flex
     align-items center
-    box-shadow 0px 0px 10px 0px rgba(217, 217, 217, 1)
+    box-shadow 0px 0px 3px 0px rgba(217, 217, 217, 1)
   span 
     font-size 14px
     color #101010
     line-height 63px
     &:nth-child(1)
-      width 34px
-      height 34px
-      background #ccc
-      display inline-block
+      img 
+        width 100%
+        height 100%
+        display block
+      width 25px
+      height 25px
       margin 20px
   .footer
     .sec-lin
@@ -172,13 +178,15 @@ section
         span
           display inline-block
 .icon 
+  img 
+    width 100%
+    height 100%
   display inline-block
   position relative
   top 5px
   left -17px
   width 34px
   height 34px
-  background #ccc
 .text
   position relative
   top -8px
@@ -194,7 +202,7 @@ footer
   justify-content space-around
   align-items center
   div:nth-child(1) 
-    width 245px
+    width 225px
     height 34px
     font-size 12px
     color #101010
@@ -203,8 +211,8 @@ footer
     height 30px
     text-align center 
     line-height 30px
-    background #545454
+    background #fd9326
     font-size 14px
     color #fff
-
+    border-radius 4px
 </style>
