@@ -16,7 +16,8 @@ export default {
       'pages/bind-phone/main',
       'pages/user-info/main',
       'pages/merchant-edit/main',
-      '^pages/set-map/main'
+      'pages/set-map/main',
+      '^pages/industry-select/main'
     ],
     window: {
       backgroundTextStyle: 'light',
