@@ -10,7 +10,7 @@
     </div>
     <div class="user-from sec">
       <div class="input">
-        <input type="text" placeholder="输入手机号" placeholder-style='font-size: 15px'>
+        <input type="text" placeholder="输入验证码" placeholder-style='font-size: 15px'>
       </div>
       <div class="text">
         <div class="buttons">
