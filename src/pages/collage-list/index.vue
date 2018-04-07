@@ -32,25 +32,30 @@ export default {
 .contanir
   height 100%
   background #fff
+  padding-top 28px
   .nav
-    width 300px
-    height 30px
+    width 278px
+    height 31px
+    border 1px solid #fd9326
+    border-radius 5px
     display flex
     justify-content space-between
     margin auto
+    margin-bottom 23px
     div
       &.active
-        background #525252
+        background #fd9326
         color #fff
-        border 1px solid #525252
+        border 1px solid #fd9326
+      &:nth-child(2) 
+        border-left 1px solid #fd9326
+        border-right 1px solid #fd9326
       width 100px
       height 30px
       line-height 30px
-      border-radius 4px
-      color rgba(16, 16, 16, 1)
+      color #fd9326
       font-size 14px
       text-align center
-      border 1px solid rgba(187, 187, 187, 1)
 
 
 </style>

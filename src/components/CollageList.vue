@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div class="collage-item" @click="goDetail()">
+    <div v-for="(item, index) in 4" :key="index" class="collage-item" @click="goDetail()">
       <div class="collage-left">
         <div class="imgs">
          </div>
       </div>
       <div class="collage-right">
         <p class="title">大盘鸡套餐</p>
-        <p class="prices"><span class="price">¥90</span><span>¥100</span></p>
-        <p class="date">有效期：2018年5月1日-2018年8月1日</p>
-        <p class="date">创建时间：2018年3月4日</p>
+        <p class="prices"><span class="price">¥90</span><span class="price-two">¥100</span></p>
+        <p class="date one">有效期：2018年5月1日-2018年8月1日</p>
+        <p class="date cec">创建时间：2018年3月4日</p>
       </div>
     </div>
   </div>
@@ -31,7 +31,7 @@ export default {
 .collage-item
   width 348px
   height 127px
-  border 1px solid #BBBBBB
+  box-shadow 0px 0px 3px 0px rgba(217, 217, 217, 1)
   border-radius 6px
   margin auto 
   margin-top 15px
@@ -62,4 +62,11 @@ export default {
     .date 
       line-height 25px
       font-size 11px
+  .price-two
+    text-decoration line-through
+    color #979797
+  .one
+    color #6e6e6e
+  .cec
+    color #999999
 </style>

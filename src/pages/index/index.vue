@@ -185,11 +185,11 @@ section
   position relative
   top 5px
   left -17px
-  width 34px
-  height 34px
+  width 25px
+  height 25px
 .text
+  top -3px
   position relative
-  top -8px
   font-size 14px
   color #101010
 footer  
