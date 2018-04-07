@@ -28,7 +28,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .c_spec4_1{
   width: 75px;
   height: 75px;

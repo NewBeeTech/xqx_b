@@ -28,7 +28,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .c_spec3_1,.c_spec3_7{
   box-sizing: border-box;
   border: 1px solid white;

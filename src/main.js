@@ -42,7 +42,10 @@ export default {
       'pages/spec-success/main', // 充值成功
       'pages/gold-setting/main', // 返金比例设置
       'pages/gold-success/main', // 返金成功
-      '^pages/hexiao-success/main' // 核销成功
+      'pages/hexiao-success/main', // 核销成功
+      'pages/detail-list/main', // 明细列表
+      'pages/receipt-code/main', // 收款码
+      '^pages/my-client/main' // 收款码
     ],
     window: {
       backgroundTextStyle: 'light',
