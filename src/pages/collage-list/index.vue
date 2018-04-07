@@ -4,6 +4,9 @@
       <div @click="tabToggle(item)" :class="{active : current === item}" v-for="(item, index) in buttons" :key="index">{{item}}</div>
     </div>
     <collage-list></collage-list>
+    <button class="creat-button" @click="navGo('/pages/create-collage/main')">
+      创建优惠券
+    </button>
   </div>
 </template>
 
@@ -56,6 +59,12 @@ export default {
       color #fd9326
       font-size 14px
       text-align center
-
-
+  .creat-button
+    width 92%
+    background #fd9326
+    color #fff
+    position fixed
+    bottom 15px
+    left 4%
+    border none
 </style>

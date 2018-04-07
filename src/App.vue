@@ -7,12 +7,18 @@ export default {
     wx.setStorageSync('logs', logs)
 
     console.log('app created and cache logs by setStorageSync')
+  },
+  methods: {
+    navGo (e) {
+      wx.navigateTo({
+        url: e
+      })
+    }
   }
 }
 </script>
 
 <style lang="stylus">
 html
-  background rgba(240, 240, 242, 1)
   height 100%
 </style>
