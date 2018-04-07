@@ -40,7 +40,9 @@ export default {
       'pages/create-collage/main', // 创建优惠券
       'pages/spec-first/main', // 充值
       'pages/spec-success/main', // 充值成功
-      '^pages/gold-setting/main'
+      'pages/gold-setting/main', // 返金比例设置
+      'pages/gold-success/main', // 返金成功
+      '^pages/hexiao-success/main' // 核销成功
     ],
     window: {
       backgroundTextStyle: 'light',

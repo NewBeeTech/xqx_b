@@ -57,7 +57,7 @@
       </div>
       <div>
         <span><img src="/static/imgs/Artboard Copy 10@2x.png" alt=""></span>
-        <span>返金设置</span>
+        <span @click="navGo('/pages/gold-setting/main')">返金设置</span>
       </div>
     </section>
 

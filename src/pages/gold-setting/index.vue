@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="c_spec3_1">
-			<div class="c_spec3_2">反金比例</div>
+			<div class="c_spec3_2">返金比例</div>
 			<div class="c_spec3_3">
 				<input type="text" value="0.01" class="c_spec3_4" />
 				<span class="c_spec3_5">%</span>
@@ -18,7 +18,7 @@
 			<div class="c_spec3_13"><img class="icon" src="/static/imgs/jiao_gr.png" alt=""></div>
 		</div>
 		<div class="c_spec3_14">提示：反金比例和会员积分兑换养老金比例至少选择一个，可多选</div>
-		<button class="c_spec3_15">保存</button>
+		<button class="c_spec3_15" @click="navReturn(-1)">保存</button>
   </div>
 </template>
 
