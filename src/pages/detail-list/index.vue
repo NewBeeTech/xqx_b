@@ -3,7 +3,7 @@
     <div class="c_spec6_1">
       <div @click="selecd = item" :class="{c_spec6_2 : item === selecd}" v-for="(item, index) in title" :key="index">{{item}}</div>
 		</div>
-		<div class="c_spec6_3">
+		<div @click="navGo('/pages/price-detail/main')" class="c_spec6_3">
 			<div class="c_spec6_4">
 				<div class="c_spec6_6">充值</div>
 				<div class="c_spec6_7">2018-03-28  13:23</div>

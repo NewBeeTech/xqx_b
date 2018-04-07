@@ -13,6 +13,14 @@ export default {
       wx.navigateTo({
         url: e
       })
+    },
+    getstorage (key) {
+      wx.getStorage({
+        key: key,
+        success: function (res) {
+          return res
+        }
+      })
     }
   }
 }

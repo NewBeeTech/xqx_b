@@ -93,8 +93,10 @@
         </div>
         <div class="select-line">
           <div>营业时间</div>
-          <div>
-            设置 <img class="right_" src="/static/imgs/right.png" alt="">
+          <div @click="navGo('/pages/time-checked/main')">
+            <span v-if="yyTime.begin">{{yyTime.begin}}至{{yyTime.end}}</span>
+            <span v-else>设置</span>
+             <img class="right_" src="/static/imgs/right.png" alt="">
           </div>
         </div>
         
@@ -112,7 +114,7 @@
           </div>
         </div>
       </div>
-      <button class="submit">保存</button>
+      <button class="submit" @click="navReturn(-1)">保存</button>
     </div>
   </div>
 </template>
@@ -123,13 +125,25 @@ export default {
     return {
       region: ['广东省', '广州市', '海珠区'],
       images: [],
-      logo: ''
+      logo: '',
+      yyTime: {}
     }
   },
   computed: {
     isLang () {
       return this.$root.$mp.appOptions.from ? 1 : 2
     }
+  },
+  onShow () {
+    let that = this
+    wx.getStorage({
+      key: 'yyTime',
+      success (res) {
+        console.log(res.data)
+        that.yyTime = res.data
+        console.log(that.yyTime)
+      }
+    })
   },
   methods: {
     // 预览图片

@@ -1,7 +1,7 @@
 <template>
   <div>
     <header>
-      <div>
+      <div @click="navGo('/pages/receipt-code/main')">
         <div><img src="/static/imgs/Artboard@2x.png" alt=""></div>
         <div>收款码</div>
       </div>
@@ -15,7 +15,7 @@
       </div>
     </header>
     <section>
-      <div class="sec-lin">
+      <div @click="navGo('/pages/transaction-record/main')" class="sec-lin">
         <div class="item">
           <div>0</div>
           <div>今日营收</div>
@@ -26,7 +26,7 @@
           <div>累计营收</div>
         </div>
       </div>
-      <div class="sec-lin">
+      <div @click="navGo('/pages/transaction-record/main')" class="sec-lin">
         <div class="item">
           <div>0</div>
           <div>今日返金</div>
@@ -37,7 +37,7 @@
           <div>累计返金</div>
         </div>
       </div>
-      <div class="sec-lin">
+      <div @click="navGo('/pages/my-client/main')" class="sec-lin">
         <div class="item">
           <div>0</div>
           <div>今日新增客户</div>
@@ -61,7 +61,7 @@
       </div>
     </section>
 
-    <section class="footer">
+    <section class="footer" @click="navGo('/pages/user-price/main')">
       <div class="sec-lin">
         <div class="item">
           <span class="icon"><img src="/static/imgs/Artboard Copy 11@2x.png" alt=""></span>
