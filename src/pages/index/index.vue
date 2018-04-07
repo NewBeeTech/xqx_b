@@ -17,34 +17,34 @@
     <section>
       <div @click="navGo('/pages/transaction-record/main')" class="sec-lin">
         <div class="item">
-          <div>0</div>
+          <div>313</div>
           <div>今日营收</div>
         </div>
         <div class="cneter"></div>
         <div class="item">
-          <div>0</div>
+          <div>233</div>
           <div>累计营收</div>
         </div>
       </div>
       <div @click="navGo('/pages/transaction-record/main')" class="sec-lin">
         <div class="item">
-          <div>0</div>
+          <div>434</div>
           <div>今日返金</div>
         </div>
         <div class="cneter"></div>
         <div class="item">
-          <div>0</div>
+          <div>555</div>
           <div>累计返金</div>
         </div>
       </div>
       <div @click="navGo('/pages/my-client/main')" class="sec-lin">
         <div class="item">
-          <div>0</div>
+          <div>312</div>
           <div>今日新增客户</div>
         </div>
         <div class="cneter"></div>
         <div class="item">
-          <div>0</div>
+          <div>423</div>
           <div>累计客户</div>
         </div>
       </div>

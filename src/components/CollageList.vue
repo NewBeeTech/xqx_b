@@ -3,7 +3,8 @@
     <div v-for="(item, index) in 4" :key="index" class="collage-item" @click="goDetail()">
       <div class="collage-left">
         <div class="imgs">
-         </div>
+          <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2417396884,1375270392&fm=200&gp=0.jpg" alt="">
+        </div>
       </div>
       <div class="collage-right">
         <p class="title">大盘鸡套餐</p>
@@ -43,8 +44,12 @@ export default {
       width 70px
       height 70px
       margin auto 
-      margin-top 10px
+      margin-top 20px
       background #ccc
+      overflow hidden
+      img 
+        width 100%
+        height 100%
   .collage-right  
     flex: 1
     font-size 14px

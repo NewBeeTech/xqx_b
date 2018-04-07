@@ -36,8 +36,10 @@ export default {
       'pages/merchant-info/main', // 基本信息
       'pages/collage-list/main', // 优惠券列表
       'pages/collage-detail/main', // 优惠券详情
+      'pages/collage-detail-sec/main', // 优惠券详情
       'pages/manual-coupon/main', // 手动核销优惠券
       'pages/create-collage/main', // 创建优惠券
+      'pages/collage-order-detail/main', // 优惠券订单详情
       'pages/spec-first/main', // 充值
       'pages/spec-success/main', // 充值成功
       'pages/gold-setting/main', // 返金比例设置

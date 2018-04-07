@@ -9,7 +9,11 @@
 				</p>
 			</div>
 			<div>
-				<img class="img" src="/static/imgs/yuefenpaizi.png">
+        <picker mode="date" :value="date" start="2015-09-01" end="2017-09-01" @change="bindDateChange">
+          <view class="picker">
+            <img class="img" src="/static/imgs/yuefenpaizi.png">
+          </view>
+        </picker>
 			</div>
 		</div>
 		<div class="back">
@@ -35,7 +39,16 @@
 
 <script>
 export default {
-
+  data () {
+    return {
+      date: ''
+    }
+  },
+  methods: {
+    bindDateChange (e) {
+      this.date = e.mp.detail.value
+    }
+  }
 }
 </script>
 
@@ -65,8 +78,8 @@ export default {
 	padding-top: 5px;
 }
 .img{ 
-  width: 100%;
-  height: 100%;
+  width: 25px;
+  height: 25px;
 }
 .back ul li label{
 	line-height: 77px
