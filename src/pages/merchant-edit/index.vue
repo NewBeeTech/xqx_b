@@ -63,7 +63,7 @@
       </div>
       <div class="select-line">
         <div>所属商圈</div>
-        <div>选择商圈 <img class="right_" src="/static/imgs/right.png" alt=""></div>
+        <div @click="navGo('/pages/choose-shangq/main')"><span style="margin-right: 5px" v-if="shangq">{{shangq}}</span><span style="margin-right: 5px" v-else>选择商圈</span><img class="right_" src="/static/imgs/right.png" alt=""></div>
       </div>
     </div>
     <div v-if="isLang == 1">
@@ -126,7 +126,8 @@ export default {
       region: ['广东省', '广州市', '海珠区'],
       images: [],
       logo: '',
-      yyTime: {}
+      yyTime: {},
+      shangq: ''
     }
   },
   computed: {
@@ -142,6 +143,13 @@ export default {
         console.log(res.data)
         that.yyTime = res.data
         console.log(that.yyTime)
+      }
+    })
+    wx.getStorage({
+      key: 'shangQuan',
+      success (res) {
+        that.shangq = res.data
+        console.log(that.shangq)
       }
     })
   },

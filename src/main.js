@@ -27,10 +27,10 @@ export default {
   config: {
     // 页面前带有 ^ 符号的，会被编译成首页，其他页面可以选填，我们会自动把 webpack entry 里面的入口页面加进去
     pages: [
-      '^pages/index/main', // 首页
+      'pages/index/main', // 首页
       'pages/bind-phone/main', // 绑定手机
       'pages/user-info/main', // 用户信息
-      'pages/merchant-edit/main', // 基本信息
+      '^pages/merchant-edit/main', // 基本信息
       'pages/set-map/main', // 地点设置
       'pages/industry-select/main', // 行业
       'pages/merchant-info/main', // 基本信息
@@ -47,6 +47,7 @@ export default {
       'pages/hexiao-success/main', // 核销成功
       'pages/detail-list/main', // 明细列表
       'pages/receipt-code/main', // 收款码
+      'pages/choose-shangq/main', // 选择商圈
       'pages/my-client/main', // 我的客户
       'pages/time-checked/main', // 设置时间
       'pages/transaction-record/main', // 交易记录

@@ -71,8 +71,8 @@ export default {
       wx.setStorage({
         key: 'yyTime',
         data: {
-          begin: that.beginHour + '-' + that.beginMin,
-          end: that.endHour + '-' + that.endMin
+          begin: that.beginHour + ':' + that.beginMin,
+          end: that.endHour + ':' + that.endMin
         }
       })
       this.navReturn(-1)
