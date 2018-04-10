@@ -61,9 +61,9 @@
         <div>地图标记</div>
         <a href="/pages/set-map/main"><div>去标记 <img class="right_" src="/static/imgs/right.png" alt=""></div></a>
       </div>
-      <div class="select-line">
+      <div @click="navGo('/pages/choose-shangq/main')" class="select-line">
         <div>所属商圈</div>
-        <div @click="navGo('/pages/choose-shangq/main')"><span style="margin-right: 5px" v-if="shangq">{{shangq}}</span><span style="margin-right: 5px" v-else>选择商圈</span><img class="right_" src="/static/imgs/right.png" alt=""></div>
+        <div><span style="margin-right: 5px" v-if="shangq">{{shangq}}</span><span style="margin-right: 5px" v-else>选择商圈</span><img class="right_" src="/static/imgs/right.png" alt=""></div>
       </div>
     </div>
     <div v-if="isLang == 1">
