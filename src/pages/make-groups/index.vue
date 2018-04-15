@@ -17,7 +17,7 @@
 				<div class="listStyle" @click="navGo('/pages/good-remark/main')">
 					<label>商品说明</label>
 					<div>
-						<img src="/static/imgs/矩形4@2x.png" alt="" />
+						<img src="/static/imgs/right.png" alt="" />
 					</div>
 				</div>
 				<div class="listStyle">

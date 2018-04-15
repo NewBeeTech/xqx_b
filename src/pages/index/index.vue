@@ -5,13 +5,14 @@
         <div><img src="/static/imgs/Artboard@2x.png" alt=""></div>
         <div>收款码</div>
       </div>
-      <div @click="navationTo('/pages/collage-list/main')">
-        <div><img src="/static/imgs/Artboard Copy 6@2x.png" alt=""></div>
-        <div>优惠券</div>
-      </div>
+      
       <div @click="scanCode">
-        <div><img src="/static/imgs/Artboard Copy 7@2x.png" alt=""></div>
+        <div><img src="/static/imgs/ArtboardCopy7@2x.png" alt=""></div>
         <div>扫一扫</div>
+      </div>
+      <div @click="navationTo('/pages/collage-list/main')">
+        <div><img src="/static/imgs/8.png" alt=""></div>
+        <div>钱包</div>
       </div>
     </header>
     <header>
@@ -80,11 +81,11 @@
 
     <section class="jiehoug">
       <div @click="navationTo('/pages/merchant-edit/main')">
-        <span><img src="/static/imgs/Artboard Copy 9@2x.png" alt=""></span>
+        <span><img src="/static/imgs/ArtboardCopy9@2x.png" alt=""></span>
         <span>基本信息设置</span>
       </div>
       <div>
-        <span><img src="/static/imgs/Artboard Copy 10@2x.png" alt=""></span>
+        <span><img src="/static/imgs/ArtboardCopy10@2x.png" alt=""></span>
         <span @click="navGo('/pages/gold-setting/main')">返金设置</span>
       </div>
     </section>
@@ -92,7 +93,7 @@
     <section class="footer" @click="navGo('/pages/user-price/main')">
       <div class="sec-lin">
         <div class="item">
-          <span class="icon"><img src="/static/imgs/Artboard Copy 11@2x.png" alt=""></span>
+          <span class="icon"><img src="/static/imgs/ArtboardCopy11@2x.png" alt=""></span>
           <span class="text">账户余额</span>
         </div>
         <div class="item">100</div>

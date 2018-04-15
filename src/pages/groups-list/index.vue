@@ -1,17 +1,17 @@
 <template>
 	<div class="main">
 		<div class="groupsTab">
-			<div class="active">进行中</div>
-			<div>未开始{{current}}</div>
-			<div>已结束</div>
+			<div :class="{active: current == 0}">进行中</div>
+			<div :class="{active:current == 1}">未开始</div>
+			<div :class="{active:current == 2}">已结束</div>
 		</div>
-		<swiper @change="bindchange" :current='current'>
+		<swiper @change="bindchange" >
 			<swiper-item >
 				<div class="grousLists">
 					<scroll-view scroll-y='true'>
 						<div class="paddingBottom">
 							<div class="grousList" @click="navGo('/pages/groups-detail/main')">
-								<img src="/static/imgs/Artboard Copy 9@2x.png" />
+								<img src="/static/imgs/ArtboardCopy9@2x.png" />
 								<div class="grousListMsg">
 									<p><text>酸豆角肉末饭1酸豆角肉末饭1酸豆角肉末饭1</text><text>返佣比例：0.6%</text></p>
 									<p>¥45 <text>¥45</text></p>
@@ -21,7 +21,7 @@
 								</div>
 							</div>
 							<div class="grousList">
-								<img src="/static/imgs/Artboard Copy 9@2x.png" />
+								<img src="/static/imgs/ArtboardCopy9@2x.png" />
 								<div class="grousListMsg">
 									<p><text>酸豆角肉末饭1</text><text>返佣比例：0.6%</text></p>
 									<p>¥45 <text>¥45</text></p>
@@ -31,7 +31,7 @@
 								</div>
 							</div>
 							<div class="grousList">
-								<img src="/static/imgs/Artboard Copy 9@2x.png" />
+								<img src="/static/imgs/ArtboardCopy9@2x.png" />
 								<div class="grousListMsg">
 									<p><text>酸豆角肉末饭1</text>返佣比例：0.6%</text></p>
 									<p>¥45 <text>¥45</text></p>
@@ -41,7 +41,7 @@
 								</div>
 							</div>
 							<div class="grousList">
-								<img src="/static/imgs/Artboard Copy 9@2x.png" />
+								<img src="/static/imgs/ArtboardCopy9@2x.png" />
 								<div class="grousListMsg">
 									<p><text>酸豆角肉末饭1</text><text>返佣比例：0.6%</text></p>
 									<p>¥45 <text>¥45</text></p>
@@ -60,7 +60,7 @@
 					<scroll-view scroll-y='true'>
 						<div class="paddingBottom">
 							<div class="grousList">
-								<img src="/static/imgs/Artboard Copy 9@2x.png" />
+								<img src="/static/imgs/ArtboardCopy9@2x.png" />
 								<div class="grousListMsg">
 									<p><text>酸豆角肉末饭2</text> <text>返佣比例：0.6%</text></p>
 									<p>¥45 <text>¥45</text></p>
@@ -79,7 +79,7 @@
 					<scroll-view scroll-y='true'>
 						<div class="paddingBottom">
 							<div class="grousList">
-								<img src="/static/imgs/Artboard Copy 9@2x.png" />
+								<img src="/static/imgs/ArtboardCopy9@2x.png" />
 								<div class="grousListMsg">
 									<p><text>酸豆角肉末饭2</text> <text>返佣比例：0.6%</text></p>
 									<p>¥45 <text>¥45</text></p>
@@ -110,7 +110,8 @@
   },
   methods: {
     bindchange (e) {
-
+      console.log(e.target.current)
+      this.current = e.target.current
     },
     submit () {
       wx.navigateTo({

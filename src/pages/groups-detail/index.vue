@@ -3,7 +3,7 @@
 
 		<div class="grousList">
 			<div class="grousLists">
-				<img src="/static/imgs/Artboard Copy 9@2x.png" />
+				<img src="/static/imgs/ArtboardCopy9@2x.png" />
 				<div class="grousListMsg">
 					<p><text>酸豆角肉末饭1酸豆角肉末饭1酸豆角肉末饭1</text><text>返佣比例：0.6%</text></p>
 					<p>¥45 <text>¥45</text></p>
@@ -13,7 +13,7 @@
 				</div>
 			</div>
 
-			<div class="openDetail">
+			<div class="openDetail" @click="navGo('/pages/make-groups/main')">
 				<p>查看拼团活动详情</p>
 				<img src="/static/imgs/right.png" />
 			</div>
@@ -22,12 +22,12 @@
 			注：拼团成功。。。。拼团成功拼团成功拼团成功拼团成功拼团成功拼团成功拼团成功
 		</div>
 		<div class="groupsDetailMsg">
-			<div class="detailTab">
-				<p class="">已拼团</p>
-				<p class="active">拼团中</p>
+			<div class="detailTab" >
+				<p @click="changeShow1" :class="{active:show}">已拼团</p>
+				<p @click="changeShow2" :class="{active:!show}">拼团中</p>
 			</div>
 			<!--已拼团-->
-			<div >
+			<div v-if="show">
 				<div class="detailRes">
 					<div>
 						<p>已拼团（份）</p>
@@ -52,7 +52,7 @@
 
 			<!--已拼团-->
 			<!--拼团中-->
-			<!--<div class="detailRes" >
+			<div class="detailRes" v-else>
 				<div>
 					<p>拼团中（份）</p>
 					<p>256</p>
@@ -61,16 +61,41 @@
 					<p>返佣比例</p>
 					<p>0.6%</p>
 				</div>
-			</div>-->
+			</div>
 			<!--拼团中-->
 		</div>
-		<div class="makeGroups">创建拼团</div>
+		<div class="makeGroups" @click="makeGroups">下架拼团</div>
 	</div>
 
 </template>
 
 <script>
-	
+		export default {
+  data () {
+    return {
+      show: true
+    }
+  },
+  mounted () {
+  },
+  methods: {
+    changeShow1 () {
+      this.show = true
+    },
+    changeShow2 () {
+      this.show = false
+    },
+    makeGroups () {
+      wx.showModal({
+        title: '提示',
+        content: '删除？',
+        success: function (res) {
+          console.log(res)
+        }
+      })
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -223,5 +248,6 @@
 		border-radius: 8px;
 		line-height: 92rpx;
 		font-size: 28rpx;
+		margin-bottom: 20rpx;
 	}
 </style>
