@@ -1,0 +1,245 @@
+<template>
+	<div class="main">
+		<div class="groupsTab">
+			<div class="active">进行中</div>
+			<div>未开始{{current}}</div>
+			<div>已结束</div>
+		</div>
+		<swiper @change="bindchange" :current='current'>
+			<swiper-item >
+				<div class="grousLists">
+					<scroll-view scroll-y='true'>
+						<div class="paddingBottom">
+							<div class="grousList" @click="navGo('/pages/groups-detail/main')">
+								<img src="/static/imgs/Artboard Copy 9@2x.png" />
+								<div class="grousListMsg">
+									<p><text>酸豆角肉末饭1酸豆角肉末饭1酸豆角肉末饭1</text><text>返佣比例：0.6%</text></p>
+									<p>¥45 <text>¥45</text></p>
+									<p>有效期：2h</p>
+									<p>创建日期：2018-10-09 12:23:12</p>
+									<p>已拼团：62份 <text>拼团中：52份</text></p>
+								</div>
+							</div>
+							<div class="grousList">
+								<img src="/static/imgs/Artboard Copy 9@2x.png" />
+								<div class="grousListMsg">
+									<p><text>酸豆角肉末饭1</text><text>返佣比例：0.6%</text></p>
+									<p>¥45 <text>¥45</text></p>
+									<p>有效期：2h</p>
+									<p>创建日期：2018-10-09 12:23:12</p>
+									<p>已拼团：62份 <text>拼团中：52份</text></p>
+								</div>
+							</div>
+							<div class="grousList">
+								<img src="/static/imgs/Artboard Copy 9@2x.png" />
+								<div class="grousListMsg">
+									<p><text>酸豆角肉末饭1</text>返佣比例：0.6%</text></p>
+									<p>¥45 <text>¥45</text></p>
+									<p>有效期：2h</p>
+									<p>创建日期：2018-10-09 12:23:12</p>
+									<p>已拼团：62份 <text>拼团中：52份</text></p>
+								</div>
+							</div>
+							<div class="grousList">
+								<img src="/static/imgs/Artboard Copy 9@2x.png" />
+								<div class="grousListMsg">
+									<p><text>酸豆角肉末饭1</text><text>返佣比例：0.6%</text></p>
+									<p>¥45 <text>¥45</text></p>
+									<p>有效期：2h</p>
+									<p>创建日期：2018-10-09 12:23:12</p>
+									<p>已拼团：62份 <text>拼团中：52份</text></p>
+								</div>
+							</div>
+						</div>
+
+					</scroll-view>
+				</div>
+			</swiper-item>
+			<swiper-item>
+				<div class="grousLists">
+					<scroll-view scroll-y='true'>
+						<div class="paddingBottom">
+							<div class="grousList">
+								<img src="/static/imgs/Artboard Copy 9@2x.png" />
+								<div class="grousListMsg">
+									<p><text>酸豆角肉末饭2</text> <text>返佣比例：0.6%</text></p>
+									<p>¥45 <text>¥45</text></p>
+									<p>有效期：2h</p>
+									<p>创建日期：2018-10-09 12:23:12</p>
+									<p>已拼团：62份 <text>拼团中：52份</text></p>
+								</div>
+							</div>
+						</div>
+
+					</scroll-view>
+				</div>
+			</swiper-item>
+			<swiper-item>
+				<div class="grousLists">
+					<scroll-view scroll-y='true'>
+						<div class="paddingBottom">
+							<div class="grousList">
+								<img src="/static/imgs/Artboard Copy 9@2x.png" />
+								<div class="grousListMsg">
+									<p><text>酸豆角肉末饭2</text> <text>返佣比例：0.6%</text></p>
+									<p>¥45 <text>¥45</text></p>
+									<p>有效期：2h</p>
+									<p>创建日期：2018-10-09 12:23:12</p>
+									<p>已拼团：62份 <text>拼团中：52份</text></p>
+								</div>
+							</div>
+						</div>
+
+					</scroll-view>
+				</div>
+			</swiper-item>
+		</swiper>
+		<div class="makeGroups" @click="navGo('/pages/make-groups/main')">创建拼团</div>
+	</div>
+
+</template>
+
+<script>
+	export default {
+  data () {
+    return {
+      current: 0
+    }
+  },
+  mounted () {
+  },
+  methods: {
+    bindchange (e) {
+
+    },
+    submit () {
+      wx.navigateTo({
+        url: '/pages/merchant-edit/main'
+      })
+    }
+  }
+}
+</script>
+
+<style scoped>
+	.main {
+		width: 100%;
+		height: 100%;
+		font-size: 24rpx;
+		position: relative;
+	}
+	
+	.groupsTab {
+		height: 88rpx;
+		display: flex;
+		border-top: 1rpx solid #efefef;
+		border-bottom: 1rpx solid #efefef;
+		align-items: center;
+		justify-content: space-around;
+	}
+	
+	.groupsTab div {
+		height: 100%;
+		line-height: 88rpx;
+		color: #999;
+		position: relative;
+	}
+	
+	.groupsTab .active {
+		color: #fea401;
+	}
+	
+	.groupsTab .active:after {
+		width: 100%;
+		height: 1px;
+		content: '';
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		background: #FEA401;
+	}
+	
+	swiper {
+		height: calc(100% - 88rpx);
+	}
+	
+	.grousLists {
+		height: 100%;
+	}
+	
+	.grousLists scroll-view {
+		height: 100%;
+	}
+	
+	.grousList {
+		display: flex;
+		padding: 38rpx 30rpx;
+		border-radius: 8px;
+		margin: 30rpx;
+		box-shadow: 0px 0px 10px #efefef;
+	}
+	
+	.grousList img {
+		width: 106rpx;
+		height: 106rpx;
+		border-radius: 5px;
+		margin-right: 34rpx;
+	}
+	
+	.grousListMsg {
+		color: #999;
+		flex: 1;
+	}
+	.grousListMsg p:nth-child(1){
+		display: flex;
+		justify-content: space-between;
+	}
+	.grousListMsg p:nth-child(1)>text:nth-child(1) {
+		display: inline-block;
+		width: 270rpx;
+		font-size: 28rpx;
+		color: #333;
+		display: block;
+		white-space:nowrap;
+		overflow:hidden; 
+		text-overflow:ellipsis;
+	}
+	
+	.grousListMsg p:nth-child(1)>text:nth-child(2) {
+		font-size: 24rpx;
+		color: #999;
+		float: right;
+	}
+	
+	.grousListMsg p:nth-child(2) {
+		font-size: 28rpx;
+		color: #333;
+		line-height: 50rpx;
+	}
+	.grousListMsg p:nth-child(2)>text {
+		font-size: 24rpx;
+		color: #999;
+		margin-left: 30rpx;
+		text-decoration: line-through;
+	}
+	
+	.makeGroups {
+		box-sizing: border-box;
+		width: calc(100% - 60rpx);
+		height: 92rpx;
+		position: absolute;
+		bottom: 35rpx;
+		left: 0;
+		margin: 0 30rpx;
+		text-align: center;
+		background: #FEA400;
+		color: white;
+		border-radius: 8px;
+		line-height: 92rpx;
+		font-size: 28rpx;
+	}
+	
+	.paddingBottom {
+		padding-bottom: 130rpx;
+	}
+</style>

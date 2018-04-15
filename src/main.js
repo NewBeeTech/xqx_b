@@ -53,7 +53,12 @@ export default {
       'pages/transaction-record/main', // 交易记录
       'pages/user-price/main', // 账户余额
       'pages/price-detail/main', // 余额明细
-      'pages/user-detail/main' // 个人信息
+      'pages/user-detail/main', // 个人信息
+      'pages/groups-list/main',  // 拼团列表
+      'pages/goods-active/main',  // 商品状态
+      'pages/groups-detail/main',  // 拼团详情
+      'pages/make-groups/main',  // 创建拼团活动
+      'pages/good-remark/main'  // 创建拼团活动
     ],
     window: {
       backgroundTextStyle: 'light',

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main">
     <header>
       <div @click="navGo('/pages/receipt-code/main')">
         <div><img src="/static/imgs/Artboard@2x.png" alt=""></div>
@@ -12,6 +12,34 @@
       <div @click="scanCode">
         <div><img src="/static/imgs/Artboard Copy 7@2x.png" alt=""></div>
         <div>扫一扫</div>
+      </div>
+    </header>
+    <header>
+      <div @click="navGo('/pages/goods-active/main')">
+        <div><img src="/static/imgs/1.png" alt=""></div>
+        <div>待发货</div>
+      </div>
+      <div @click="navGo('/pages/goods-active/main')">
+        <div><img src="/static/imgs/6.png" alt=""></div>
+        <div>已发货</div>
+      </div>
+      <div @click="navGo('/pages/goods-active/main')">
+        <div><img src="/static/imgs/7.png" alt=""></div>
+        <div>已完成</div>
+      </div>
+    </header>
+    <header>
+      <div @click="navGo('/pages/groups-list/main')">
+        <div><img src="/static/imgs/4.png" alt=""></div>
+        <div>拼团</div>
+      </div>
+      <div @click="navationTo('/pages/collage-list/main')">
+        <div><img src="/static/imgs/2.png" alt=""></div>
+        <div>砍价</div>
+      </div>
+      <div @click="scanCode">
+        <div><img src="/static/imgs/3.png" alt=""></div>
+        <div>秒杀</div>
       </div>
     </header>
     <section>
@@ -97,12 +125,13 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.main
+  padding-top 30px
 header  
   width 100%
   background #ffffff
   display flex
   justify-content space-around
-  padding-top 30px
   div
     text-align center
     font-size 14px

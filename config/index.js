@@ -23,7 +23,7 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 8088,
+    port: 8089,
     // 在小程序开发者工具中不需要自动打开浏览器
     autoOpenBrowser: false,
     assetsSubDirectory: 'static',
