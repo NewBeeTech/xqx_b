@@ -113,7 +113,12 @@ export default {
 	data () {
     return {
       value: {
-      		
+      		realChargeTodaySum:'',
+      		realChargeHistorySum:'',
+      		currencyTodaySum:'',
+      		currencyHistorySum:'',
+      		personTodaySum:'',
+      		personHistorySum:''
       }
     }
   },
@@ -124,19 +129,22 @@ export default {
 				// 登录
 			wx.login({
 				success: function(res) {
-					console.log(res)
+					console.log(res.code)
+					let code = res.code;
 					wx.getUserInfo({
 						withCredentials:true,
 						success:function(res){
 							console.log(res)
 							wxRequest('userLogin',{
-								code:res.code,
-								
+								code:code,
+								encryptedData:res.encryptedData,
+								iv:res.iv
 							})
 							.then(res =>{
 								console.log(res)
 								if(res.code == 1){
-									 wx.setStorageSync('token',res.value)
+									 wx.setStorageSync('token',res.value);
+									 that.getHomeMsg();
 								}
 							}).catch(err => {
 								console.log(err)
@@ -178,15 +186,7 @@ export default {
 //			
 	},
 	onShow:function(){
-		let that = this;
-//		获取首页信息
-		wxRequest('homeMsg')
-			.then(res =>{
-				console.log(res)
-				that.value = res.value
-			}).catch(err => {
-				console.log(err)
-			})
+		this.getHomeMsg();
 	},
   methods: {
     scanCode () {
@@ -196,8 +196,20 @@ export default {
         }
       })
     },
-    getUserInfo (code){
-    		
+   	getHomeMsg (){
+    		let that = this;
+	//		获取首页信息
+			wxRequest('homeMsg')
+				.then(res =>{
+					console.log(res)
+					if(res.code == 1){
+					   that.value = res.value
+						
+					}
+
+				}).catch(err => {
+					console.log(err)
+				})
     },
     navationTo (url) {
       wx.navigateTo({
