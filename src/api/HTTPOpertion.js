@@ -1,6 +1,6 @@
 
-var Default = require("Default.js");
-var HttpManager = require("HTTPManager.js");
+var Default = require("./Default.js");
+var HttpManager = require("./HTTPManager.js");
 function HTTPOpertion() { };
 
 /**
@@ -425,5 +425,4 @@ HTTPOpertion.getToLocation = function (key) {
   });
 
 }
-
-module.exports = HTTPOpertion;
+module.exports = HTTPOpertion

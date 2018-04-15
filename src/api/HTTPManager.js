@@ -118,4 +118,4 @@ HTTPManager.login = function(){
     });
   })
 }
-module.exports = HTTPManager;
+module.exports = HTTPManager

@@ -120,6 +120,7 @@
 </template>
 
 <script>
+	import {wxRequest} from '@/api'
 export default {
   data () {
     return {
@@ -127,8 +128,24 @@ export default {
       images: [],
       logo: '',
       yyTime: {},
-      shangq: ''
+      shangq: '',
+      type:0
     }
+  },
+  onLoad:function(option){
+  	  let that = this;
+  		let type = this.$root.$mp.query.type;
+  		that.type = type;
+  		if(type == 1){
+  			wx.setNavigationBarTitle({
+  				title:'编辑基本信息'
+  			})
+  			that.getShopInfo()
+  		}else{
+  			 wx.setNavigationBarTitle({
+  				title:'注册商户'
+  			})
+  		}
   },
   computed: {
     isLang () {
@@ -154,6 +171,16 @@ export default {
     })
   },
   methods: {
+  	//获取基本信息
+  	  getShopInfo () {
+  	  		wxRequest('getShopInfo')
+			.then(res =>{
+				console.log(res)
+				
+			}).catch(err => {
+				console.log(err)
+			})
+  	  },
     // 预览图片
     previewImg (index) {
       let that = this

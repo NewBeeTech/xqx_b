@@ -1,16 +1,16 @@
 <template>
 	<div class="main">
-		<div class="groupsTab">
-			<div :class="{active: current == 0}">进行中</div>
-			<div :class="{active:current == 1}">未开始</div>
-			<div :class="{active:current == 2}">已结束</div>
+		<div class="groupsTab" >
+			<div :class="{active:current == 0}" @click="tabChange" id='0'>进行中</div>
+			<div :class="{active:current == 1}" @click="tabChange" id='1'>未开始</div>
+			<div :class="{active:current == 2}" @click="tabChange" id='2'>已结束</div>
 		</div>
-		<swiper @change="bindchange" >
+		<swiper @change="bindchange" :current='current'>
 			<swiper-item >
 				<div class="grousLists">
 					<scroll-view scroll-y='true'>
 						<div class="paddingBottom">
-							<div class="grousList" @click="navGo('/pages/groups-detail/main')">
+							<div class="grousList" @click="navGo('/pages/groups-detail/main?type=0')">
 								<img src="/static/imgs/ArtboardCopy9@2x.png" />
 								<div class="grousListMsg">
 									<p><text>酸豆角肉末饭1酸豆角肉末饭1酸豆角肉末饭1</text><text>返佣比例：0.6%</text></p>
@@ -20,36 +20,6 @@
 									<p>已拼团：62份 <text>拼团中：52份</text></p>
 								</div>
 							</div>
-							<div class="grousList">
-								<img src="/static/imgs/ArtboardCopy9@2x.png" />
-								<div class="grousListMsg">
-									<p><text>酸豆角肉末饭1</text><text>返佣比例：0.6%</text></p>
-									<p>¥45 <text>¥45</text></p>
-									<p>有效期：2h</p>
-									<p>创建日期：2018-10-09 12:23:12</p>
-									<p>已拼团：62份 <text>拼团中：52份</text></p>
-								</div>
-							</div>
-							<div class="grousList">
-								<img src="/static/imgs/ArtboardCopy9@2x.png" />
-								<div class="grousListMsg">
-									<p><text>酸豆角肉末饭1</text>返佣比例：0.6%</text></p>
-									<p>¥45 <text>¥45</text></p>
-									<p>有效期：2h</p>
-									<p>创建日期：2018-10-09 12:23:12</p>
-									<p>已拼团：62份 <text>拼团中：52份</text></p>
-								</div>
-							</div>
-							<div class="grousList">
-								<img src="/static/imgs/ArtboardCopy9@2x.png" />
-								<div class="grousListMsg">
-									<p><text>酸豆角肉末饭1</text><text>返佣比例：0.6%</text></p>
-									<p>¥45 <text>¥45</text></p>
-									<p>有效期：2h</p>
-									<p>创建日期：2018-10-09 12:23:12</p>
-									<p>已拼团：62份 <text>拼团中：52份</text></p>
-								</div>
-							</div>
 						</div>
 
 					</scroll-view>
@@ -59,7 +29,7 @@
 				<div class="grousLists">
 					<scroll-view scroll-y='true'>
 						<div class="paddingBottom">
-							<div class="grousList">
+							<div class="grousList" @click="navGo('/pages/make-groups/main?type=1')">
 								<img src="/static/imgs/ArtboardCopy9@2x.png" />
 								<div class="grousListMsg">
 									<p><text>酸豆角肉末饭2</text> <text>返佣比例：0.6%</text></p>
@@ -78,10 +48,10 @@
 				<div class="grousLists">
 					<scroll-view scroll-y='true'>
 						<div class="paddingBottom">
-							<div class="grousList">
+							<div class="grousList" @click="navGo('/pages/groups-detail/main?type=1')">
 								<img src="/static/imgs/ArtboardCopy9@2x.png" />
 								<div class="grousListMsg">
-									<p><text>酸豆角肉末饭2</text> <text>返佣比例：0.6%</text></p>
+									<p><text>酸豆角肉末饭3</text> <text>返佣比例：0.6%</text></p>
 									<p>¥45 <text>¥45</text></p>
 									<p>有效期：2h</p>
 									<p>创建日期：2018-10-09 12:23:12</p>
@@ -94,7 +64,7 @@
 				</div>
 			</swiper-item>
 		</swiper>
-		<div class="makeGroups" @click="navGo('/pages/make-groups/main')">创建拼团</div>
+		<div class="makeGroups" @click="navGo('/pages/make-groups/main?type=0')">创建拼团</div>
 	</div>
 
 </template>
@@ -112,6 +82,10 @@
     bindchange (e) {
       console.log(e.target.current)
       this.current = e.target.current
+    },
+    tabChange (e){
+    		console.log(e.target.id)
+    		this.current = e.target.id;
     },
     submit () {
       wx.navigateTo({

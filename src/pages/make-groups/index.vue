@@ -53,7 +53,7 @@
 				<div class="listStyle">
 					<label>拼团有效期</label>
 					<div>
-						<input type="number" disabled="" value="24h"/>
+						<input type="number" disabled="" value="24h" />
 					</div>
 				</div>
 			</div>
@@ -64,14 +64,14 @@
 			<div class="serviceMsg padding">
 				<div>服务说明</div>
 				<div class="serviceList">
-					<img src="/static/imgs/dui.png"/>
+					<img src="/static/imgs/dui.png" />
 					<div>
 						<p>全场包邮</p>
 						<p>所有商品均无条件包邮</p>
 					</div>
 				</div>
 				<div class="serviceList">
-					<img src="/static/imgs/dui.png"/>
+					<img src="/static/imgs/dui.png" />
 					<div>
 						<p>消费即得养老金</p>
 						<p>每一笔消费都能获得相应的比例的养老金</p>
@@ -79,18 +79,18 @@
 
 				</div>
 				<div class="serviceList">
-					<img src="/static/imgs/dui.png"/>
+					<img src="/static/imgs/dui.png" />
 					<div>
 						<p>假一赔十</p>
 						<p>若收到的商品是假冒品牌，可获得加倍的赔偿</p>
 					</div>
 				</div>
 			</div>
-			<div class="makeBtn">
-				<div>保存</div>
-				<div>创建并上架</div>
+			<div class="makeBtn" v-if="type == 0">
+				<div @click="saveGroups">保存</div>
+				<div @click="makeGroups">创建并上架</div>
 			</div>
-			<div class="makeBtn2">
+			<div class="makeBtn2" v-if='type == 1'>
 				<div>删除</div>
 				<div>编辑</div>
 				<div>上架</div>
@@ -101,25 +101,60 @@
 </template>
 
 <script>
+	import { wxRequest } from '@/api'
 	export default {
-  data () {
-    return {
-      current: 0
-    }
-  },
-  mounted () {
-  },
-  methods: {
-    bindchange () {
+		data() {
+			return {
+				type: 0
+			}
+		},
+		onLoad: function() {
+			let that = this;
+			let type = that.$root.$mp.query.type;//入口类型0:创建，1:未开始，2:进行中/已完成
+			that.type = type;
+			if(type == 0){
+	  			wx.setNavigationBarTitle({
+	  				title:'创建活动'
+	  			})
 
-    },
-    submit () {
-      wx.navigateTo({
-        url: '/pages/merchant-edit/main'
-      })
-    }
-  }
-}
+	  		}else{
+	  			 wx.setNavigationBarTitle({
+	  				title:'活动详情'
+	  			})
+	  		}
+		},
+
+		mounted() {},
+		methods: {
+			//创建并上架活动
+			makeGroups() {
+				let that = this;
+				wxRequest('makeGroups')
+					.then(res => {
+						console.log(res)
+						//				that.codeImg = res.value
+					}).catch(err => {
+						console.log(err)
+					})
+			},
+			//保存活动
+			saveGroups() {
+				let that = this;
+				wxRequest('makeGroups')
+					.then(res => {
+						console.log(res)
+						//				that.codeImg = res.value
+					}).catch(err => {
+						console.log(err)
+					})
+			},
+			submit() {
+				wx.navigateTo({
+					url: '/pages/merchant-edit/main'
+				})
+			}
+		}
+	}
 </script>
 
 <style scoped>
@@ -133,79 +168,94 @@
 		font-weight: 100;
 		background: #f0f0f0;
 	}
-	.listStyle{
+	
+	.listStyle {
 		height: 96rpx;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		border-bottom: 1rpx solid #f0f0f0;
 	}
-	.listStyle>div{
+	
+	.listStyle>div {
 		flex: 1;
 		display: flex;
 		justify-content: flex-end;
 	}
-	.listStyle>div>input{
+	
+	.listStyle>div>input {
 		text-align: right;
 	}
-	.padding{
+	
+	.padding {
 		padding: 0 35rpx;
 		background: white;
 	}
-	.listStyle label{
+	
+	.listStyle label {
 		color: #333;
 	}
-	.listStyle img{
+	
+	.listStyle img {
 		width: 15rpx;
 		height: 30rpx;
 	}
-	.goodName,.goodLogo{
+	
+	.goodName,
+	.goodLogo {
 		height: 164rpx;
 		background: white;
 		margin-bottom: 18rpx;
 	}
-	.goodLogo img{
+	
+	.goodLogo img {
 		width: 116rpx;
 		height: 116rpx;
 	}
-	.remark{
+	
+	.remark {
 		padding: 30rpx 35rpx;
-
 	}
-	.remark div{
+	
+	.remark div {
 		line-height: 80rpx;
 		color: #000;
 	}
-	.remark textarea{
+	
+	.remark textarea {
 		height: 100rpx;
 		color: #333;
 		font-weight: 100;
-
 	}
-	.placeholder{
+	
+	.placeholder {
 		color: #999;
 	}
-	.serviceMsg>div:nth-child(1){
+	
+	.serviceMsg>div:nth-child(1) {
 		line-height: 100rpx;
 		border-top: 1rpx solid #f0f0f0;
-		
 	}
-	.serviceList{
+	
+	.serviceList {
 		display: flex;
 		font-size: 28rpx;
 		padding: 20rpx 0;
 		/*align-items: center;*/
 	}
-	.serviceList>div>p:nth-child(2){
+	
+	.serviceList>div>p:nth-child(2) {
 		color: #999;
 	}
-	.serviceList img{
+	
+	.serviceList img {
 		width: 42rpx;
 		height: 42rpx;
 		display: block;
 		margin-right: 20rpx;
 	}
-	.makeBtn{
+	
+	.makeBtn {
 		padding: 35rpx;
 		border-top: 1rpx solid #f0f0f0;
 		display: flex;
@@ -213,7 +263,8 @@
 		justify-content: flex-start;
 		background: white;
 	}
-	.makeBtn>div{
+	
+	.makeBtn>div {
 		height: 90rpx;
 		line-height: 90rpx;
 		text-align: center;
@@ -222,12 +273,14 @@
 		color: #FEA401;
 		border-radius: 10rpx;
 	}
-	.makeBtn>div:nth-child(2){
+	
+	.makeBtn>div:nth-child(2) {
 		background: #FEA401;
 		color: white;
 		margin-left: 20rpx;
 	}
-	.makeBtn2{
+	
+	.makeBtn2 {
 		padding: 35rpx;
 		border-top: 1rpx solid #f0f0f0;
 		display: flex;
@@ -235,7 +288,8 @@
 		justify-content: flex-start;
 		background: white;
 	}
-	.makeBtn2>div{
+	
+	.makeBtn2>div {
 		height: 90rpx;
 		line-height: 90rpx;
 		text-align: center;
@@ -244,12 +298,13 @@
 		color: #FEA401;
 		border-radius: 10rpx;
 	}
-	.makeBtn2>div:nth-child(2){
-		margin:0 20rpx;
+	
+	.makeBtn2>div:nth-child(2) {
+		margin: 0 20rpx;
 	}
-	.makeBtn2>div:nth-child(3){
+	
+	.makeBtn2>div:nth-child(3) {
 		background: #FEA401;
 		color: white;
-		
 	}
 </style>

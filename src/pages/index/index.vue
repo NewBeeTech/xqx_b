@@ -46,41 +46,41 @@
     <section>
       <div @click="navGo('/pages/transaction-record/main')" class="sec-lin">
         <div class="item">
-          <div>313</div>
+          <div>{{value.realChargeTodaySum}}</div>
           <div>今日营收</div>
         </div>
         <div class="cneter"></div>
         <div class="item">
-          <div>233</div>
+          <div>{{value.realChargeHistorySum}}</div>
           <div>累计营收</div>
         </div>
       </div>
       <div @click="navGo('/pages/transaction-record/main')" class="sec-lin">
         <div class="item">
-          <div>434</div>
+          <div>{{value.currencyTodaySum}}</div>
           <div>今日返金</div>
         </div>
         <div class="cneter"></div>
         <div class="item">
-          <div>555</div>
+          <div>{{value.currencyHistorySum}}</div>
           <div>累计返金</div>
         </div>
       </div>
       <div @click="navGo('/pages/my-client/main')" class="sec-lin">
         <div class="item">
-          <div>312</div>
+          <div>{{value.personTodaySum}}</div>
           <div>今日新增客户</div>
         </div>
         <div class="cneter"></div>
         <div class="item">
-          <div>423</div>
+          <div>{{value.personHistorySum}}</div>
           <div>累计客户</div>
         </div>
       </div>
     </section>
 
     <section class="jiehoug">
-      <div @click="navationTo('/pages/merchant-edit/main')">
+      <div @click="navationTo('/pages/merchant-edit/main?type=1')">
         <span><img src="/static/imgs/ArtboardCopy9@2x.png" alt=""></span>
         <span>基本信息设置</span>
       </div>
@@ -103,11 +103,91 @@
       <div>您还未进行资质认证，下载小确幸商家版APP完成认证后，可体验更多营销服务哦～</div>
       <div>立即下载</div>
     </footer>
+    <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button>
   </div>
 </template>
 
 <script>
+import {wxRequest} from '@/api'
 export default {
+	data () {
+    return {
+      value: {
+      		
+      }
+    }
+  },
+	created (){
+		let that = this;
+		let token = wx.getStorageSync('token');	
+		if(!token){
+				// 登录
+			wx.login({
+				success: function(res) {
+					console.log(res)
+					wx.getUserInfo({
+						withCredentials:true,
+						success:function(res){
+							console.log(res)
+							wxRequest('userLogin',{
+								code:res.code,
+								
+							})
+							.then(res =>{
+								console.log(res)
+								if(res.code == 1){
+									 wx.setStorageSync('token',res.value)
+								}
+							}).catch(err => {
+								console.log(err)
+							})
+						},
+						fail:function(err){
+							console.log(err)
+							wx.navigateTo({
+				        url: '/pages/bind-phone/main'
+				      })
+						}
+					})
+//					that.getUserInfo(res.code);
+//					wx.getSetting({
+//				    success(res) {
+//				        if (!res.authSetting['scope.userInfo']) {
+//				            wx.openSetting({
+//				            	  success:function(){
+//				            	  	   
+//				            	  },
+//				            	  fail:function(){
+//				            	  			wx.navigateTo({
+//										        url: '/pages/bind-phone/main'
+//										      })
+//				            	  }
+//				            })
+//				        }else{
+//				        	   wx.navigateTo({
+//						        url: '/pages/bind-phone/main'
+//						      })
+//				        }
+//				    }
+//				})
+//					
+				}
+			})
+		}
+		
+//			
+	},
+	onShow:function(){
+		let that = this;
+//		获取首页信息
+		wxRequest('homeMsg')
+			.then(res =>{
+				console.log(res)
+				that.value = res.value
+			}).catch(err => {
+				console.log(err)
+			})
+	},
   methods: {
     scanCode () {
       wx.scanCode({
@@ -115,6 +195,9 @@ export default {
           console.log(res)
         }
       })
+    },
+    getUserInfo (code){
+    		
     },
     navationTo (url) {
       wx.navigateTo({
