@@ -3,7 +3,7 @@
     <div class="user-from top sec">
       <div class="text">商户名称</div>
       <div class="input">
-        <input type="text" minlength="1" placeholder="请输入商户名称" placeholder-style='font-size: 15px' v-model="info.name" @blur="checkName">
+        <input type="text" minlength="1" placeholder="请输入商户名称" placeholder-style='font-size: 15px' v-model="info.name" @blur="checkName" :value="info.name">
       </div>
     </div>
     <div class="user-from top sec">
@@ -61,15 +61,16 @@
       <div class="select-line">
         <div>地图标记</div>
         <a href="/pages/set-map/main">
-          <div>去标记 <img class="right_" src="/static/imgs/right.png" alt=""></div>
+          <div>{{mark!=""?mark:"去标记"}} <img class="right_" src="/static/imgs/right.png" alt=""></div>
         </a>
       </div>
-      <div @click="navGo('/pages/choose-shangq/main')" class="select-line">
-        <div>{{businessDistrict?businessDistrict:"所属商圈"}}</div>
-        <div><span style="margin-right: 5px" v-if="shangq">{{shangq}}</span><span style="margin-right: 5px"
-                                                                                  v-else>选择商圈</span><img class="right_"
-                                                                                                         src="/static/imgs/right.png"
-                                                                                                         alt=""></div>
+      <div @click="navGo('/pages/choose-shangq/main')" class="select-line top sec">
+        <div>所属商圈</div>
+        <div>
+          <span style="margin-right: 5px" v-if="info.businessDistrict">{{info.businessDistrict}}</span>
+          <span style="margin-right: 5px" v-else>选择商圈</span>
+          <img class="right_" src="/static/imgs/right.png"alt="">
+        </div>
       </div>
     </div>
 
@@ -85,9 +86,9 @@
       <button class="button sub" size="digit" @click="submit">下一步</button>
     </div>
 
-    <div v-else>
+    <div v-else class="select-container">
       <div class="select-container">
-        <div class="select-line">
+        <div class="select-line  top sec">
           <div>客服电话</div>
           <div class="input">
             <input type="digit" placeholder="请输入客服电话" placeholder-style='font-size: 15px' v-model="info.storePhone">
@@ -96,43 +97,42 @@
         <div class="select-line">
           <div>营业时间</div>
           <div @click="navGo('/pages/time-checked/main')">
-            <span v-if="yyTime.begin">{{yyTime.begin}}至{{yyTime.end}}</span>
-            <span v-else>{{businessHours?businessHours:"设置"}}</span>
+            <span v-if="info.businessHours">{{info.businessHours}}</span>
+            <span v-else>设置</span>
             <img class="right_" src="/static/imgs/right.png" alt="">
           </div>
         </div>
 
-        <div class="select-line">
+        <div class="select-line  top sec">
           <div>联系人</div>
           <div class="input">
-            <input type="digit" placeholder="请输入联系人姓名" placeholder-style='font-size: 15px'
-                   v-model="info.personInChargeName">
+            <input type="text" placeholder="请输入联系人姓名" placeholder-style='font-size: 15px'
+                   v-model="info.personInChargeName" :value="info.personInChargeName">
           </div>
         </div>
         <div class="select-line">
           <div>联系人电话</div>
           <div class="input">
             <input type="digit" placeholder="请输入联系人电话" placeholder-style='font-size: 15px'
-                   v-model="info.personInChargePhone">
+                   v-model="info.personInChargePhone" :value="info.personInChargePhone">
           </div>
         </div>
         <div class="select-line">
           <div>返金设置</div>
           <div class="input">
             <input type="digit" placeholder="默认0.1%" placeholder-style='font-size: 15px'
-                   v-model="info.ratio">
+                   v-model="info.ratio" :value="info.ratio">
           </div>
         </div>
         <div class="select-line">
           <div>积分设置</div>
           <div class="input">
-            <input type="digit" placeholder="默认0.1%" placeholder-style='font-size: 15px'
-                   v-model="info.integralRatio" min="0.1" max="80">
+            <input type="digit" placeholder="最小0.1最大80" placeholder-style='font-size: 15px'
+                   v-model="info.integralRatio" min="0.1" max="80" :value="info.integralRatio">
           </div>
         </div>
-
       </div>
-      <button class="submit" @click="navReturn()">保存</button>
+      <button class="submit" @click="toSava">保存</button>
     </div>
   </div>
 </template>
@@ -150,8 +150,11 @@
         yyTime: {},
         shangq: '',
         type: 0,
-        info: {},
-        imageIndex: 0
+        info: {
+          ratio:0
+        },
+        imageIndex: 0,
+        mark:""
       }
     },
     onLoad: function (option) {
@@ -162,7 +165,7 @@
         wx.setNavigationBarTitle({
           title: '编辑基本信息'
         })
-        that.getShopInfo()
+        // that.getShopInfo()
       } else {
         wx.setNavigationBarTitle({
           title: '注册商户'
@@ -175,12 +178,14 @@
         return this.$root.$mp.appOptions.from ? 1 : 2
       }
     },
+
     onShow() {
       var address = wx.getStorageSync("chooseAddress");
       if (address) {
         address = JSON.parse(address);
         this.info.latitude = address.location.lat;
         this.info.longitude = address.location.lng;
+        this.mark = address.title;
       }
       if (wx.getStorageSync("hangye")) {
         var hangye = JSON.parse(wx.getStorageSync("hangye"));
@@ -363,8 +368,33 @@
           console.log(err);
         });
       },
-      navReturn() {
+      toSava() {
+
         this.info.appLoginname = wx.getStorageSync('phone');
+        var message = "";
+        if (!this.info.name){message = "请输入商户名称"}
+        if (!this.logo){message = "请上传商户logo"}
+        if (!this.info.businessIndName){message = "请输入行业名称"}
+        if (!this.images.length){message = "请上传商品图片"}
+        if (!this.info.businessIndName){message = "请选择行业"}
+        if (!this.region){message = "请选择所在地区"}
+        if (!this.mark){message = "请选择地图标记"}
+        if (!this.info.businessDistrict){message = "请选择商圈"}
+        if (!this.info.storePhone){message = "请输入客服电话"}
+        if (!this.info.businessHours){message = "请选择营业时间"}
+        if (!this.info.personInChargeName){message = "请输入联系人姓名"}
+        if (!this.info.ratio){message = "请设置返金金额"}
+        if (!this.info.integralRatio){message = "请设置积分设置"}
+
+        if (message){
+          wx.showToast({
+            title: message,
+            icon:"none",
+            duration: 2000
+          })
+          return;
+        }
+
         wxRequest('merchantRegister', this.info)
           .then(res => {
             console.log(res);
@@ -375,16 +405,6 @@
           .catch(err => {
             console.log(err)
           })
-
-      },
-      loadCity(){
-        var self = this;
-        wxRequest("getProvince",{proKey:"0"}).then(function (res) {
-          console.log(res);
-          self.region[0] = res.value;
-        }).catch(function (err) {
-          console.log(err)
-        })
       }
     }
   }

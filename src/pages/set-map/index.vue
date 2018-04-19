@@ -9,10 +9,10 @@
       <map id="map"
            scale="14"
            show-location
-           style="width: 100%; height: 1200rpx;">
+           style="width: 100%; height: 40vh;">
       </map>
     </div>
-    <scroll-view class="result_contaniner" scroll-y style="height: 63vh; background: #fff">
+    <scroll-view class="result_contaniner" scroll-y style="height: 60vh; background: #fff">
       <div class="scorll-item" v-for="item in list" @click="chooseLocation(item)">
         <div>{{item.title}}</div>
         <div>{{item.address}}</div>
@@ -89,19 +89,16 @@
     .serch-in
       width 94%
       margin auto
-      height 56prx
+      height 56rpx
       background #fff
       border-radius 10rpx
-      font-size 14px
+      font-size 28rpx
       color #888
       line-height 56rpx
       text-align center
   .result_contaniner
     width 100%
-    position absolute
-    bottom 0
-    left 0
-    z-index 99
+
     .scorll-item
       background #fff
       margin-left 30rpx
