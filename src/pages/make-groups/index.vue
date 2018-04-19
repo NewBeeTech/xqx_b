@@ -4,7 +4,7 @@
 			<div class="goodName listStyle padding">
 				<label>商品名称</label>
 				<div>
-					<input v-model="info.name" type="text" placeholder="请输入商品名称" />
+					<input v-model="info.name" type="text" placeholder="请输入商品名称" v-bind="info.name" />
 				</div>
 			</div>
 			<div class="goodLogo listStyle padding" @click="chooseImage(1, 'logo')">
@@ -24,19 +24,19 @@
 				<div class="listStyle">
 					<label>商品价格</label>
 					<div>
-						<input v-model="info.price" v-bind="info.price+'000'" type="digit" placeholder="请输入商品价格" />
+						<input v-model="info.price" v-bind="info.price" type="digit" placeholder="请输入商品价格" />
 					</div>
 				</div>
 				<div class="listStyle">
 					<label>拼团价</label>
 					<div>
-						<input v-model="info.groupPrice" type="digit" placeholder="请输入拼团价格" />
+						<input v-model="info.groupPrice" type="digit" placeholder="请输入拼团价格" v-bind="info.groupPrice"/>
 					</div>
 				</div>
 				<div class="listStyle">
 					<label>返金比例</label>
 					<div>
-						<input v-model="info.ratio" type="digit" placeholder="请设置返金比例" />
+						<input v-model="info.ratio" type="digit" placeholder="请设置返金比例" v-bind="info.ratio"/>
 					</div>
 				</div>
 				<div class="listStyle">

@@ -23,11 +23,12 @@ export let api = {
     "getTowIndustry":"mxcx/UtilsController/getTowIndustry",//获取行业2级数据
     "queryGoodsGroupOrderState":"mxcx/GoodsGroupOrderController/queryGoodsGroupOrderState",
     "getMerchantMoneyCollectQr":"mxcx/MerchantController/getMerchantMoneyCollectQr",
-    "decryptPhoneNumber":"mxcx/AuthorizedController/decryptPhoneNumber"
+    "decryptPhoneNumber":"mxcx/AuthorizedController/decryptPhoneNumber",
+    "queryGroupBuy":"mxcx/GroupBuyController/queryGroupBuy"
 	}
 }
 export let wxRequest = function(server, parm) {
-  console.log("parm:",parm);
+
 	wx.showLoading({
 		title: '加载中'
 	})
@@ -35,6 +36,7 @@ export let wxRequest = function(server, parm) {
 	if(!parm.code){
 		parm.sessionKey = wx.getStorageSync('token');
 	}
+  console.log("parm:",parm);
 	return new Promise(function(success, fail) {
 		wx.request({
 			url: api.HTTP_HOST + api.HTTP_SERVER[server],

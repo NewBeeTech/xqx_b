@@ -13,7 +13,7 @@
 				</div>
 			</div>
 
-			<div class="openDetail" @click="navGo('/pages/make-groups/main')">
+			<div class="openDetail" @click="navGo('/pages/make-groups/main?id='+info.id+'type=detail')">
 				<p>查看拼团活动详情</p>
 				<img src="/static/imgs/right.png" />
 			</div>
@@ -87,7 +87,7 @@
         this.id = options.type;
         console.log(options);
         //		获取首页信息
-        wxRequest('queryGoodsGroup',{status:options.type})
+        wxRequest('queryGroupBuy',{goodsGroupid:options.type,status:this.isShow?"11":"12"})
           .then(res => {
             console.log(res)
             if (res.code == 1) {
