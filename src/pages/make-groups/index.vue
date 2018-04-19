@@ -42,7 +42,7 @@
 				<div class="listStyle">
 					<label>单笔交易返养老金（元）</label>
 					<div>
-						<input v-model="info.currency" type="digit" placeholder="¥0.00" />
+						<input v-model="info.currency" type="digit" placeholder="¥0.00"   v-bind="info.currency"/>
 					</div>
 				</div>
 				<div class="listStyle">
@@ -227,7 +227,9 @@
         self.info.explainImgUrl = mark.explainImgUrl;
         self.info.groupAging = 24;
         self.info.status = 1;
-
+        self.info.price *=100;
+        self.info.groupPrice *=100;
+        self.info.currency *=100;
         for (let key in self.info) {
           if (!key){
             if (!self.info[key]){
