@@ -1,61 +1,75 @@
 <template>
 	<div class="main">
 		<scroll-view scroll-y='true'>
-			<div class="orderList">
+			<div class="orderList" v-for="item in list">
 				<div class="orderMsg">
 					<label>订单号</label>
-					<p>123456789</p>
+					<p>{{item.serialNumber}}}</p>
 					<!--<span>发货</span>-->
-					<text>已发货</text>
+					<text v-if="item.orderState==1">待发货</text>
+					<text v-if="item.orderState==2">已发货</text>
+					<text v-if="item.orderState==3">已完成</text>
 				</div>
 				<div class="orderMsg">
 					<label>商品名称</label>
-					<p>老干妈</p>
+					<p>{{item.commodityName}}</p>
 				</div>
 				<div class="orderMsg">
 					<label>用户名</label>
-					<p>老干妈</p>
+					<p>{{item.personName}}</p>
 				</div>
 				<div class="orderMsg">
 					<label>联系电话</label>
-					<p>老干妈</p>
+					<p>{{item.phone}}</p>
 				</div>
 				<div class="orderMsg">
 					<label>地址</label>
-					<p>北京市朝阳区望京国际,北京市朝阳区望京国际北京市朝阳区望京国际北京市朝阳区望京国际</p>
+					<p>{{item.address}}</p>
 				</div>
 			</div>
-			<div class="orderList">
-				<div class="orderMsg">
-					<label>订单号</label>
-					<p>123456789</p>
-					<!--<span>发货</span>-->
-					<text>已发货</text>
-				</div>
-				<div class="orderMsg">
-					<label>商品名称</label>
-					<p>老干妈</p>
-				</div>
-				<div class="orderMsg">
-					<label>用户名</label>
-					<p>老干妈</p>
-				</div>
-				<div class="orderMsg">
-					<label>联系电话</label>
-					<p>老干妈</p>
-				</div>
-				<div class="orderMsg">
-					<label>地址</label>
-					<p>北京市朝阳区望京国际,北京市朝阳区望京国际北京市朝阳区望京国际北京市朝阳区望京国际</p>
-				</div>
-			</div>
+
 		</scroll-view>
 	</div>
 
 </template>
 
 <script>
-	
+  import {wxRequest} from '@/api'
+
+  export default {
+    data () {
+      return {
+        current: 0,
+        list:[]
+      }
+    },
+    mounted () {
+
+    },
+    onLoad (options) {
+      console.log(options.status)
+      this.status = options.status
+      this.searchGroup(1);
+    },
+    methods: {
+      searchGroup (page){
+
+        let that = this;
+        //		获取首页信息
+        wxRequest('queryGoodsGroupOrderState',{status:this.status,pageNum:page,pageSize:10})
+          .then(res => {
+            console.log(res)
+            if (res.code == 1) {
+              that.list = res.value
+              console.log(res);
+            }
+
+          }).catch(err => {
+          console.log(err)
+        })
+      }
+    }
+  }
 </script>
 
 <style scoped>

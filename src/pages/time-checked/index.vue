@@ -68,13 +68,10 @@ export default {
     },
     selectTime () {
       let that = this
-      wx.setStorage({
-        key: 'yyTime',
-        data: {
-          begin: that.beginHour + ':' + that.beginMin,
-          end: that.endHour + ':' + that.endMin
-        }
-      })
+
+      wx.setStorageSync(
+        'time',that.beginHour + ':' + that.beginMin+"-"+that.endHour + ':' + that.endMin);
+      console.log(that.beginHour + ':' + that.beginMin+"-"+that.endHour + ':' + that.endMin);
       this.navReturn(-1)
     }
   }
@@ -90,7 +87,7 @@ export default {
 .title
   width 100%
   line-height 40px
-  text-align center 
+  text-align center
   font-size 16px
 .submmit
   width 70%

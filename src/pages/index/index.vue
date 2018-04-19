@@ -5,26 +5,26 @@
         <div><img src="/static/imgs/Artboard@2x.png" alt=""></div>
         <div>收款码</div>
       </div>
-      
+
       <div @click="scanCode">
         <div><img src="/static/imgs/ArtboardCopy7@2x.png" alt=""></div>
         <div>扫一扫</div>
       </div>
-      <div @click="navationTo('/pages/collage-list/main')">
+      <div @click="navationTo('/pages/user-price/main')">
         <div><img src="/static/imgs/8.png" alt=""></div>
         <div>钱包</div>
       </div>
     </header>
     <header>
-      <div @click="navGo('/pages/goods-active/main')">
+      <div @click="navGo('/pages/goods-active/main?status=1')">
         <div><img src="/static/imgs/1.png" alt=""></div>
         <div>待发货</div>
       </div>
-      <div @click="navGo('/pages/goods-active/main')">
+      <div @click="navGo('/pages/goods-active/main?status=2')">
         <div><img src="/static/imgs/6.png" alt=""></div>
         <div>已发货</div>
       </div>
-      <div @click="navGo('/pages/goods-active/main')">
+      <div @click="navGo('/pages/goods-active/main?status=3')">
         <div><img src="/static/imgs/7.png" alt=""></div>
         <div>已完成</div>
       </div>
@@ -44,36 +44,39 @@
       </div>
     </header>
     <section>
-      <div @click="navGo('/pages/transaction-record/main')" class="sec-lin">
+      <!-- @click="navGo('/pages/transaction-record/main')"-->
+      <div class="sec-lin">
         <div class="item">
-          <div>{{value.realChargeTodaySum}}</div>
-          <div>今日营收</div>
+          <div>{{~~value.realChargeTodaySum/100==value.realChargeTodaySum/100?value.realChargeTodaySum/100+".00":~~(value.realChargeTodaySum*100)/100}}</div>
+          <div>今日营收(元)</div>
         </div>
         <div class="cneter"></div>
         <div class="item">
-          <div>{{value.realChargeHistorySum}}</div>
-          <div>累计营收</div>
+          <div>{{~~value.realChargeHistorySum/100==value.realChargeHistorySum/100?value.realChargeHistorySum/100+".00":~~(value.realChargeHistorySum*100)/100}}</div>
+          <div>累计营收(元)</div>
         </div>
       </div>
-      <div @click="navGo('/pages/transaction-record/main')" class="sec-lin">
+      <!-- @click="navGo('/pages/transaction-record/main')"-->
+      <div class="sec-lin">
         <div class="item">
-          <div>{{value.currencyTodaySum}}</div>
-          <div>今日返金</div>
+          <div>{{~~value.currencyTodaySum/100==value.currencyTodaySum/100?value.currencyTodaySum/100+".00":~~(value.currencyTodaySum*100)/100}}</div>
+          <div>今日返金(元)</div>
         </div>
         <div class="cneter"></div>
         <div class="item">
-          <div>{{value.currencyHistorySum}}</div>
-          <div>累计返金</div>
+          <div>{{~~value.currencyHistorySum/100==value.currencyHistorySum/100?value.currencyHistorySum/100+".00":~~(value.currencyHistorySum*100)/100}}</div>
+          <div>累计返金(元)</div>
         </div>
       </div>
-      <div @click="navGo('/pages/my-client/main')" class="sec-lin">
+      <!--@click="navGo('/pages/my-client/main')"-->
+      <div class="sec-lin">
         <div class="item">
-          <div>{{value.personTodaySum}}</div>
+          <div>{{value.personTodaySum==""?0:value.personTodaySum}}</div>
           <div>今日新增客户</div>
         </div>
         <div class="cneter"></div>
         <div class="item">
-          <div>{{value.personHistorySum}}</div>
+          <div>{{value.personHistorySum==""?0:value.personHistorySum}}</div>
           <div>累计客户</div>
         </div>
       </div>
@@ -82,262 +85,287 @@
     <section class="jiehoug">
       <div @click="navationTo('/pages/merchant-edit/main?type=1')">
         <span><img src="/static/imgs/ArtboardCopy9@2x.png" alt=""></span>
-        <span>基本信息设置</span>
+        <span>基本信息</span>
       </div>
       <div>
         <span><img src="/static/imgs/ArtboardCopy10@2x.png" alt=""></span>
-        <span @click="navGo('/pages/gold-setting/main')">返金设置</span>
+        <span @click="navGo('/pages/gold-setting/main')">返金中心</span>
       </div>
     </section>
 
-    <section class="footer" @click="navGo('/pages/user-price/main')">
-      <div class="sec-lin">
-        <div class="item">
-          <span class="icon"><img src="/static/imgs/ArtboardCopy11@2x.png" alt=""></span>
-          <span class="text">账户余额</span>
-        </div>
-        <div class="item">100</div>
-      </div>
-    </section>
+    <!--<section class="footer" @click="navGo('/pages/user-price/main')">-->
+      <!--<div class="sec-lin">-->
+        <!--<div class="item">-->
+          <!--<span class="icon"><img src="/static/imgs/ArtboardCopy11@2x.png" alt=""></span>-->
+          <!--<span class="text">账户余额</span>-->
+        <!--</div>-->
+        <!--<div class="item">100</div>-->
+      <!--</div>-->
+    <!--</section>-->
     <footer>
       <div>您还未进行资质认证，下载小确幸商家版APP完成认证后，可体验更多营销服务哦～</div>
-      <div>立即下载</div>
+      <div @click="navGo('/pages/app-download/main')">立即下载</div>
     </footer>
     <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button>
   </div>
 </template>
 
 <script>
-import {wxRequest} from '@/api'
-export default {
-	data () {
-    return {
-      value: {
-      		realChargeTodaySum:'',
-      		realChargeHistorySum:'',
-      		currencyTodaySum:'',
-      		currencyHistorySum:'',
-      		personTodaySum:'',
-      		personHistorySum:''
+  import {wxRequest} from '@/api'
+
+  export default {
+    data() {
+      return {
+        value: {
+          realChargeTodaySum: '',
+          realChargeHistorySum: '',
+          currencyTodaySum: '',
+          currencyHistorySum: '',
+          personTodaySum: '',
+          personHistorySum: ''
+        }
+      }
+    },
+    created() {
+
+      // wxRequest('useAppLoginNameQueryMerchant', {appLoginname:"18612962314"})
+      //   .then(res => {
+      //     console.log(res);
+      //   }).catch(err => {
+      //   console.log(err)
+      // })
+
+      let that = this;
+
+      let token = wx.getStorageSync('token');
+      console.log(".............",token)
+      if (!token) {
+        // 登录
+        wx.login({
+          success: function (res) {
+            console.log(res.code)
+            let code = res.code;
+            wx.getUserInfo({
+              withCredentials: true,
+              success: function (res) {
+                console.log(res)
+                var config = {
+                  code: code,
+                  encryptedData: res.encryptedData,
+                  iv: res.iv
+                };
+                console.log(config);
+                wxRequest('userLogin', config)
+                  .then(res => {
+                    console.log(res);
+                    wx.setStorageSync('token', res.value);
+                    if (res.code == 1) {
+                      console.log(res.code);
+                      that.getHomeMsg();
+                    }
+                    if (res.code == 4000) {
+                      wx.navigateTo({
+                        url: '/pages/bind-phone/main'
+                      })
+                    }
+                  }).catch(err => {
+                  console.log(err)
+                })
+              },
+              fail: function (err) {
+                console.log(err)
+                // 	wx.navigateTo({
+                //   url: '/pages/bind-phone/main'
+                // })
+              }
+            })
+
+          }
+        })
+      }
+    },
+    onShow: function () {
+
+      if (wx.getStorageSync('token')){
+        this.getHomeMsg();
+        this.getInfo();
+      }
+
+    },
+    methods: {
+      getInfo: function () {
+        var self = this;
+        wxRequest('getShopInfo')
+          .then(res => {
+            console.log(res);
+            // self.name = res.value.name;
+
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      },
+      scanCode() {
+        wx.scanCode({
+          success: (res) => {
+            console.log(res)
+          }
+        })
+      },
+      getHomeMsg() {
+        let that = this;
+        //		获取首页信息
+        wxRequest('homeMsg')
+          .then(res => {
+            if (res.code == 1) {
+              console.log(res.value);
+              if (res.value){
+                that.value = res.value
+              }
+            }
+            if (res.code == 4000) {
+              wx.navigateTo({
+                url: '/pages/bind-phone/main'
+              })
+            }
+            ;
+
+          }).catch(err => {
+          console.log(err)
+        })
+      },
+      navationTo(url) {
+        wx.navigateTo({
+          url: url
+        })
       }
     }
-  },
-	created (){
-		let that = this;
-		let token = wx.getStorageSync('token');	
-		if(!token){
-				// 登录
-			wx.login({
-				success: function(res) {
-					console.log(res.code)
-					let code = res.code;
-					wx.getUserInfo({
-						withCredentials:true,
-						success:function(res){
-							console.log(res)
-							wxRequest('userLogin',{
-								code:code,
-								encryptedData:res.encryptedData,
-								iv:res.iv
-							})
-							.then(res =>{
-								console.log(res)
-								if(res.code == 1){
-									 wx.setStorageSync('token',res.value);
-									 that.getHomeMsg();
-								}
-							}).catch(err => {
-								console.log(err)
-							})
-						},
-						fail:function(err){
-							console.log(err)
-							wx.navigateTo({
-				        url: '/pages/bind-phone/main'
-				      })
-						}
-					})
-//					that.getUserInfo(res.code);
-//					wx.getSetting({
-//				    success(res) {
-//				        if (!res.authSetting['scope.userInfo']) {
-//				            wx.openSetting({
-//				            	  success:function(){
-//				            	  	   
-//				            	  },
-//				            	  fail:function(){
-//				            	  			wx.navigateTo({
-//										        url: '/pages/bind-phone/main'
-//										      })
-//				            	  }
-//				            })
-//				        }else{
-//				        	   wx.navigateTo({
-//						        url: '/pages/bind-phone/main'
-//						      })
-//				        }
-//				    }
-//				})
-//					
-				}
-			})
-		}
-		
-//			
-	},
-	onShow:function(){
-		this.getHomeMsg();
-	},
-  methods: {
-    scanCode () {
-      wx.scanCode({
-        success: (res) => {
-          console.log(res)
-        }
-      })
-    },
-   	getHomeMsg (){
-    		let that = this;
-	//		获取首页信息
-			wxRequest('homeMsg')
-				.then(res =>{
-					console.log(res)
-					if(res.code == 1){
-					   that.value = res.value
-						
-					}
-
-				}).catch(err => {
-					console.log(err)
-				})
-    },
-    navationTo (url) {
-      wx.navigateTo({
-        url: url
-      })
-    }
   }
-}
 </script>
 
 <style lang="stylus" scoped>
-.main
-  padding-top 30px
-header  
-  width 100%
-  background #ffffff
-  display flex
-  justify-content space-around
-  div
-    text-align center
-    font-size 14px
-    color #101010
-  div:nth-child(1) 
-    img 
-      width 100%
-      height 100%
-    width 46px
-    height 46px
-  div:nth-child(2)
-    line-height 50px
-section   
-  .sec-lin
-    margin auto
-    border-radius 4px
-    margin-top 10px
-    width 346px
-    height 69px
-    left 14px
-    background #fff
-    text-align center
-    box-shadow 0px 0px 3px 0px rgba(217, 217, 217, 1)
+  .main
+    padding 30px 0 120rpx
+
+  header
+    width 100%
+    background #ffffff
     display flex
-    justify-content space-between
-    align-items center
-    .cneter
-      width 1px
-      height 13px
-      background #ccc
-    .item
-      width 49%
+    justify-content space-around
+    div
       text-align center
-      div:nth-child(1)
-        font-size 24px
-        color #101010
-      div:nth-child(2)
-        font-size 12px
-        color #A3A3A3
-.jiehoug
-  width 346px
-  margin auto 
-  margin-top 30px
-  display flex
-  justify-content space-between
-  div
-    border-radius 4px
-    background #fff
-    width 163px
-    height 63px
-    line-height 20px
-    text-align center
-    display flex
-    align-items center
-    box-shadow 0px 0px 3px 0px rgba(217, 217, 217, 1)
-  span 
-    font-size 14px
-    color #101010
-    line-height 63px
-    &:nth-child(1)
-      img 
+      font-size 14px
+      color #101010
+    div:nth-child(1)
+      img
         width 100%
         height 100%
-        display block
-      width 25px
-      height 25px
-      margin 20px
-  .footer
+      width 46px
+      height 46px
+    div:nth-child(2)
+      line-height 50px
+
+  section
     .sec-lin
+      border-radius 8rpx
+      margin 10rpx auto 0
+      width 692rpx
+      height 138rpx
+      /*left 28rpx*/
+      background #fff
+      text-align center
+      box-shadow 0px 0px 3px 0px rgba(217, 217, 217, 1)
+      display flex
+      justify-content space-between
+      align-items center
+      .cneter
+        width 1px
+        height 13px
+        background #ccc
       .item
-        width 50%
-        height 100%
-        span
-          display inline-block
-.icon 
-  img 
-    width 100%
-    height 100%
-  display inline-block
-  position relative
-  top 5px
-  left -17px
-  width 25px
-  height 25px
-.text
-  top -3px
-  position relative
-  font-size 14px
-  color #101010
-footer  
-  width 100%
-  height 58px
-  position fixed
-  bottom 0
-  background #ffffff
-  display flex
-  justify-content space-around
-  align-items center
-  div:nth-child(1) 
-    width 225px
-    height 34px
-    font-size 12px
-    color #101010
-  div:nth-child(2) 
-    width 80px
-    height 30px
-    text-align center 
-    line-height 30px
-    background #fd9326
+        width 49%
+        text-align center
+        div:nth-child(1)
+          font-size 24px
+          color #101010
+        div:nth-child(2)
+          font-size 12px
+          color #A3A3A3
+
+  .jiehoug
+    width 346px
+    margin auto
+    margin-top 30px
+    display flex
+    justify-content space-between
+    div
+      border-radius 4px
+      background #fff
+      width 163px
+      height 63px
+      line-height 20px
+      text-align center
+      display flex
+      align-items center
+      box-shadow 0px 0px 3px 0px rgba(217, 217, 217, 1)
+    span
+      font-size 14px
+      color #101010
+      line-height 63px
+      &:nth-child(1)
+        img
+          width 100%
+          height 100%
+          display block
+        width 25px
+        height 25px
+        margin 20px
+    .footer
+      .sec-lin
+        .item
+          width 50%
+          height 100%
+          span
+            display inline-block
+
+  .icon
+    img
+      width 100%
+      height 100%
+    display inline-block
+    position relative
+    top 5px
+    left -17px
+    width 25px
+    height 25px
+
+  .text
+    top -3px
+    position relative
     font-size 14px
-    color #fff
-    border-radius 4px
+    color #101010
+
+  footer
+    width 100%
+    height 58px
+    position fixed
+    bottom 0
+    background #ffffff
+    display flex
+    justify-content space-around
+    align-items center
+    div:nth-child(1)
+      width 225px
+      height 34px
+      font-size 12px
+      color #101010
+    div:nth-child(2)
+      width 80px
+      height 30px
+      text-align center
+      line-height 30px
+      background #fd9326
+      font-size 14px
+      color #fff
+      border-radius 4px
 </style>

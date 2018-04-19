@@ -1,19 +1,33 @@
 <template>
   <div>
     <div @click="chooseItem(item)" :class="{c_3 : choose === item}" class="c_1" v-for="(item, index) in selectList" :key="index">
-			{{item}}
+			{{item.name}}
 			<span v-if="choose === item" class="c_2"><img src="/static/imgs/duidui.png" alt=""></span>
 		</div>
   </div>
 </template>
 
 <script>
+  import {wxRequest} from '@/api'
 export default {
   data () {
     return {
       choose: '',
-      selectList: ['美食', '休闲娱乐', '生活服务', '运输票务', '电影票', '旅游', '酒店', '购物', '虚拟', '网络传媒']
+      selectList: []
     }
+  },
+  onLoad (){
+
+    var self = this;
+    wxRequest('getBusinessCircle',{businessCircleKey:"130702"})
+      .then(res => {
+
+        self.selectList = res.value;
+
+      })
+      .catch(err => {
+        console.log(err)
+      })
   },
   onShow () {
     let that = this
@@ -34,7 +48,7 @@ export default {
       wx.getStorage({
         key: 'shangQuan',
         success: function (res) {
-          that.choose = res.data
+          that.choose = res.data.value
         }
       })
       setTimeout(() => {

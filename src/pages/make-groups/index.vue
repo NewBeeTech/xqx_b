@@ -4,12 +4,13 @@
 			<div class="goodName listStyle padding">
 				<label>商品名称</label>
 				<div>
-					<input type="text" placeholder="请输入商品名称" />
+					<input v-model="info.name" type="text" placeholder="请输入商品名称" />
 				</div>
 			</div>
-			<div class="goodLogo listStyle padding">
+			<div class="goodLogo listStyle padding" @click="chooseImage(1, 'logo')">
 				<label>商品图片</label>
-				<div>
+        <img v-if="logo" :src="logo" alt="">
+				<div v-else>
 					<img src="/static/imgs/圆角矩形2拷贝2@2x.png" />
 				</div>
 			</div>
@@ -23,43 +24,43 @@
 				<div class="listStyle">
 					<label>商品价格</label>
 					<div>
-						<input type="digit" placeholder="请输入商品价格" />
+						<input v-model="info.price" v-bind="info.price+'000'" type="digit" placeholder="请输入商品价格" />
 					</div>
 				</div>
 				<div class="listStyle">
 					<label>拼团价</label>
 					<div>
-						<input type="digit" placeholder="请输入拼团价格" />
+						<input v-model="info.groupPrice" type="digit" placeholder="请输入拼团价格" />
 					</div>
 				</div>
 				<div class="listStyle">
 					<label>返金比例</label>
 					<div>
-						<input type="digit" placeholder="请设置返金比例" />
+						<input v-model="info.ratio" type="digit" placeholder="请设置返金比例" />
 					</div>
 				</div>
 				<div class="listStyle">
 					<label>单笔交易返养老金（元）</label>
 					<div>
-						<input type="digit" placeholder="¥0.00" />
+						<input v-model="info.currency" type="digit" placeholder="¥0.00" />
 					</div>
 				</div>
 				<div class="listStyle">
 					<label>参团人数</label>
 					<div>
-						<input type="number" placeholder="请输入2～200" />
+						<input v-model="info.groupPersonNum" type="number" placeholder="请输入2～200" @blur="checkPersonNum"/>
 					</div>
 				</div>
 				<div class="listStyle">
 					<label>拼团有效期</label>
 					<div>
-						<input type="number" disabled="" value="24h" />
+						<input type="number" disabled  value="24h" />
 					</div>
 				</div>
 			</div>
 			<div class="padding remark">
 				<div>拼团规则</div>
-				<textarea placeholder="请填写拼团规则"></textarea>
+				<textarea auto-height placeholder="请填写拼团规则" v-model="info.rule"></textarea>
 			</div>
 			<div class="serviceMsg padding">
 				<div>服务说明</div>
@@ -102,10 +103,14 @@
 
 <script>
 	import { wxRequest } from '@/api'
+  import {qiniu} from "../../api/qiniuUploader"
+
 	export default {
 		data() {
 			return {
-				type: 0
+				type: 0,
+        logo: '',
+        info:{}
 			}
 		},
 		onLoad: function() {
@@ -126,29 +131,145 @@
 
 		mounted() {},
 		methods: {
+      checkPersonNum(e){
+        if (e){
+          console.log(e);
+        }
+      },
+      deleteImage (index){
+        var self = this;
+        wx.showModal({
+          title: '是否要删除图片',
+          success: function(res) {
+            if (res.confirm) {
+              console.log(self.images)
+              self.images.splice(index,1);
+              console.log(self.images)
+            } else if (res.cancel) {
+
+            }
+          }
+        })
+      },
+      chooseImage:function (count, type) {
+        let that = this
+        wx.chooseImage({
+          count: count, // 默认9
+          sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+          success: function (res) {
+            // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+            const tempFilePaths = res.tempFilePaths
+            if (type === 'logo') {
+              console.log(res)
+              that.logo = tempFilePaths[0]
+              that.uploadImage("ccpp-logo",tempFilePaths[0]);
+            } else {
+              that[type] = [...that[type], ...tempFilePaths]
+              console.log(that.images)
+              that.uploadImage("ccpp-mpic",that.images[0]);
+            }
+
+
+          }
+        })
+      },
+      uploadImage:function(bucket,filePaths){
+        var self = this;
+        wxRequest('getQiniuToken', {bucket:bucket})
+          .then(res => {
+            console.log(res)
+
+            if (res.code == 1){
+              var token = res.value
+              var date = new Date()
+
+              qiniu.upload(filePaths, (res) => {
+                console.log(res);
+                var type = bucket.replace("ccpp-","");
+                var imageURL = "https://"+type+".denong.com/"+res.key;
+                console.log(imageURL);
+
+                if (type == "logo") {
+                  self.info.imgUrl = imageURL;
+                }
+              },(error) => {
+                console.log('error: ' + error);
+              },{
+                region: 'NCN',
+                domain: bucket,
+                key: date.getTime()+".jpg",
+                uptoken: token
+
+              },(res) => {
+
+              });
+
+            }else {
+              wx.showToast({
+                title: '获取失败',
+                icon: 'none',
+                duration: 2000
+              })
+            }
+
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      },
 			//创建并上架活动
-			makeGroups() {
-				let that = this;
-				wxRequest('makeGroups')
+			makeGroups:function() {
+				let self = this;
+
+				var mark = JSON.parse(wx.getStorageSync("remark"));
+        self.info.explainContent = mark.explainContent;
+        self.info.explainImgUrl = mark.explainImgUrl;
+        self.info.groupAging = 24;
+        self.info.status = 1;
+
+        for (let key in self.info) {
+          if (!key){
+            if (!self.info[key]){
+              wx.showToast({
+                title:"请传入完整信息",
+                duration:2000
+              })
+              return;
+            }
+          }
+        }
+				wxRequest('createGoodsGroup',self.info)
 					.then(res => {
 						console.log(res)
 						//				that.codeImg = res.value
+            wx.navigateBack()
 					}).catch(err => {
 						console.log(err)
+          wx.showToast({
+            title:err.message,
+            duration:2000
+          })
 					})
 			},
 			//保存活动
-			saveGroups() {
-				let that = this;
-				wxRequest('makeGroups')
-					.then(res => {
-						console.log(res)
-						//				that.codeImg = res.value
-					}).catch(err => {
-						console.log(err)
-					})
+			saveGroups:function() {
+        let self = this;
+        var mark = JSON.parse(wx.getStorageSync("remark"));
+        self.info.explainContent = mark.explainContent;
+        self.info.explainImgUrl = mark.explainImgUrl;
+        self.info.status = 0;
+        self.info.groupAging = 24;
+        wxRequest('createGoodsGroup',self.info)
+          .then(res => {
+            console.log(res)
+            wx.navigateBack()
+            //				that.codeImg = res.value
+          }).catch(err => {
+          console.log(err)
+        })
 			},
-			submit() {
+			submit:function() {
 				wx.navigateTo({
 					url: '/pages/merchant-edit/main'
 				})
@@ -168,7 +289,7 @@
 		font-weight: 100;
 		background: #f0f0f0;
 	}
-	
+
 	.listStyle {
 		height: 96rpx;
 		display: flex;
@@ -176,85 +297,85 @@
 		justify-content: space-between;
 		border-bottom: 1rpx solid #f0f0f0;
 	}
-	
+
 	.listStyle>div {
 		flex: 1;
 		display: flex;
 		justify-content: flex-end;
 	}
-	
+
 	.listStyle>div>input {
 		text-align: right;
 	}
-	
+
 	.padding {
 		padding: 0 35rpx;
 		background: white;
 	}
-	
+
 	.listStyle label {
 		color: #333;
 	}
-	
+
 	.listStyle img {
 		width: 15rpx;
 		height: 30rpx;
 	}
-	
+
 	.goodName,
 	.goodLogo {
 		height: 164rpx;
 		background: white;
 		margin-bottom: 18rpx;
 	}
-	
+
 	.goodLogo img {
 		width: 116rpx;
 		height: 116rpx;
 	}
-	
+
 	.remark {
 		padding: 30rpx 35rpx;
 	}
-	
+
 	.remark div {
 		line-height: 80rpx;
 		color: #000;
 	}
-	
+
 	.remark textarea {
 		height: 100rpx;
 		color: #333;
 		font-weight: 100;
 	}
-	
+
 	.placeholder {
 		color: #999;
 	}
-	
+
 	.serviceMsg>div:nth-child(1) {
 		line-height: 100rpx;
 		border-top: 1rpx solid #f0f0f0;
 	}
-	
+
 	.serviceList {
 		display: flex;
 		font-size: 28rpx;
 		padding: 20rpx 0;
 		/*align-items: center;*/
 	}
-	
+
 	.serviceList>div>p:nth-child(2) {
 		color: #999;
 	}
-	
+
 	.serviceList img {
 		width: 42rpx;
 		height: 42rpx;
 		display: block;
 		margin-right: 20rpx;
 	}
-	
+
 	.makeBtn {
 		padding: 35rpx;
 		border-top: 1rpx solid #f0f0f0;
@@ -263,7 +384,7 @@
 		justify-content: flex-start;
 		background: white;
 	}
-	
+
 	.makeBtn>div {
 		height: 90rpx;
 		line-height: 90rpx;
@@ -273,13 +394,13 @@
 		color: #FEA401;
 		border-radius: 10rpx;
 	}
-	
+
 	.makeBtn>div:nth-child(2) {
 		background: #FEA401;
 		color: white;
 		margin-left: 20rpx;
 	}
-	
+
 	.makeBtn2 {
 		padding: 35rpx;
 		border-top: 1rpx solid #f0f0f0;
@@ -288,7 +409,7 @@
 		justify-content: flex-start;
 		background: white;
 	}
-	
+
 	.makeBtn2>div {
 		height: 90rpx;
 		line-height: 90rpx;
@@ -298,11 +419,11 @@
 		color: #FEA401;
 		border-radius: 10rpx;
 	}
-	
+
 	.makeBtn2>div:nth-child(2) {
 		margin: 0 20rpx;
 	}
-	
+
 	.makeBtn2>div:nth-child(3) {
 		background: #FEA401;
 		color: white;

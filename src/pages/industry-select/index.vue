@@ -1,50 +1,23 @@
 <template>
   <div class="contain">
     <scroll-view scroll-y class="scroll left">
-      <div @click="industryClick(item.name)" :class="{active: checked === item.name}" v-for="(item, index) in list" :key="index">{{item.name}}</div>
+      <div @click="loadTwo(item.id)" :class="{active: checked === item.name}" v-for="(item, index) in leftList" :key="index">{{item.name}}</div>
     </scroll-view>
     <scroll-view scroll-y class="scroll right">
-      <div @click="rightClick(item)" :class="{active: checkedRight === item}" v-for="(item, index) in leftList" :key="index">{{item}}</div>
+      <div @click="rightClick(item)" :class="{active: checkedRight === item}" v-for="(item, index) in rightList" :key="index">{{item.name}}</div>
     </scroll-view>
   </div>
 </template>
 
 <script>
+  import {wxRequest} from '@/api'
 export default {
   data () {
     return {
       checked: '美食',
       checkedRight: '',
-      list: [
-        {
-          name: '美食',
-          select: ['粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜']
-        },
-        {
-          name: '个人股',
-          select: ['粤菜', '粤菜', '粤菜', '打完大哇', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜']
-        },
-        {
-          name: '带娃',
-          select: ['粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜']
-        },
-        {
-          name: '电饭锅',
-          select: ['粤菜', '福娃发完', '粤菜', '福娃发完', '福娃发完', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜']
-        },
-        {
-          name: '福娃发完',
-          select: ['粤菜', '福娃发完', '粤菜', '粤菜', '福娃发完', '粤菜', '福娃发完', '粤菜', '粤菜', '粤菜']
-        },
-        {
-          name: '打完大哇',
-          select: ['粤菜', '福娃发完', '打完大哇', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜']
-        },
-        {
-          name: '吊袜带',
-          select: ['粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜', '粤菜']
-        }
-      ]
+      leftList:[],
+      rightList:[]
     }
   },
   computed: {
@@ -52,15 +25,44 @@ export default {
       return this.list.filter(el => el.name === this.checked)[0].select
     }
   },
+  onLoad(){
+    this.loadOne();
+    this.loadTwo(10);
+  },
   methods: {
+    loadOne (){
+      var self = this;
+      wxRequest('getOneIndustry')
+        .then(res => {
+
+          self.leftList = res.value;
+          console.log(self.leftList[0].name);
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    loadTwo (id){
+      var self = this;
+      wxRequest('getTowIndustry',{towKey:id})
+        .then(res => {
+
+          self.rightList = res.value;
+
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     industryClick (name) {
       this.checked = name
     },
     rightClick (item) {
       let that = this
       this.checkedRight = item
+      wx.setStorageSync("hangye",JSON.stringify(item));
       wx.navigateTo({
-        url: '/pages/merchant-edit/main?merchant=' + that.checkedRight
+        url: '/pages/merchant-edit/main'
       })
     }
   }

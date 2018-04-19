@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <button class="button">确定</button>
+    <button class="button" @click="navGo('/pages/gold-setting/main')">确定</button>
   </div>
 </template>
 
@@ -55,9 +55,9 @@ export default {
     .text
       width 26%
       font-size 16px
-      text-align left 
+      text-align left
       padding-left 20px
-    .input 
+    .input
       width 40%
       font-size 15px
       padding-left 25px
@@ -73,10 +73,10 @@ export default {
       font-size 16px
       color #8F8E94
       width 60%
-      text-align right 
+      text-align right
 .edit
   margin-top 15px
-.tips 
+.tips
   font-size 14px
   color #B8B8B8
   margin-left 6%

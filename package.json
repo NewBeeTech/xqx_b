@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "mpvue": "^1.0.6",
+    "qiniu-js": "^2.2.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "vuex": "^2.3.1"

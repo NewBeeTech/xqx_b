@@ -1,155 +1,126 @@
 <template>
-  <div>
+  <div class="page">
     <div class="serch">
       <div class="serch-in">
-        搜索地点
+        <input type="text" placeholder="搜索地点" @blur="search">
       </div>
     </div>
     <div class="map">
       <map id="map"
-        longitude="113.324520"
-        latitude="23.099994"
-        scale="14"
-        :controls="controls"
-        @controltap="moveChange"
-        :markers="markers"
-        :polyline="polyline"
-        @regionchange="regionchange"
-        show-location
-        style="width: 100%; height: 30vh;">
+           scale="14"
+           show-location
+           style="width: 100%; height: 1200rpx;">
       </map>
     </div>
-    <scroll-view scroll-y style="height: 63vh; background: #fff">
-      <div class="scorll-item">
-        <div>老上海城隍庙小吃（知春路分店）</div>
-        <div>北京市海淀区知春路17-1</div>
+    <scroll-view class="result_contaniner" scroll-y style="height: 63vh; background: #fff">
+      <div class="scorll-item" v-for="item in list" @click="chooseLocation(item)">
+        <div>{{item.title}}</div>
+        <div>{{item.address}}</div>
       </div>
-      <div class="scorll-item">
-        <div>老上海城隍庙小吃（知春路分店）</div>
-        <div>北京市海淀区知春路17-1</div>
-      </div>
-      <div class="scorll-item">
-        <div>老上海城隍庙小吃（知春路分店）</div>
-        <div>北京市海淀区知春路17-1</div>
-      </div>
-      <div class="scorll-item">
-        <div>老上海城隍庙小吃（知春路分店）</div>
-        <div>北京市海淀区知春路17-1</div>
-      </div>
-      <div class="scorll-item">
-        <div>老上海城隍庙小吃（知春路分店）</div>
-        <div>北京市海淀区知春路17-1</div>
-      </div>
-      <div class="scorll-item">
-        <div>老上海城隍庙小吃（知春路分店）</div>
-        <div>北京市海淀区知春路17-1</div>
-      </div>
-      <div class="scorll-item">
-        <div>老上海城隍庙小吃（知春路分店）</div>
-        <div>北京市海淀区知春路17-1</div>
-      </div>
-      <div class="scorll-item">
-        <div>老上海城隍庙小吃（知春路分店）</div>
-        <div>北京市海淀区知春路17-1</div>
-      </div>
-      <div class="scorll-item">
-        <div>老上海城隍庙小吃（知春路分店）</div>
-        <div>北京市海淀区知春路17-1</div>
-      </div>
-      <div class="scorll-item">
-        <div>老上海城隍庙小吃（知春路分店）</div>
-        <div>北京市海淀区知春路17-1</div>
-      </div>
+
     </scroll-view>
-    <button class="button">确定</button>  
+    <button class="button">确定</button>
   </div>
 </template>
 
 <script>
-export default {
-  data () {
-    return {
-      markers: [{
-        iconPath: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4157100854,154011290&fm=27&gp=0.jpg',
-        id: 0,
-        latitude: 23.099994,
-        longitude: 113.324520,
-        width: 50,
-        height: 50
-      }],
-      polyline: [{
-        points: [{
-          longitude: 113.3245211,
-          latitude: 23.10229
-        }, {
-          longitude: 113.324520,
-          latitude: 23.21229
-        }],
-        color: '#FF0000DD',
-        width: 2,
-        dottedLine: true
-      }],
-      controls: [{
-        id: 1,
-        iconPath: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4157100854,154011290&fm=27&gp=0.jpg',
-        position: {
-          left: 0,
-          top: 300 - 50,
-          width: 50,
-          height: 50
-        },
-        clickable: true
-      }]
-    }
-  },
-  methods: {
-    regionchange (e) {
-      console.log(111)
-      console.log(e.type)
+  import {wxRequest} from '@/api'
+  import {qqMap} from "../../api/qqmap-wx-jssdk";
+
+  var qqmapsdk = new qqMap({
+    key: 'OHQBZ-YF2R4-3ZAUK-DWK4H-YV6IZ-J3BD7'
+  });
+  export default {
+    data() {
+      return {
+        list: [],
+        loc: {}
+      }
     },
-    moveChange (e) {
-      console.log(111)
-      console.log(e.controlId)
+    onLoad() {
+      var self = this;
+      this.mapCtx = wx.createMapContext('map')
+      wx.getLocation({
+        type: 'wgs84',
+        success: function (res) {
+          self.loc.latitude = res.latitude;
+          self.loc.longitude = res.longitude;
+          self.mapCtx.moveToLocation();
+        }
+      })
+    },
+    methods: {
+      search(e) {
+        var self = this;
+        qqmapsdk.search({
+          keyword: e.target.value,
+          location: {latitude: this.loc.latitude, longitude: this.loc.longitude},
+          success: function (res) {
+            console.log(res.data);
+            self.list = res.data;
+          },
+          fail: function (res) {
+            console.log(res);
+          },
+          complete: function (res) {
+            console.log(res);
+          }
+        });
+      },
+      chooseLocation: function (e) {
+        console.log(e)
+        wx.setStorageSync("chooseAddress",JSON.stringify(e));
+        wx.navigateBack();
+      }
     }
   }
-}
 </script>
 
 <style lang="stylus">
-.serch
-  width 100%
-  height 7vh
-  background #E6E6E6
-  display flex
-  align-items center
-  .serch-in
-    width 94%
-    margin auto 
-    height 28px
-    background #fff
-    border-radius 5px
-    font-size 14px
-    color #888
-    line-height 28px
-    text-align center
-.scorll-item
-  background #fff
-  margin-left 15px
-  border-bottom 1px solid #B0B0B0
-  height 70px
-  div
-    padding-top 10px
-  div:nth-child(1)
-    color #101010
-    font-size 14px
-  div:nth-child(2)
-    color #B0B0B0
-    font-size 12px
-.button
-  position fixed
-  bottom 10px
-  left 10%
-  width 80%
-  background #2E2E2E
-  color #fff
+.page
+  height 100%
+  overflow hidden
+  .serch
+    width 100%
+    height 88rpx
+    background #E6E6E6
+    display flex
+    align-items center
+    .serch-in
+      width 94%
+      margin auto
+      height 56prx
+      background #fff
+      border-radius 10rpx
+      font-size 14px
+      color #888
+      line-height 56rpx
+      text-align center
+  .result_contaniner
+    width 100%
+    position absolute
+    bottom 0
+    left 0
+    z-index 99
+    .scorll-item
+      background #fff
+      margin-left 30rpx
+      border-bottom 2rpx solid #B0B0B0
+
+    div
+      padding-top 20rpx
+    div:nth-child(1)
+      color #101010
+      font-size 28rpx
+    div:nth-child(2)
+      color #B0B0B0
+      font-size 24rpx
+
+  .button
+    position fixed
+    bottom 20rpx
+    left 10%
+    width 80%
+    background #2E2E2E
+    color #fff
 </style>

@@ -56,8 +56,9 @@ export default {
 			'pages/goods-active/main', // 商品状态
 			'pages/groups-detail/main', // 拼团详情
 			'pages/make-groups/main', // 创建拼团活动
-			'pages/good-remark/main' // 创建拼团活动
-		],
+			'pages/good-remark/main', // 创建拼团活动
+      'pages/app-download/main'
+    ],
 		window: {
 			backgroundTextStyle: 'light',
 			navigationBarBackgroundColor: '#fff',

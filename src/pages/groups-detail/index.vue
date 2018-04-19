@@ -5,11 +5,11 @@
 			<div class="grousLists">
 				<img src="/static/imgs/ArtboardCopy9@2x.png" />
 				<div class="grousListMsg">
-					<p><text>酸豆角肉末饭1酸豆角肉末饭1酸豆角肉末饭1</text><text>返佣比例：0.6%</text></p>
-					<p>¥45 <text>¥45</text></p>
-					<p>有效期：2h</p>
+					<p><text>{{info.name}}</text><text>返佣比例：{{info.ratio}}%</text></p>
+					<p>¥45 <text>¥{{info.price}}</text></p>
+					<p>有效期：{{info.groupAging}}h</p>
 					<p>创建日期：2018-10-09 12:23:12</p>
-					<p>已拼团：62份 <text>拼团中：52份</text></p>
+					<p>已拼团：{{info.groupPersonNum}}份 <text>拼团中：{{info.groupPersonNum}}份</text></p>
 				</div>
 			</div>
 
@@ -19,7 +19,7 @@
 			</div>
 		</div>
 		<div class="market">
-			注：拼团成功。。。。拼团成功拼团成功拼团成功拼团成功拼团成功拼团成功拼团成功
+			{{info.rule}}
 		</div>
 		<div class="groupsDetailMsg">
 			<div class="detailTab" >
@@ -31,7 +31,7 @@
 				<div class="detailRes">
 					<div>
 						<p>已拼团（份）</p>
-						<p>256</p>
+						<p>{{info.groupPersonNum}}</p>
 					</div>
 					<div>
 						<p>已收款（元）</p>
@@ -45,7 +45,7 @@
 					</div>
 					<div>
 						<p>返佣比例</p>
-						<p>0.6%</p>
+						<p>{{info.ratio}}%</p>
 					</div>
 				</div>
 			</div>
@@ -59,7 +59,7 @@
 				</div>
 				<div>
 					<p>返佣比例</p>
-					<p>0.6%</p>
+					<p>{{info.ratio}}%</p>
 				</div>
 			</div>
 			<!--拼团中-->
@@ -70,14 +70,34 @@
 </template>
 
 <script>
+  import { wxRequest } from '@/api'
+
 		export default {
   data () {
     return {
-      show: true
+      show: true,
+      info:{}
     }
   },
   mounted () {
+
   },
+      onLoad(options){
+        let that = this;
+        this.id = options.id;
+        //		获取首页信息
+        wxRequest('queryGoodsGroup',options.id)
+          .then(res => {
+            console.log(res)
+            if (res.code == 1) {
+              that.info = res.value[0]
+              console.log(res);
+            }
+
+          }).catch(err => {
+          console.log(err)
+        })
+      },
   methods: {
     changeShow1 () {
       this.show = true
@@ -86,11 +106,17 @@
       this.show = false
     },
     makeGroups () {
+      var self = this;
       wx.showModal({
         title: '提示',
         content: '删除？',
         success: function (res) {
           console.log(res)
+          wxRequest("updateGoodsGroup",{id:self.id,status:4}).then(function (res) {
+            console.log(res);
+          }).catch(function (err) {
+            console.log(err);
+          });
         }
       })
     }
@@ -106,7 +132,7 @@
 		position: relative;
 		border-top: 1rpx solid #efefef;
 	}
-	
+
 	.grousList {
 		/*display: flex;*/
 		/*padding: 38rpx 30rpx;*/
@@ -114,29 +140,29 @@
 		margin: 30rpx;
 		box-shadow: 0px 0px 10px #efefef;
 	}
-	
+
 	.grousLists {
 		padding: 38rpx 30rpx;
 		display: flex;
 	}
-	
+
 	.grousList img {
 		width: 106rpx;
 		height: 106rpx;
 		border-radius: 5px;
 		margin-right: 34rpx;
 	}
-	
+
 	.grousListMsg {
 		color: #999;
 		flex: 1;
 	}
-	
+
 	.grousListMsg p:nth-child(1) {
 		display: flex;
 		justify-content: space-between;
 	}
-	
+
 	.grousListMsg p:nth-child(1)>text:nth-child(1) {
 		display: inline-block;
 		width: 270rpx;
@@ -147,26 +173,26 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-	
+
 	.grousListMsg p:nth-child(1)>text:nth-child(2) {
 		font-size: 24rpx;
 		color: #999;
 		float: right;
 	}
-	
+
 	.grousListMsg p:nth-child(2) {
 		font-size: 28rpx;
 		color: #333;
 		line-height: 50rpx;
 	}
-	
+
 	.grousListMsg p:nth-child(2)>text {
 		font-size: 24rpx;
 		color: #999;
 		margin-left: 30rpx;
 		text-decoration: line-through;
 	}
-	
+
 	.openDetail {
 		display: flex;
 		align-items: center;
@@ -175,23 +201,23 @@
 		line-height: 96rpx;
 		border-top: 1rpx solid #efefef;
 	}
-	
+
 	.openDetail img {
 		width: 20rpx;
 		height: 35rpx;
 		margin-left: 20rpx;
 	}
-	
+
 	.market {
 		font-size: 12px;
 		color: #999;
 		padding: 30rpx;
 	}
-	
+
 	.groupsDetailMsg {
 		padding: 20rpx 30rpx;
 	}
-	
+
 	.detailTab {
 		margin: 0 156rpx;
 		height: 78rpx;
@@ -202,19 +228,19 @@
 		border-radius: 10rpx;
 		margin-bottom: 48rpx;
 	}
-	
+
 	.detailTab p {
 		height: 100%;
 		line-height: 78rpx;
 		flex: 1;
 		color: #FEA401;
 	}
-	
+
 	.detailTab .active {
 		color: white;
 		background: #FEA401;
 	}
-	
+
 	.detailRes {
 		padding: 40rpx 0;
 		display: flex;
@@ -225,19 +251,19 @@
 		box-shadow: 0px 0px 10px #efefef;
 		line-height: 40rpx;
 	}
-	
+
 	.detailRes>div {
 		flex: 1;
 	}
-	
+
 	.detailRes>div:nth-child(1) {
 		border-right: 1rpx solid #efefef;
 	}
-	
+
 	.detailRes>div>p:nth-child(1) {
 		color: #999;
 	}
-	
+
 	.makeGroups {
 		width: calc(100% - 60rpx);
 		height: 92rpx;

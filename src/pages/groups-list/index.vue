@@ -10,14 +10,14 @@
 				<div class="grousLists">
 					<scroll-view scroll-y='true'>
 						<div class="paddingBottom">
-							<div class="grousList" @click="navGo('/pages/groups-detail/main?type=0')">
-								<img src="/static/imgs/ArtboardCopy9@2x.png" />
+							<div v-for="item in list" class="grousList" @click="navGo('/pages/groups-detail/main?type='+item.id)">
+								<img :src="item.imgUrl"/>
 								<div class="grousListMsg">
-									<p><text>酸豆角肉末饭1酸豆角肉末饭1酸豆角肉末饭1</text><text>返佣比例：0.6%</text></p>
-									<p>¥45 <text>¥45</text></p>
+									<p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>
+									<p>¥{{item.price}} <text>¥{{item.groupPrice}}</text></p>
 									<p>有效期：2h</p>
 									<p>创建日期：2018-10-09 12:23:12</p>
-									<p>已拼团：62份 <text>拼团中：52份</text></p>
+									<p>已拼团：{{item.groupPersonNum}}份 <text>拼团中：52份</text></p>
 								</div>
 							</div>
 						</div>
@@ -28,38 +28,36 @@
 			<swiper-item>
 				<div class="grousLists">
 					<scroll-view scroll-y='true'>
-						<div class="paddingBottom">
-							<div class="grousList" @click="navGo('/pages/make-groups/main?type=1')">
-								<img src="/static/imgs/ArtboardCopy9@2x.png" />
-								<div class="grousListMsg">
-									<p><text>酸豆角肉末饭2</text> <text>返佣比例：0.6%</text></p>
-									<p>¥45 <text>¥45</text></p>
-									<p>有效期：2h</p>
-									<p>创建日期：2018-10-09 12:23:12</p>
-									<p>已拼团：62份 <text>拼团中：52份</text></p>
-								</div>
-							</div>
-						</div>
-
+            <div class="paddingBottom">
+              <div v-for="item in list" class="grousList" @click="navGo('/pages/groups-detail/main?type='+item.id)">
+                <img :src="item.imgUrl"/>
+                <div class="grousListMsg">
+                  <p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>
+                  <p>¥{{item.price}} <text>¥{{item.groupPrice}}</text></p>
+                  <p>有效期：2h</p>
+                  <p>创建日期：2018-10-09 12:23:12</p>
+                  <p>已拼团：{{item.groupPersonNum}}份 <text>拼团中：52份</text></p>
+                </div>
+              </div>
+            </div>
 					</scroll-view>
 				</div>
 			</swiper-item>
 			<swiper-item>
 				<div class="grousLists">
 					<scroll-view scroll-y='true'>
-						<div class="paddingBottom">
-							<div class="grousList" @click="navGo('/pages/groups-detail/main?type=1')">
-								<img src="/static/imgs/ArtboardCopy9@2x.png" />
-								<div class="grousListMsg">
-									<p><text>酸豆角肉末饭3</text> <text>返佣比例：0.6%</text></p>
-									<p>¥45 <text>¥45</text></p>
-									<p>有效期：2h</p>
-									<p>创建日期：2018-10-09 12:23:12</p>
-									<p>已拼团：62份 <text>拼团中：52份</text></p>
-								</div>
-							</div>
-						</div>
-
+            <div class="paddingBottom">
+              <div v-for="item in list" class="grousList" @click="navGo('/pages/groups-detail/main?type='+item.id)">
+                <img :src="item.imgUrl"/>
+                <div class="grousListMsg">
+                  <p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>
+                  <p>¥{{item.price}} <text>¥{{item.groupPrice}}</text></p>
+                  <p>有效期：2h</p>
+                  <p>创建日期：2018-10-09 12:23:12</p>
+                  <p>已拼团：{{item.groupPersonNum}}份 <text>拼团中：52份</text></p>
+                </div>
+              </div>
+            </div>
 					</scroll-view>
 				</div>
 			</swiper-item>
@@ -70,26 +68,54 @@
 </template>
 
 <script>
+  import {wxRequest} from '@/api'
+
 	export default {
   data () {
     return {
-      current: 0
+      current: 0,
+      list:[]
     }
   },
   mounted () {
+
   },
+    onShow(){
+      this.searchGroup(this.current);
+    },
   methods: {
+    searchGroup (status){
+      var num = 0;
+      if(this.current == 0){num = 1}
+      if(this.current == 1){num = 0}
+      if(this.current == 2){num = 3}
+      let that = this;
+      //		获取首页信息
+      wxRequest('queryGoodsGroup',{status:num})
+        .then(res => {
+          console.log(res)
+          if (res.code == 1) {
+            that.list = res.value
+            console.log(res);
+          }
+
+        }).catch(err => {
+        console.log(err)
+      })
+    },
     bindchange (e) {
       console.log(e.target.current)
       this.current = e.target.current
+      this.searchGroup(this.current);
     },
     tabChange (e){
     		console.log(e.target.id)
     		this.current = e.target.id;
+      this.searchGroup(this.current);
     },
-    submit () {
+    submit (id) {
       wx.navigateTo({
-        url: '/pages/merchant-edit/main'
+        url: '/pages/merchant-edit/main?id='+id
       })
     }
   }
@@ -103,7 +129,7 @@
 		font-size: 24rpx;
 		position: relative;
 	}
-	
+
 	.groupsTab {
 		height: 88rpx;
 		display: flex;
@@ -112,18 +138,18 @@
 		align-items: center;
 		justify-content: space-around;
 	}
-	
+
 	.groupsTab div {
 		height: 100%;
 		line-height: 88rpx;
 		color: #999;
 		position: relative;
 	}
-	
+
 	.groupsTab .active {
 		color: #fea401;
 	}
-	
+
 	.groupsTab .active:after {
 		width: 100%;
 		height: 1px;
@@ -133,19 +159,19 @@
 		bottom: 0;
 		background: #FEA401;
 	}
-	
+
 	swiper {
 		height: calc(100% - 88rpx);
 	}
-	
+
 	.grousLists {
 		height: 100%;
 	}
-	
+
 	.grousLists scroll-view {
 		height: 100%;
 	}
-	
+
 	.grousList {
 		display: flex;
 		padding: 38rpx 30rpx;
@@ -153,14 +179,14 @@
 		margin: 30rpx;
 		box-shadow: 0px 0px 10px #efefef;
 	}
-	
+
 	.grousList img {
 		width: 106rpx;
 		height: 106rpx;
 		border-radius: 5px;
 		margin-right: 34rpx;
 	}
-	
+
 	.grousListMsg {
 		color: #999;
 		flex: 1;
@@ -176,16 +202,16 @@
 		color: #333;
 		display: block;
 		white-space:nowrap;
-		overflow:hidden; 
+		overflow:hidden;
 		text-overflow:ellipsis;
 	}
-	
+
 	.grousListMsg p:nth-child(1)>text:nth-child(2) {
 		font-size: 24rpx;
 		color: #999;
 		float: right;
 	}
-	
+
 	.grousListMsg p:nth-child(2) {
 		font-size: 28rpx;
 		color: #333;
@@ -197,7 +223,7 @@
 		margin-left: 30rpx;
 		text-decoration: line-through;
 	}
-	
+
 	.makeGroups {
 		box-sizing: border-box;
 		width: calc(100% - 60rpx);
@@ -213,7 +239,7 @@
 		line-height: 92rpx;
 		font-size: 28rpx;
 	}
-	
+
 	.paddingBottom {
 		padding-bottom: 130rpx;
 	}

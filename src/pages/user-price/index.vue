@@ -2,9 +2,9 @@
   <div class="wraper">
 		<div class="balance">
 			<p>账户余额</p>
-			<p>3213232</p>
+			<p>{{info.avail_money}}</p>
 		</div>
-		<div class="dj">冻结金额￥<span>10</span> <mark @click="show"><img class="icon1" src="/static/imgs/wenhao.png"></mark></div>
+		<div class="dj">冻结金额￥<span>{{info.blocked_money}}</span> <mark @click="show"><img class="icon1" src="/static/imgs/wenhao.png"></mark></div>
 		<div class="main">
 			<div @click="navGo('/pages/spec-first/main')">充值</div>
 			<div @click="download()">提现</div>
@@ -17,8 +17,37 @@
 </template>
 
 <script>
-export default {
+
+  import {wxRequest} from '@/api'
+  import {toDoubleNum} from "../../api";
+
+  export default {
+    data() {
+      return {
+        info: {}
+      }
+    },
+    created() {
+
+    },
+    onLoad(){
+      this.getInfo();
+    },
   methods: {
+
+    getInfo: function () {
+      var self = this;
+      wxRequest('getShopInfo')
+        .then(res => {
+          console.log(res);
+          self.info = res.value;
+          self.info.blocked_money = toDoubleNum(self.info.blocked_money);
+          self.info.avail_money = toDoubleNum(self.info.avail_money);
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     show () {
       wx.showModal({
         showCancel: false,
@@ -129,7 +158,7 @@ img{
 .footer{
   width: 100%;
   height: 55px;
-  border-top:1px solid #ccc; 
+  border-top:1px solid #ccc;
   position: fixed;
   bottom: 0;
   left: 0;
