@@ -165,7 +165,6 @@
         wx.setNavigationBarTitle({
           title: '编辑基本信息'
         })
-        // that.getShopInfo()
       } else {
         wx.setNavigationBarTitle({
           title: '注册商户'

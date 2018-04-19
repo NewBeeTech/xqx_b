@@ -11,6 +11,7 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
+    "import-local": "^1.0.0",
     "mpvue": "^1.0.6",
     "qiniu-js": "^2.2.2",
     "stylus": "^0.54.5",

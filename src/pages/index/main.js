@@ -6,6 +6,6 @@ app.$mount()
 
 export default {
   config: {
-    navigationBarTitleText: '绿星数码工作室'
+    navigationBarTitleText: ''
   }
 }

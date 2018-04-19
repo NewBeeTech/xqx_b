@@ -6,9 +6,9 @@
 				<img src="/static/imgs/ArtboardCopy9@2x.png" />
 				<div class="grousListMsg">
 					<p><text>{{info.name}}</text><text>返佣比例：{{info.ratio}}%</text></p>
-					<p>¥45 <text>¥{{info.price}}</text></p>
-					<p>有效期：{{info.groupAging}}h</p>
-					<p>创建日期：2018-10-09 12:23:12</p>
+					<p>¥{{info.groupPrice}} <text>¥{{info.price}}</text></p>
+					<p>有效期：{{info.endTime}}h</p>
+					<p>创建日期：{{info.groupAging}}</p>
 					<p>已拼团：{{info.groupPersonNum}}份 <text>拼团中：{{info.groupPersonNum}}份</text></p>
 				</div>
 			</div>
@@ -23,29 +23,29 @@
 		</div>
 		<div class="groupsDetailMsg">
 			<div class="detailTab" >
-				<p @click="changeShow1" :class="{active:show}">已拼团</p>
-				<p @click="changeShow2" :class="{active:!show}">拼团中</p>
+				<p @click="changeShow1" :class="{active:isShow}">已拼团</p>
+				<p @click="changeShow2" :class="{active:!isShow}">拼团中</p>
 			</div>
 			<!--已拼团-->
-			<div v-if="show">
+			<div v-if="isShow">
 				<div class="detailRes">
 					<div>
 						<p>已拼团（份）</p>
-						<p>{{info.groupPersonNum}}</p>
+						<p>{{info.groupPersonNum?info.groupPersonNum:0}}</p>
 					</div>
 					<div>
 						<p>已收款（元）</p>
-						<p>256</p>
+						<p>{{0}}</p>
 					</div>
 				</div>
 				<div class="detailRes">
 					<div>
 						<p>已返佣（元）</p>
-						<p>256</p>
+						<p>{{0}}</p>
 					</div>
 					<div>
 						<p>返佣比例</p>
-						<p>{{info.ratio}}%</p>
+						<p>{{info.ratio?info.ratio:0}}%</p>
 					</div>
 				</div>
 			</div>
@@ -55,7 +55,7 @@
 			<div class="detailRes" v-else>
 				<div>
 					<p>拼团中（份）</p>
-					<p>256</p>
+					<p>{{0}}</p>
 				</div>
 				<div>
 					<p>返佣比例</p>
@@ -75,7 +75,7 @@
 		export default {
   data () {
     return {
-      show: true,
+      isShow: true,
       info:{}
     }
   },
@@ -84,9 +84,10 @@
   },
       onLoad(options){
         let that = this;
-        this.id = options.id;
+        this.id = options.type;
+        console.log(options);
         //		获取首页信息
-        wxRequest('queryGoodsGroup',options.id)
+        wxRequest('queryGoodsGroup',{status:options.type})
           .then(res => {
             console.log(res)
             if (res.code == 1) {
@@ -100,10 +101,13 @@
       },
   methods: {
     changeShow1 () {
-      this.show = true
+      this.isShow = false;
+      console.log(this.isShow);
+
     },
     changeShow2 () {
-      this.show = false
+      this.isShow = true;
+      console.log(this.isShow);
     },
     makeGroups () {
       var self = this;

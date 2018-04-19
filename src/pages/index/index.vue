@@ -189,6 +189,7 @@
       if (wx.getStorageSync('token')){
         this.getHomeMsg();
         this.getInfo();
+        // this.getUserInfo();
       }
 
     },
@@ -199,11 +200,28 @@
           .then(res => {
             console.log(res);
             // self.name = res.value.name;
+            // self.value = res.value;
 
+            wx.setNavigationBarTitle({
+              title:res.value.name
+            })
           })
           .catch(err => {
             console.log(err)
           })
+      },
+      getUserInfo:function(){
+        var phone = wx.getStorageSync('phone');
+        if (phone){
+          wxRequest("useAppLoginNameQueryMerchant",{appLoginname:phone}).then(function (res) {
+            console.log(res);
+            wx.setNavigationBarTitle({
+              title: res.value.name
+            })
+          }).catch(function (err) {
+            console.log(err);
+          })
+        }
       },
       scanCode() {
         wx.scanCode({
@@ -218,7 +236,7 @@
         wxRequest('homeMsg')
           .then(res => {
             if (res.code == 1) {
-              console.log(res.value);
+              console.log(res);
               if (res.value){
                 that.value = res.value
               }
