@@ -9,8 +9,8 @@
 	},
 	"miniprogramRoot": "./dist/",
 	"compileType": "miniprogram",
-	"appid": "gh_14cd47a7461f",
-	"projectname": "public",
+	"appid": "wx3a76f6c75a0c63fd",
+	"projectname": "b_terminal",
 	"condition": {
 		"search": {
 			"current": -1,

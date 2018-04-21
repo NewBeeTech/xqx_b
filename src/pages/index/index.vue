@@ -34,7 +34,7 @@
         <div><img src="/static/imgs/4.png" alt=""></div>
         <div>拼团</div>
       </div>
-      <div @click="navationTo('/pages/collage-list/main')">
+      <div @click="navationTo('/pages/discount/main')">
         <div><img src="/static/imgs/2.png" alt=""></div>
         <div>砍价</div>
       </div>
