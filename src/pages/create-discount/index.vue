@@ -7,11 +7,14 @@
 					<input v-model="info.name" type="text" placeholder="请输入商品名称" v-bind="info.name" />
 				</div>
 			</div>
-			<div class="goodLogo listStyle padding" @click="chooseImage(1, 'logo')">
+			<div class="goodLogo listStyle padding align-top" >
 				<label>商品图片</label>
-        <img v-if="logo" :src="logo" alt="">
+				<div v-if="logo" class="logo-container" >
+					<img class="close-img" src="/static/imgs/close-img.png" style="width: 40rpx; height: 40rpx;" @click="deleteImg()" />
+					<img :src="logo" alt="" @click="previewImg()" />
+				</div>
 				<div v-else>
-					<img src="/static/imgs/圆角矩形2拷贝2@2x.png" />
+					<img @click="chooseImage(1, 'logo')" src="/static/imgs/圆角矩形2拷贝2@2x.png" />
 				</div>
 			</div>
 			<div class="padding">
@@ -134,6 +137,24 @@
 
 		mounted() {},
 		methods: {
+			/**
+			 * 预览图片
+			 * @return {[type]} [description]
+			 */
+			previewImg:function () {
+	      let that = this
+	      wx.previewImage({
+	        current: that.logo, // 当前显示图片的http链接
+					urls: [that.logo]// 需要预览的图片http链接列表
+	      })
+	    },
+			/**
+			 * 删除图片
+			 * @return {[type]} [description]
+			 */
+			deleteImg: function() {
+				this.logo = '';
+			},
       checkPersonNum(e){
         if (e){
           console.log(e);
@@ -365,17 +386,22 @@
 	}
 
 	.listStyle label {
-		color: #333;
+		color: #000;
+		font-size: 30rpx;
+		font-weight: normal;
 	}
 
 	.listStyle img {
 		width: 15rpx;
 		height: 30rpx;
 	}
-
+	.align-top {
+		align-items: flex-start;
+		padding-top: 30rpx;
+	}
 	.goodName,
 	.goodLogo {
-		height: 164rpx;
+		height: 154rpx;
 		background: white;
 		margin-bottom: 18rpx;
 	}
@@ -479,6 +505,16 @@
 	.makeBtn2>div:nth-child(3) {
 		background: #FEA401;
 		color: white;
+	}
+	.logo-container {
+		position: relative;
+	}
+	.close-img {
+		position: absolute;
+		width: 10rpx;
+		height: 10rpx;
+		right: 100rpx;
+		top: -20rpx;
 	}
 	textarea {
 		position: default;
