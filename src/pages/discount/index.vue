@@ -14,7 +14,7 @@
 								<img :src="item.imgUrl"/>
 								<div class="grousListMsg">
 									<p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>
-									<p>¥{{item.price}} <text>¥{{item.groupPrice}}</text></p>
+									<p>¥{{item.price/100}} <text>¥{{item.groupPrice/100}}</text></p>
 									<p>有效期：24h</p>
 									<p>创建日期：{{item.createTime}}</p>
 									<p>已拼团：{{item.groupPersonNum}}份 <text>拼团中：{{item.groupPersonNum}}份</text></p>
@@ -33,10 +33,9 @@
                 <img :src="item.imgUrl"/>
                 <div class="grousListMsg">
                   <p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>
-                  <p>¥{{item.price}} <text>¥{{item.groupPrice}}</text></p>
-                  <p>有效期：2h</p>
-                  <p>创建日期：2018-10-09 12:23:12</p>
-                  <p>已拼团：{{item.groupPersonNum}}份 <text>拼团中：52份</text></p>
+                  <p>¥{{item.price/100}} <text>¥{{item.groupPrice/100}}</text></p>
+                  <p>有效期：{{item.groupAging}}h</p>
+                  <p>创建日期：{{item.createTimeDesc}}</p>
                 </div>
               </div>
             </div>
@@ -84,6 +83,16 @@
       this.searchGroup(this.current);
     },
   methods: {
+		timeDesc(time) {
+			const timeObj = new Date(time);
+      const min = timeObj.getMinutes() || '00';
+      const hour = timeObj.getHours() > 10 ? timeObj.getHours() : '0'+timeObj.getHours();
+      const month = timeObj.getMonth() + 1;
+			const year = timeObj.getFullYear();
+      const day = timeObj.getDate();
+			console.log(`${year}-${month}-${day} ${hour}:${min}`);
+			return `${year}-${month}-${day} ${hour}:${min}`;
+		},
     searchGroup (status){
       var num = 0;
       if(this.current == 0){num = 1}
@@ -91,12 +100,17 @@
       if(this.current == 2){num = 3}
       let that = this;
       //		获取首页信息
-      wxRequest('queryGoodsGroup',{status:num})
+      wxRequest('queryGoodsGroup',{
+				status:num,
+				goodsType: 3,
+			})
         .then(res => {
           console.log(res)
           if (res.code == 1) {
-            that.list = res.value
-            console.log(res);
+						let result = res.value;
+						result = result.map( item => ({ ...item, createTimeDesc: that.timeDesc(item.createTime) }));
+            that.list = result;
+            console.warn(res);
           }
 
         }).catch(err => {

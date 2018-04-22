@@ -309,19 +309,32 @@
 			saveGroups:function() {
 				if (this.validateForm()) {
 					let self = this;
-	        var mark = JSON.parse(wx.getStorageSync("remark"));
-	        self.info.explainContent = mark.explainContent;
-	        self.info.explainImgUrl = mark.explainImgUrl;
-	        self.info.status = 0;
-	        self.info.groupAging = 24;
-	        wxRequest('createGoodsGroup',self.info)
-	          .then(res => {
-	            console.log(res)
-	            wx.navigateBack()
-	            //				that.codeImg = res.value
-	          }).catch(err => {
-	          console.log(err)
-	        })
+					try {
+						var discountInfo = JSON.parse(wx.getStorageSync("discount-info"));
+						wxRequest('createGoodsGroup', {
+							name: self.name,
+							imgUrl: self.logo,
+							explainContent: discountInfo.explainContent,
+							explainImgUrl: JSON.stringify(discountInfo.explainImgUrl),
+							price: self.originPrice * 100,
+							groupPrice: self.groupPrice * 100,
+							singlePrice: self.onceGroupPrice * 100,
+							ratio: self.ratio,
+							currency: (self.originPrice*100) * self.ratio,
+							groupAging: 24,
+							rule: self.rule,
+							status: 0,
+							goodsType: 3,
+						})
+		          .then(res => {
+		            console.log(res)
+		            wx.navigateBack()
+		            //				that.codeImg = res.value
+		          }).catch(err => {
+		          console.log(err)
+		        });
+					} catch (e) {
+					}
 				}
 			},
 			// 校验填写数据
