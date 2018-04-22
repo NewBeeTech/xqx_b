@@ -70,14 +70,14 @@
 			<div class="serviceMsg padding">
 				<div>服务说明</div>
 				<div class="serviceList">
-					<img src="/static/imgs/dui.png" />
+					<img v-if="!disabled"  src="/static/imgs/dui.png" />
 					<div>
 						<p>全场包邮</p>
 						<p>所有商品均无条件包邮</p>
 					</div>
 				</div>
 				<div class="serviceList">
-					<img src="/static/imgs/dui.png" />
+					<img v-if="!disabled" src="/static/imgs/dui.png" />
 					<div>
 						<p>消费即得养老金</p>
 						<p>每一笔消费都能获得相应的比例的养老金</p>
@@ -85,7 +85,7 @@
 
 				</div>
 				<div class="serviceList">
-					<img src="/static/imgs/dui.png" />
+					<img v-if="!disabled"  src="/static/imgs/dui.png" />
 					<div>
 						<p>假一赔十</p>
 						<p>若收到的商品是假冒品牌，可获得加倍的赔偿</p>
