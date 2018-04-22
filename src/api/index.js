@@ -1,6 +1,7 @@
 export let api = {
 	HTTP_HOST: 'http://wmomo.wicp.net/',
 	HTTP_SERVER: {
+		"useIdQueryGoodsGroup": "/mxcx/GoodsGroupController/useIdQueryGoodsGroup",
 	  "useAppLoginNameQueryMerchant":"mxcx/MerchantController/useAppLoginNameQueryMerchant",
 		'userLogin': 'mxcx/AuthorizedController/checkAuthorization', //获取code，登录
     "getMessageCode":"mxcx/UtilsController/getMessageCode",//获取验证码

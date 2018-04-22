@@ -29,7 +29,7 @@
 				<div class="grousLists">
 					<scroll-view scroll-y='true'>
             <div class="paddingBottom">
-              <div v-for="item in list" class="grousList" @click="navGo('/pages/groups-detail/main?type='+item.id)">
+              <div v-for="item in list" class="grousList" @click="navGo('/pages/create-discount/main?id='+item.id)">
                 <img :src="item.imgUrl"/>
                 <div class="grousListMsg">
                   <p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>

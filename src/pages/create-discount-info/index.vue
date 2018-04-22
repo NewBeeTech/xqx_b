@@ -36,6 +36,14 @@
       images: [],
     }
   },
+	onLoad() {
+		try {
+			var discountInfo = JSON.parse(wx.getStorageSync("discount-info"));
+			discountInfo.explainImgUrl = JSON.parse(discountInfo.explainImgUrl);
+			this.info = discountInfo;
+		} catch(e) {
+		}
+	},
   mounted () {
 
   },

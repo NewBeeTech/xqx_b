@@ -4,13 +4,13 @@
 			<div class="goodName listStyle padding">
 				<label>商品名称</label>
 				<div>
-					<input placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="name" type="text" placeholder="请输入商品名称" v-bind="name" />
+					<input :disabled="disabled"  placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="name" type="text" placeholder="请输入商品名称" v-bind="name" />
 				</div>
 			</div>
 			<div class="goodLogo listStyle padding align-top" >
 				<label>商品图片</label>
 				<div v-if="logo" class="logo-container" >
-					<img class="close-img" src="/static/imgs/close-img.png" style="width: 40rpx; height: 40rpx;" @click="deleteImg()" />
+					<img v-if="!disabled" class="close-img" src="/static/imgs/close-img.png" style="width: 40rpx; height: 40rpx;" @click="deleteImg()" />
 					<img :src="logo" alt="" @click="previewImg()" />
 				</div>
 				<div v-else>
@@ -28,13 +28,13 @@
 				<div class="listStyle">
 					<label>商品原价</label>
 					<div>
-						<input placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="originPrice" v-bind="originPrice" type="digit" confirm-type="done" placeholder="请输入商品价格" />
+						<input :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="originPrice" v-bind="originPrice" type="digit" confirm-type="done" placeholder="请输入商品价格" />
 					</div>
 				</div>
 				<div class="listStyle">
 					<label>返金比例</label>
 					<div>
-						<input placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="ratio" type="digit" placeholder="请设置返金比例" v-bind="ratio"/>
+						<input :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="ratio" type="digit" placeholder="请设置返金比例" v-bind="ratio"/>
 					</div>
 				</div>
 				<div class="listStyle">
@@ -47,13 +47,13 @@
 				<div class="listStyle">
 					<label>商品底价</label>
 					<div>
-						<input placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="groupPrice" type="digit" placeholder="请输入砍价商品底价" v-bind="groupPrice"/>
+						<input :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="groupPrice" type="digit" placeholder="请输入砍价商品底价" v-bind="groupPrice"/>
 					</div>
 				</div>
 				<div class="listStyle">
 					<label>单次砍价金额（元）</label>
 					<div>
-						<input placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="onceGroupPrice" type="digit" placeholder="请输入单次砍价金额" v-bind="onceGroupPrice"/>
+						<input :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="onceGroupPrice" type="digit" placeholder="请输入单次砍价金额" v-bind="onceGroupPrice"/>
 					</div>
 				</div>
 				<div class="listStyle">
@@ -65,7 +65,7 @@
 			</div>
 			<div class="padding remark">
 				<div>砍价规则</div>
-				<input placeholder-style="color: #cbcbcb; font-weight: normal;"  auto-height placeholder="请填写砍价规则" v-model="rule"></textarea>
+				<input :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;"  auto-height placeholder="请填写砍价规则" v-model="rule"></textarea>
 			</div>
 			<div class="serviceMsg padding">
 				<div>服务说明</div>
@@ -113,6 +113,7 @@
 	export default {
 		data() {
 			return {
+				disabled: false,
 				name: '', // 商品名称
         logo: '', // 商品图片
 				originPrice: '', // 商品原价
@@ -126,8 +127,14 @@
 			}
 		},
 		onLoad: function() {
-			// let that = this;
-			// let type = that.$root.$mp.query.type;//入口类型0:创建，1:未开始，2:进行中/已完成
+			let that = this;
+			let id = that.$root.$mp.query.id;
+			if (id) {
+				this.disabled = true;
+				this.useIdQueryGoodsGroup(id);
+			} else { // 创建态
+				this.disabled = false;
+			}
 			// that.type = type;
 			// if(type == 0){
 	  	// 		wx.setNavigationBarTitle({
@@ -157,6 +164,18 @@
 		},
 		onUnload: function() {
 			this.logo = '';
+			this.disabled = false;
+			this.name = ''; // 商品名称
+			this.logo = ''; // 商品图片
+			this.originPrice = ''; // 商品原价
+			this.groupPrice = ''; // 商品底价
+			this.onceGroupPrice = ''; // 单次砍价金额
+			this.rule = ''; // 砍价规则
+			this.ratio = '';
+			this.type = 0;
+			this.info = {};
+			this.goodsInfoDesc = '请填写商品说明';
+			wx.setStorageSync("discount-info", "");
 		},
 
 		mounted() {},
@@ -435,7 +454,37 @@
 					return true;
 				}
 			},
-
+			//保存活动
+			useIdQueryGoodsGroup: function(id) {
+				let self = this;
+				try {
+					wxRequest('useIdQueryGoodsGroup', {
+						goodsGroupId: id,
+					})
+		      .then(res => {
+						if (res.code === 1) {
+							self.name = res.value.name;
+							self.logo = res.value.imgUrl;
+							wx.setStorageSync("discount-info",JSON.stringify({
+								explainContent: res.value.explainContent,
+								explainImgUrl: res.value.explainImgUrl,
+							}));
+							self.originPrice = res.value.price / 100;
+							self.groupPrice = res.value.groupPrice / 100;
+							self.onceGroupPrice = res.value.singlePrice / 100;
+							self.ratio = res.value.ratio,
+							self.currency = res.value.currency;
+							self.rule = res.value.rule;
+							// status: 0,
+							// goodsType: 3,
+						}
+		      	console.log(res)
+		      }).catch(err => {
+		      	console.log(err)
+		      });
+				} catch (e) {
+				}
+			},
 			submit:function() {
 				wx.navigateTo({
 					url: '/pages/merchant-edit/main'
