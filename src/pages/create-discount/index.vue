@@ -92,14 +92,14 @@
 					</div>
 				</div>
 			</div>
-			<div class="makeBtn" v-if="type == 0">
+			<div v-if="!disabled" class="makeBtn" >
 				<div @click="saveGroups">保存</div>
 				<div @click="makeGroups">创建并上架</div>
 			</div>
-			<div class="makeBtn2" v-if='type == 1'>
-				<div>删除</div>
-				<div>编辑</div>
-				<div>上架</div>
+			<div v-if="disabled" class="makeBtn2" >
+				<div @click="deleteGoods">删除</div>
+				<div @click="editGoods">编辑</div>
+				<div @click="makeGroups">上架</div>
 			</div>
 		</scroll-view>
 	</div>
@@ -113,6 +113,7 @@
 	export default {
 		data() {
 			return {
+				id: '',
 				disabled: false,
 				name: '', // 商品名称
         logo: '', // 商品图片
@@ -129,6 +130,7 @@
 		onLoad: function() {
 			let that = this;
 			let id = that.$root.$mp.query.id;
+			this.id = id;
 			if (id) {
 				this.disabled = true;
 				this.useIdQueryGoodsGroup(id);
@@ -180,6 +182,37 @@
 
 		mounted() {},
 		methods: {
+			/**
+			 * 进入编辑态
+			 * @return {[type]} [description]
+			 */
+			editGoods: function() {
+				this.disabled = false;
+			},
+			/**
+			 * 删除砍价
+			 * @return {[type]} [description]
+			 */
+			deleteGoods: function() {
+				const id = this.id;
+				if (id) {
+					wxRequest('deleteGoodsGroup', {
+						id,
+						status: 4,
+					})
+						.then(res => {
+							if (res.code === 1) {
+								wx.navigateBack();
+							}
+						}).catch(err => {
+							console.log(err)
+	          wx.showToast({
+	            title:err.message,
+	            duration:2000
+	          })
+						})
+				}
+			},
 			/**
 			 * 预览图片
 			 * @return {[type]} [description]
@@ -290,39 +323,61 @@
       },
 			//创建并上架活动
 			makeGroups:function() {
-				let self = this;
-
-				var mark = JSON.parse(wx.getStorageSync("remark"));
-        self.info.explainContent = mark.explainContent;
-        self.info.explainImgUrl = mark.explainImgUrl;
-        self.info.groupAging = 24;
-        self.info.status = 1;
-        self.info.price *=100;
-        self.info.groupPrice *=100;
-        self.info.currency *=100;
-        for (let key in self.info) {
-          if (!key){
-            if (!self.info[key]){
-              wx.showToast({
-                title:"请传入完整信息",
-                duration:2000
-              })
-              return;
-            }
-          }
-        }
-				wxRequest('createGoodsGroup',self.info)
-					.then(res => {
-						console.log(res)
-						//				that.codeImg = res.value
-            wx.navigateBack()
-					}).catch(err => {
-						console.log(err)
-          wx.showToast({
-            title:err.message,
-            duration:2000
-          })
-					})
+				if (this.validateForm()) {
+					let self = this;
+					try {
+						var discountInfo = JSON.parse(wx.getStorageSync("discount-info"));
+						if (self.id) {
+							wxRequest('updateGoodsGroup', {
+								id: self.id,
+								name: self.name,
+								imgUrl: self.logo,
+								explainContent: discountInfo.explainContent,
+								explainImgUrl: JSON.stringify(discountInfo.explainImgUrl),
+								price: self.originPrice * 100,
+								groupPrice: self.groupPrice * 100,
+								singlePrice: self.onceGroupPrice * 100,
+								ratio: self.ratio,
+								currency: (self.originPrice*100) * self.ratio,
+								groupAging: 24,
+								rule: self.rule,
+								status: 1,
+								goodsType: 3,
+							})
+			          .then(res => {
+			            console.log(res)
+			            wx.navigateBack()
+			            //				that.codeImg = res.value
+			          }).catch(err => {
+			          console.log(err)
+			        });
+						} else {
+							wxRequest('createGoodsGroup', {
+								name: self.name,
+								imgUrl: self.logo,
+								explainContent: discountInfo.explainContent,
+								explainImgUrl: JSON.stringify(discountInfo.explainImgUrl),
+								price: self.originPrice * 100,
+								groupPrice: self.groupPrice * 100,
+								singlePrice: self.onceGroupPrice * 100,
+								ratio: self.ratio,
+								currency: (self.originPrice*100) * self.ratio,
+								groupAging: 24,
+								rule: self.rule,
+								status: 1,
+								goodsType: 3,
+							})
+			          .then(res => {
+			            console.log(res)
+			            wx.navigateBack()
+			            //				that.codeImg = res.value
+			          }).catch(err => {
+			          console.log(err)
+			        });
+						}
+					} catch (e) {
+					}
+				}
 			},
 			//保存活动
 			saveGroups:function() {
@@ -330,28 +385,54 @@
 					let self = this;
 					try {
 						var discountInfo = JSON.parse(wx.getStorageSync("discount-info"));
-						wxRequest('createGoodsGroup', {
-							name: self.name,
-							imgUrl: self.logo,
-							explainContent: discountInfo.explainContent,
-							explainImgUrl: JSON.stringify(discountInfo.explainImgUrl),
-							price: self.originPrice * 100,
-							groupPrice: self.groupPrice * 100,
-							singlePrice: self.onceGroupPrice * 100,
-							ratio: self.ratio,
-							currency: (self.originPrice*100) * self.ratio,
-							groupAging: 24,
-							rule: self.rule,
-							status: 0,
-							goodsType: 3,
-						})
-		          .then(res => {
-		            console.log(res)
-		            wx.navigateBack()
-		            //				that.codeImg = res.value
-		          }).catch(err => {
-		          console.log(err)
-		        });
+						if (self.id) {
+							wxRequest('updateGoodsGroup', {
+								id: self.id,
+								name: self.name,
+								imgUrl: self.logo,
+								explainContent: discountInfo.explainContent,
+								explainImgUrl: JSON.stringify(discountInfo.explainImgUrl),
+								price: self.originPrice * 100,
+								groupPrice: self.groupPrice * 100,
+								singlePrice: self.onceGroupPrice * 100,
+								ratio: self.ratio,
+								currency: (self.originPrice*100) * self.ratio,
+								groupAging: 24,
+								rule: self.rule,
+								status: 0,
+								goodsType: 3,
+							})
+			          .then(res => {
+			            console.log(res)
+			            wx.navigateBack()
+			            //				that.codeImg = res.value
+			          }).catch(err => {
+			          console.log(err)
+			        });
+						} else {
+							wxRequest('createGoodsGroup', {
+								name: self.name,
+								imgUrl: self.logo,
+								explainContent: discountInfo.explainContent,
+								explainImgUrl: JSON.stringify(discountInfo.explainImgUrl),
+								price: self.originPrice * 100,
+								groupPrice: self.groupPrice * 100,
+								singlePrice: self.onceGroupPrice * 100,
+								ratio: self.ratio,
+								currency: (self.originPrice*100) * self.ratio,
+								groupAging: 24,
+								rule: self.rule,
+								status: 0,
+								goodsType: 3,
+							})
+			          .then(res => {
+			            console.log(res)
+			            wx.navigateBack()
+			            //				that.codeImg = res.value
+			          }).catch(err => {
+			          console.log(err)
+			        });
+						}
 					} catch (e) {
 					}
 				}
