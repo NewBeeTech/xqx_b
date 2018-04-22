@@ -5,31 +5,31 @@
 			<div class="grousLists">
 				<!-- <img src="/static/imgs/ArtboardCopy9@2x.png" /> -->
 				<div class="grousListMsg">
-					<p><text>{{name}}</text><text>返佣比例：{{ratio}}%</text></p>
+					<p><text>{{name}}</text><text>返金比例：{{ratio}}%</text></p>
 					<p>¥{{groupPrice}} <text>¥{{price}}</text></p>
 					<p>有效期：24h</p>
 					<p>创建日期：{{createTimeDesc}}</p>
 				</div>
 			</div>
 
-			<div class="openDetail" @click="navGo('/pages/make-groups/main?id='+info.id+'type=detail')">
-				<p>查看拼团活动详情</p>
+			<div class="openDetail" @click="navGo('/pages/create-discount/main?id='+id)">
+				<p>查看砍价活动详情</p>
 				<img src="/static/imgs/right.png" />
 			</div>
 		</div>
 		<div class="market">
-			{{info.rule}}
+			注：客户参加活动砍价成功后，支付的款项会在您预设的返金比例扣除返金金额后才能进入您的小确幸账户中～
 		</div>
 		<div class="groupsDetailMsg">
 			<div class="detailTab" >
-				<p @click="changeShow1" :class="{active:isShow}">已拼团</p>
-				<p @click="changeShow2" :class="{active:!isShow}">拼团中</p>
+				<p @click="changeShow2" :class="{active:isShow}">已砍价</p>
+				<p @click="changeShow1" :class="{active:!isShow}">砍价中</p>
 			</div>
 			<!--已拼团-->
 			<div v-if="isShow">
 				<div class="detailRes">
 					<div>
-						<p>已拼团（份）</p>
+						<p>已砍价（份）</p>
 						<p>{{info.groupPersonNum?info.groupPersonNum:0}}</p>
 					</div>
 					<div>
@@ -39,11 +39,11 @@
 				</div>
 				<div class="detailRes">
 					<div>
-						<p>已返佣（元）</p>
+						<p>已返金（元）</p>
 						<p>{{0}}</p>
 					</div>
 					<div>
-						<p>返佣比例</p>
+						<p>返金比例</p>
 						<p>{{info.ratio?info.ratio:0}}%</p>
 					</div>
 				</div>
@@ -53,11 +53,11 @@
 			<!--拼团中-->
 			<div class="detailRes" v-else>
 				<div>
-					<p>拼团中（份）</p>
+					<p>砍价中（份）</p>
 					<p>{{0}}</p>
 				</div>
 				<div>
-					<p>返佣比例</p>
+					<p>返金比例</p>
 					<p>{{info.ratio}}%</p>
 				</div>
 			</div>
@@ -74,6 +74,7 @@
 		export default {
   data () {
     return {
+			id: '',
       isShow: true,
       info:{},
 			name: '',
@@ -89,22 +90,22 @@
   onLoad(options){
   	let that = this;
 		let id = that.$root.$mp.query.id;
+		let status = that.$root.$mp.query.status;
+		this.id = id;
 		this.useIdQueryGoodsGroup(id);
-        this.id = options.type;
-        console.log(options);
-        //		获取首页信息
-        wxRequest('queryGroupBuy',{goodsGroupid:options.type,status:this.isShow?"11":"12"})
+    //		获取首页信息
+    wxRequest('queryGroupBuy',{goodsGroupId: id,status: 12 })
           .then(res => {
             console.log(res)
             if (res.code == 1) {
-              that.info = res.value[0]
+              // that.info = res.value[0]
               console.log(res);
             }
 
           }).catch(err => {
           console.log(err)
-        })
-      },
+    });
+  },
   methods: {
 		timeDesc(time) {
 			const timeObj = new Date(time);
