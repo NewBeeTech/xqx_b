@@ -4,7 +4,7 @@
 			<div class="goodName listStyle padding">
 				<label>商品名称</label>
 				<div>
-					<input v-model="info.name" type="text" placeholder="请输入商品名称" v-bind="info.name" />
+					<input placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="name" type="text" placeholder="请输入商品名称" v-bind="name" />
 				</div>
 			</div>
 			<div class="goodLogo listStyle padding align-top" >
@@ -20,50 +20,52 @@
 			<div class="padding">
 				<div class="listStyle" @click="navGo('/pages/create-discount-info/main')">
 					<label>商品说明</label>
-					<div>
+					<div class="goods-info">
+						<div class="goods-info-text">{{goodsInfoDesc}}</div>
 						<img src="/static/imgs/right.png" alt="" />
 					</div>
 				</div>
 				<div class="listStyle">
 					<label>商品原价</label>
 					<div>
-						<input v-model="info.originPrice" v-bind="info.originPrice" type="digit" placeholder="请输入商品价格" />
+						<input placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="originPrice" v-bind="originPrice" type="digit" confirm-type="done" placeholder="请输入商品价格" />
 					</div>
 				</div>
 				<div class="listStyle">
 					<label>返金比例</label>
 					<div>
-						<input v-model="info.ratio" type="digit" placeholder="请设置返金比例" v-bind="info.ratio"/>
+						<input placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="ratio" type="digit" placeholder="请设置返金比例" v-bind="ratio"/>
 					</div>
 				</div>
 				<div class="listStyle">
 					<label>单笔交易返养老金（元）</label>
 					<div>
-						<input v-model="info.currency" type="digit" placeholder="¥0.00"   v-bind="info.currency"/>
+						<!-- <input placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="info.currency" type="digit" placeholder="¥0.00"   v-bind="info.currency"/> -->
+						<div>{{ originPrice * ratio || '￥0.00'}}</div>
 					</div>
 				</div>
 				<div class="listStyle">
 					<label>商品底价</label>
 					<div>
-						<input v-model="info.groupPrice" type="digit" placeholder="请输入砍价后价格" v-bind="info.groupPrice"/>
+						<input placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="groupPrice" type="digit" placeholder="请输入砍价商品底价" v-bind="groupPrice"/>
 					</div>
 				</div>
 				<div class="listStyle">
 					<label>单次砍价金额（元）</label>
 					<div>
-						<input v-model="info.groupPrice" type="digit" placeholder="请输入单次砍价金额" v-bind="info.groupPrice"/>
+						<input placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="onceGroupPrice" type="digit" placeholder="请输入单次砍价金额" v-bind="onceGroupPrice"/>
 					</div>
 				</div>
 				<div class="listStyle">
 					<label>拼团有效期</label>
 					<div>
-						<input type="number" disabled  value="24h" />
+						<input placeholder-style="color: #cbcbcb; font-weight: normal;" type="number" disabled value="24h" />
 					</div>
 				</div>
 			</div>
 			<div class="padding remark">
 				<div>砍价规则</div>
-				<input auto-height placeholder="请填写砍价规则" v-model="info.rule"></textarea>
+				<input placeholder-style="color: #cbcbcb; font-weight: normal;"  auto-height placeholder="请填写砍价规则" v-model="rule"></textarea>
 			</div>
 			<div class="serviceMsg padding">
 				<div>服务说明</div>
@@ -111,9 +113,16 @@
 	export default {
 		data() {
 			return {
+				name: '', // 商品名称
+        logo: '', // 商品图片
+				originPrice: '', // 商品原价
+				groupPrice: '', // 商品底价
+				onceGroupPrice: '', // 单次砍价金额
+				rule: '', // 砍价规则
+				ratio: '',
 				type: 0,
-        logo: '',
-        info:{}
+        info:{},
+				goodsInfoDesc: '请填写商品说明'
 			}
 		},
 		onLoad: function() {
@@ -130,6 +139,21 @@
 	  	// 			title:'活动详情'
 	  	// 		})
 	  	// 	}
+		},
+		onShow: function() {
+			/**
+			 * 处理商品说明文案显示，有说明和无说明的文案
+			 * @type {[type]}
+			 */
+			try {
+				var discountInfo = JSON.parse(wx.getStorageSync("discount-info"));
+				if(discountInfo.explainContent && discountInfo.explainImgUrl.length > 0) {
+					this.goodsInfoDesc = '查看商品说明';
+				} else {
+					this.goodsInfoDesc = '请填写商品说明';
+				}
+			} catch(e) {
+			}
 		},
 		onUnload: function() {
 			this.logo = '';
@@ -302,37 +326,94 @@
 			},
 			// 校验填写数据
 			validateForm: function() {
-				if (!this.info.name) {
+				var discountInfo = JSON.parse(wx.getStorageSync("discount-info") || '');
+				if (!this.name) {
 					wx.showToast({
 						title: '请输入商品名称',
 						icon: 'none',
 						duration: 2000
 					});
 					return false;
-				} else if (this.info.name.length > 30) {
+				} else if (this.name.length > 30) {
 					wx.showToast({
 						title: '商品名称最多输入30个字',
 						icon: 'none',
 						duration: 2000
 					});
 					return false;
-				} else if (!this.info.logo) {
+				} else if (!this.logo) {
 					wx.showToast({
 						title: '请上传商品图片',
 						icon: 'none',
 						duration: 2000
 					});
 					return false;
-				} else if (!this.info.originPrice) {
+				} else if (!discountInfo.explainContent || !discountInfo.explainImgUrl || discountInfo.explainImgUrl.length === 0) {
+					wx.showToast({
+						title: '请完善商品说明',
+						icon: 'none',
+						duration: 2000
+					});
+					return false;
+				} else if ( discountInfo && discountInfo.explainContent && discountInfo.explainContent.length > 500) {
+					wx.showToast({
+						title: '商品说明最多可输入500字',
+						icon: 'none',
+						duration: 2000
+					});
+					return false;
+				} else if (!this.originPrice) {
 					wx.showToast({
 						title: '请输入商品原价',
 						icon: 'none',
 						duration: 2000
 					});
 					return false;
-				} else if (!this.info.originPrice) {
+				} else if (this.originPrice < 0.01 || this.originPrice > 999999.99) {
 					wx.showToast({
-						title: '请输入商品原价',
+						title: '商品原价输入范围0.01 ~ 999999.99',
+						icon: 'none',
+						duration: 2000
+					});
+					return false;
+				} else if (!this.ratio) {
+					wx.showToast({
+						title: '请输入返金比例',
+						icon: 'none',
+						duration: 2000
+					});
+					return false;
+				} else if (this.ratio < 0.01 || this.ratio > 80) {
+					wx.showToast({
+						title: '商品原价输入范围0.01 ~ 80',
+						icon: 'none',
+						duration: 2000
+					});
+					return false;
+				} else if (!this.groupPrice) {
+					wx.showToast({
+						title: '请输入商品底价',
+						icon: 'none',
+						duration: 2000
+					});
+					return false;
+				} else if (this.groupPrice < 0.01 || this.groupPrice > 999999.99) {
+					wx.showToast({
+						title: '商品底价输入范围0.01 ~ 999999.99',
+						icon: 'none',
+						duration: 2000
+					});
+					return false;
+				} else if (!this.onceGroupPrice) {
+					wx.showToast({
+						title: '请输入单次砍价金额',
+						icon: 'none',
+						duration: 2000
+					});
+					return false;
+				} else if (this.onceGroupPrice > this.groupPrice) {
+					wx.showToast({
+						title: '输入金额不得高于商品底价',
 						icon: 'none',
 						duration: 2000
 					});
@@ -341,6 +422,7 @@
 					return true;
 				}
 			},
+
 			submit:function() {
 				wx.navigateTo({
 					url: '/pages/merchant-edit/main'
@@ -515,6 +597,16 @@
 		height: 10rpx;
 		right: 100rpx;
 		top: -20rpx;
+	}
+	.goods-info {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.goods-info-text {
+		color: #cbcbcb;
+		font-weight: normal;
+		margin-right: 10rpx;
 	}
 	textarea {
 		position: default;
