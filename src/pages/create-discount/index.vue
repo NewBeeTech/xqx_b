@@ -14,7 +14,7 @@
 					<img :src="logo" alt="" @click="previewImg()" />
 				</div>
 				<div v-else>
-					<img @click="chooseImage(1, 'logo')" src="/static/imgs/圆角矩形2拷贝2@2x.png" />
+					<img @click="chooseImage(1, 'logo')" src="/static/imgs/add-imgs.png" />
 				</div>
 			</div>
 			<div class="padding">
@@ -270,7 +270,7 @@
             if (type === 'logo') {
               console.log(res)
 							console.warn('logo：',res);
-              that.logo = tempFilePaths[0]
+              // that.logo = tempFilePaths[0]
 							console.warn('logo adress: ', that.logo);
               that.uploadImage("ccpp-logo",tempFilePaths[0]);
             } else {

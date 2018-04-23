@@ -21,7 +21,7 @@
 			注：客户参加活动砍价成功后，支付的款项会在您预设的返金比例扣除返金金额后才能进入您的小确幸账户中～
 		</div>
 		<div class="groupsDetailMsg">
-			<div class="detailTab" v-if="close">
+			<div class="detailTab" v-if="!close">
 				<p @click="changeShow2" :class="{active:isShow}">已砍价</p>
 				<p @click="changeShow1" :class="{active:!isShow}">砍价中</p>
 			</div>
@@ -63,7 +63,7 @@
 			</div>
 			<!--拼团中-->
 		</div>
-		<div v-if="close" class="makeGroups" @click="makeGroups">下架砍价</div>
+		<div v-if="!close" class="makeGroups" @click="makeGroups">下架砍价</div>
 	</div>
 
 </template>
@@ -92,9 +92,12 @@
   	let that = this;
 		let id = that.$root.$mp.query.id;
 		let status = that.$root.$mp.query.status;
-		if (status === 3) {
+		if (status == 3) {
 			this.close = true;
+		} else {
+			this.close = false;
 		}
+		console.warn(status, this.close);
 		this.id = id;
 		this.useIdQueryGoodsGroup(id);
     //		获取首页信息
@@ -110,6 +113,17 @@
           console.log(err)
     });
   },
+	unLoad() {
+		this.close = false;
+		this.id = '';
+		this.isShow = true;
+		this.info = {};
+		this.name = '';
+		this.ratio = '';
+		this.price = '';
+		this.groupPrice = '';
+		this.createTimeDesc = '';
+	},
   methods: {
 		timeDesc(time) {
 			const timeObj = new Date(time);

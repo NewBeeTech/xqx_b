@@ -8,7 +8,7 @@
 			<div class="goodImg"  >
 				<div class="good-imgs">
 					<div v-if="info.explainImgUrl.length < 20">
-						<img class="add-img" @click="chooseImage(4, 'images')"  src="/static/imgs/圆角矩形2拷贝2@2x.png" />
+						<img class="add-img" @click="chooseImage(4, 'images')"  src="/static/imgs/add-imgs.png" />
 					</div>
 					<div class="img-container" v-for="(item, index) in info.explainImgUrl"  >
 						<img class="close-img" src="/static/imgs/close-img.png" style="width: 40rpx; height: 40rpx;" @click="deleteImg(index)" />
@@ -200,8 +200,10 @@
 		min-height: 160rpx;
 		color: #333;
 		font-weight: 100;
+		width: 100%;
 	}
 	.goodImg{
+		margin-top: 40rpx;
 		padding: 0 35rpx;
 	}
 	.goodImg>div{
