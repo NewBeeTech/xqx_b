@@ -172,8 +172,8 @@
     makeGroups () {
       var self = this;
       wx.showModal({
-        title: '提示',
-        content: '下架？',
+        title: '活动正在进行中，要下架该活动吗？',
+        // content: '下架？',
         success: function (res) {
           console.log(res)
 					if (res.confirm) {

@@ -333,7 +333,15 @@
 				if (this.validateForm()) {
 					let self = this;
 					try {
-						var discountInfo = JSON.parse(wx.getStorageSync("discount-info"));
+						var discountInfo = wx.getStorageSync("discount-info");
+						if (discountInfo) {
+							discountInfo = {
+								explainContent: '',
+								explainImgUrl: [],
+							};
+						} else {
+							var discountInfo = JSON.parse(wx.getStorageSync("discount-info"));
+						}
 						if (self.id) {
 							wxRequest('updateGoodsGroup', {
 								id: self.id,
@@ -403,7 +411,7 @@
 								groupPrice: parseInt(self.groupPrice * 100),
 								singlePrice: parseInt(self.onceGroupPrice * 100),
 								ratio: self.ratio,
-								currency: (parseInt(self.originPrice)*100) * self.ratio,
+								currency: (parseInt(self.originPrice)*100) * self.ratio > 1 ? (parseInt(self.originPrice)*100) * self.ratio : 1 ,
 								groupAging: 24,
 								rule: self.rule,
 								status: 0,
@@ -426,7 +434,7 @@
 								groupPrice: parseInt(self.groupPrice) * 100,
 								singlePrice: parseInt(self.onceGroupPrice) * 100,
 								ratio: self.ratio,
-								currency: (parseInt(self.originPrice)*100) * self.ratio,
+								currency: (parseInt(self.originPrice)*100) * self.ratio > 1 ? (parseInt(self.originPrice)*100) * self.ratio : 1 ,
 								groupAging: 24,
 								rule: self.rule,
 								status: 0,
