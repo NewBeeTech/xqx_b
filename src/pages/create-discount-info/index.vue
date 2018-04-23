@@ -3,11 +3,11 @@
 		<scroll-view scroll-y='true' style='height: 100%;'>
 
 			<div class="padding remark">
-				<textarea :disabled="onlyView" placeholder="请填写商品说明" v-model="info.explainContent"></textarea>
+				<textarea :disabled="onlyView" auto-height placeholder="请填写商品说明" v-model="info.explainContent"></textarea>
 			</div>
 			<div class="goodImg"  >
 				<div class="good-imgs">
-					<div v-if="info.explainImgUrl.length < 20">
+					<div v-if="info.explainImgUrl.length < 10">
 						<img v-if="!onlyView" class="add-img" @click="chooseImage(4, 'images')"  src="/static/imgs/add-imgs.png" />
 					</div>
 					<div class="img-container" v-for="(item, index) in info.explainImgUrl"  >
@@ -16,7 +16,7 @@
 	        </div>
 				</div>
 
-				<label v-if="info.explainImgUrl.length < 20 && !onlyView">	请上传商品图片</label>
+				<label v-if="info.explainImgUrl.length < 10 && !onlyView">	请上传商品图片</label>
 			</div>
 		</scroll-view>
 	</div>

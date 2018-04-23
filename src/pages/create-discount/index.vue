@@ -32,6 +32,12 @@
 					</div>
 				</div>
 				<div class="listStyle">
+					<label>商品底价</label>
+					<div>
+						<input :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="groupPrice" type="digit" placeholder="请输入砍价商品底价" v-bind="groupPrice"/>
+					</div>
+				</div>
+				<div class="listStyle">
 					<label>返金比例</label>
 					<div class="form-rate">
 						<input :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="ratio" type="digit" placeholder="请设置返金比例" v-bind="ratio"/>
@@ -42,13 +48,7 @@
 					<label>单笔交易返养老金（元）</label>
 					<div>
 						<!-- <input placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="info.currency" type="digit" placeholder="¥0.00"   v-bind="info.currency"/> -->
-						<div>{{ originPrice * ratio / 100 || '￥0.00'}}</div>
-					</div>
-				</div>
-				<div class="listStyle">
-					<label>商品底价</label>
-					<div>
-						<input :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="groupPrice" type="digit" placeholder="请输入砍价商品底价" v-bind="groupPrice"/>
+						<div>{{ groupPrice * ratio / 100 || '￥0.00'}}</div>
 					</div>
 				</div>
 				<div class="listStyle">
@@ -58,7 +58,7 @@
 					</div>
 				</div>
 				<div class="listStyle">
-					<label>拼团有效期</label>
+					<label>砍价有效期</label>
 					<div>
 						<input placeholder-style="color: #cbcbcb; font-weight: normal;" type="number" disabled value="24h" />
 					</div>
@@ -162,7 +162,7 @@
 			 */
 			try {
 				var discountInfo = JSON.parse(wx.getStorageSync("discount-info"));
-				if(discountInfo.explainContent && discountInfo.explainImgUrl.length > 0) {
+				if(discountInfo.explainContent || discountInfo.explainImgUrl.length > 0) {
 					this.goodsInfoDesc = '查看商品说明';
 				} else {
 					this.goodsInfoDesc = '请填写商品说明';
@@ -479,16 +479,9 @@
 						duration: 2000
 					});
 					return false;
-				} else if (!discountInfo.explainContent || !discountInfo.explainImgUrl || discountInfo.explainImgUrl.length === 0) {
+				} else if ( discountInfo && discountInfo.explainContent && discountInfo.explainContent.length > 300) {
 					wx.showToast({
-						title: '请完善商品说明',
-						icon: 'none',
-						duration: 2000
-					});
-					return false;
-				} else if ( discountInfo && discountInfo.explainContent && discountInfo.explainContent.length > 500) {
-					wx.showToast({
-						title: '商品说明最多可输入500字',
+						title: '商品说明最多可输入300字',
 						icon: 'none',
 						duration: 2000
 					});
@@ -578,6 +571,13 @@
 						duration: 2000
 					});
 					return false;
+				} else if ( this.rule.length > 300) {
+					wx.showToast({
+						title: '砍价规则最多可输入300字',
+						icon: 'none',
+						duration: 2000
+					});
+					return false;
 				} else if (Number(this.onceGroupPrice) > Number(this.groupPrice)) {
 					wx.showToast({
 						title: '输入单次砍价金额不得超过商品底价',
@@ -604,6 +604,9 @@
 								explainContent: res.value.explainContent,
 								explainImgUrl: res.value.explainImgUrl,
 							}));
+							if(res.value.explainContent || res.value.explainImgUrl > 0) {
+								this.goodsInfoDesc = '查看商品说明';
+							}
 							self.originPrice = res.value.price / 100;
 							self.groupPrice = res.value.groupPrice / 100;
 							self.onceGroupPrice = res.value.singlePrice / 100;
