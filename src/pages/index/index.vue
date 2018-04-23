@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <header>
-      <div @click="navGo('/pages/receipt-code/main')">
+      <!-- <div @click="navGo('/pages/receipt-code/main')">
         <div><img src="/static/imgs/Artboard@2x.png" alt=""></div>
         <div>收款码</div>
       </div>
@@ -13,7 +13,7 @@
       <div @click="navationTo('/pages/user-price/main')">
         <div><img src="/static/imgs/8.png" alt=""></div>
         <div>钱包</div>
-      </div>
+      </div> -->
     </header>
     <header>
       <div @click="navGo('/pages/goods-active/main?status=1')">
@@ -83,14 +83,14 @@
     </section>
 
     <section class="jiehoug">
-      <div @click="navationTo('/pages/merchant-edit/main?type=1')">
+      <!-- <div @click="navationTo('/pages/merchant-edit/main?type=1')">
         <span><img src="/static/imgs/ArtboardCopy9@2x.png" alt=""></span>
         <span>基本信息</span>
       </div>
       <div>
         <span><img src="/static/imgs/ArtboardCopy10@2x.png" alt=""></span>
         <span @click="navGo('/pages/gold-setting/main')">返金中心</span>
-      </div>
+      </div> -->
     </section>
 
     <!--<section class="footer" @click="navGo('/pages/user-price/main')">-->
