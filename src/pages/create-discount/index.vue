@@ -181,6 +181,7 @@
 			this.ratio = '';
 			this.type = 0;
 			this.info = {};
+			this.onlyView = false; // 不展示底部操作
 			this.goodsInfoDesc = '请填写商品说明';
 			wx.setStorageSync("discount-info", "");
 		},
@@ -447,7 +448,15 @@
 				function isNumeric(n) {
   				return !isNaN(parseFloat(n)) && isFinite(n);
 				}
-				var discountInfo = JSON.parse(wx.getStorageSync("discount-info") || '');
+				var discountInfo = {
+					explainContent: '',
+					explainImgUrl: [],
+				}
+				try {
+					discountInfo = JSON.parse(wx.getStorageSync("discount-info") || '');
+				} catch(e) {
+					console.warn(e);
+				}
 				if (!this.name) {
 					wx.showToast({
 						title: '请输入商品名称',
