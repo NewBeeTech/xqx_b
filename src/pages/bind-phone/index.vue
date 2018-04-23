@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <button class="button" size="default"  open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">一键绑定手机号</button>
+    <!-- <button class="button" size="default"  open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">一键绑定手机号</button> -->
 
     <div class="bind-title">手动绑定手机号</div>
     <div class="user-from">

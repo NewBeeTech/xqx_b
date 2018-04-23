@@ -5,10 +5,11 @@
 			<div class="grousLists">
 				<!-- <img src="/static/imgs/ArtboardCopy9@2x.png" /> -->
 				<div class="grousListMsg">
-					<p><text>{{name}}</text><text>返金比例：{{ratio}}%</text></p>
+					<p><text>{{name}}</text><text>返金比例：{{infoRatio}}%</text></p>
 					<p>¥{{groupPrice}} <text>¥{{price}}</text></p>
 					<p>有效期：24h</p>
-					<p>创建日期：{{createTimeDesc}}</p>
+					<p>创建时间：{{createTimeDesc}}</p>
+					<p>下架时间：{{endTimeDesc}}</p>
 				</div>
 			</div>
 
@@ -76,12 +77,14 @@
     return {
 			close: false,
 			id: '',
+			infoRatio: '',
       isShow: true,
       info:{},
 			name: '',
 			price: '',
 			groupPrice: '',
 			createTimeDesc: '',
+			endTimeDesc: '',
 			yiKan: '',
 			yishou: '',
 			yifan: '',
@@ -91,8 +94,7 @@
     }
   },
   mounted () {
-
-  },
+	},
   onLoad(options){
   	let that = this;
 		let id = that.$root.$mp.query.id;
@@ -145,6 +147,13 @@
 		this.price = '';
 		this.groupPrice = '';
 		this.createTimeDesc = '';
+		this.infoRatio = '';
+		this.endTimeDesc = '';
+		this.yiKan = '';
+		this.yishou = '';
+		this.yifan = '';
+		this.kanjiazhong = '';
+		this.kanjiazhongRatio = '';
 	},
   methods: {
 		timeDesc(time) {
@@ -171,10 +180,11 @@
 						self.price= res.value.price / 100;
 						self.groupPrice = res.value.groupPrice / 100;
 						self.onceGroupPrice = res.value.singlePrice / 100;
-						self.ratio = res.value.ratio,
+						self.infoRatio = res.value.ratio,
 						self.currency = res.value.currency;
 						self.rule = res.value.rule;
 						self.createTimeDesc = self.timeDesc(res.value.createTime);
+						self.endTimeDesc = self.timeDesc(res.value.endTime);
 					}
 					console.log(res)
 				}).catch(err => {
@@ -194,7 +204,7 @@
     makeGroups () {
       var self = this;
       wx.showModal({
-        title: '活动正在进行中，要下架该活动吗？',
+        content: '活动正在进行中，要下架该活动吗？',
         // content: '下架？',
         success: function (res) {
           console.log(res)

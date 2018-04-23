@@ -17,7 +17,6 @@
 									<p>¥{{item.groupPrice/100}} <text>¥{{item.price/100}}</text></p>
 									<p>有效期：24h</p>
 									<p>创建日期：{{item.createTimeDesc}}</p>
-									<!-- <p>砍价成功：{{item.groupPersonNum}}份 <text>砍价中：{{item.groupPersonNum}}份</text></p> -->
 								</div>
 							</div>
 						</div>
@@ -52,7 +51,8 @@
                   <p><text>{{item.name}}</text><text>返金比例：{{item.ratio}}%</text></p>
                   <p>¥{{item.groupPrice/100}} <text>¥{{item.price/100}}</text></p>
                   <p>有效期：24h</p>
-                  <p>创建日期：{{item.createTimeDesc}}</p>
+                  <p>创建时间：{{item.createTimeDesc}}</p>
+                  <p>下架时间：{{item.endTimeDesc}}</p>
                   <!-- <p>砍价成功：{{item.groupPersonNum}}份 <text>砍价中：{{item.createTime}}份</text></p> -->
                 </div>
               </div>
@@ -110,7 +110,7 @@
           console.log(res)
           if (res.code == 1) {
 						let result = res.value;
-						result = result.map( item => ({ ...item, createTimeDesc: that.timeDesc(item.createTime) }));
+						result = result.map( item => ({ ...item, createTimeDesc: that.timeDesc(item.createTime), endTimeDesc: that.timeDesc(item.endTime), }));
 						if (num === 1) {
 							that.list1 = result;
 						} else if (num === 0) {

@@ -125,7 +125,9 @@
 	              var imageURL = "https://"+type+".denong.com/"+res.key;
 	              console.log(imageURL);
 
-	              self.info.explainImgUrl.push(imageURL);
+								if (self.info.explainImgUrl.length < 20) {
+	              	self.info.explainImgUrl.push(imageURL);
+								}
 								console.warn(self.info.explainImgUrl);
 	            },(error) => {
 	              console.log('error: ' + error);
