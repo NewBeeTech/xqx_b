@@ -6,15 +6,16 @@
 				<textarea placeholder="请填写商品说明" v-model="info.explainContent"></textarea>
 			</div>
 			<div class="goodImg"  >
-
-        <div >
-          <img :src="item" alt="" @click="previewImg(index)" v-for="(item, index) in info.explainImgUrl" :key="index">
-        </div>
-				<div>
-
+				<div class="good-imgs">
+					<div class="img-container" v-for="(item, index) in info.explainImgUrl"  >
+						<img class="close-img" src="/static/imgs/close-img.png" style="width: 40rpx; height: 40rpx;" @click="deleteImg(index)" />
+		    		<img class="good-img" :src="item" alt="" @click="previewImg(index)" :key="index">
+	        </div>
+				</div>
+				<div v-if="info.explainImgUrl.length < 20">
 					<img @click="chooseImage(4, 'images')"  src="/static/imgs/圆角矩形2拷贝2@2x.png" />
 				</div>
-				<label>	请上传商品图片</label>
+				<label v-if="info.explainImgUrl.length < 20">	请上传商品图片</label>
 			</div>
 		</scroll-view>
 	</div>
@@ -51,6 +52,13 @@
     wx.setStorageSync("discount-info",JSON.stringify(this.info));
   },
   methods: {
+		deleteImg: function(index) {
+			console.log(index);
+			let explainImgUrl = this.info.explainImgUrl;
+			explainImgUrl.splice(index, 1);
+			console.log(explainImgUrl);
+			this.info.explainImgUrl = explainImgUrl;
+		},
     previewImg:function (index) {
       let that = this
       wx.previewImage({
@@ -138,6 +146,26 @@
 </script>
 
 <style scoped>
+	.good-imgs {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+	.good-img {
+		margin-right: 10rpx;
+		width: 116rpx;
+		height: 116rpx;
+	}
+	.close-img {
+		position: absolute;
+		width: 10rpx;
+		height: 10rpx;
+		right: 100rpx;
+		top: -20rpx;
+	}
+	.img-container {
+		position: relative;
+	}
 	.main {
 		width: 100%;
 		height: 100%;

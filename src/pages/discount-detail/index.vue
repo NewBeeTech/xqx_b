@@ -12,7 +12,7 @@
 				</div>
 			</div>
 
-			<div class="openDetail" @click="navGo('/pages/create-discount/main?id='+id)">
+			<div class="openDetail" @click="navGo('/pages/create-discount/main?id='+id+'&onlyView=true')">
 				<p>查看砍价活动详情</p>
 				<img src="/static/imgs/right.png" />
 			</div>
@@ -21,12 +21,12 @@
 			注：客户参加活动砍价成功后，支付的款项会在您预设的返金比例扣除返金金额后才能进入您的小确幸账户中～
 		</div>
 		<div class="groupsDetailMsg">
-			<div class="detailTab" >
+			<div class="detailTab" v-if="close">
 				<p @click="changeShow2" :class="{active:isShow}">已砍价</p>
 				<p @click="changeShow1" :class="{active:!isShow}">砍价中</p>
 			</div>
 			<!--已拼团-->
-			<div v-if="isShow">
+			<div v-if="isShow && !close">
 				<div class="detailRes">
 					<div>
 						<p>已砍价（份）</p>
@@ -63,7 +63,7 @@
 			</div>
 			<!--拼团中-->
 		</div>
-		<div class="makeGroups" @click="makeGroups">下架拼团</div>
+		<div v-if="close" class="makeGroups" @click="makeGroups">下架砍价</div>
 	</div>
 
 </template>
@@ -74,6 +74,7 @@
 		export default {
   data () {
     return {
+			close: false,
 			id: '',
       isShow: true,
       info:{},
@@ -91,6 +92,9 @@
   	let that = this;
 		let id = that.$root.$mp.query.id;
 		let status = that.$root.$mp.query.status;
+		if (status === 3) {
+			this.close = true;
+		}
 		this.id = id;
 		this.useIdQueryGoodsGroup(id);
     //		获取首页信息
@@ -155,11 +159,13 @@
       var self = this;
       wx.showModal({
         title: '提示',
-        content: '删除？',
+        content: '下架？',
         success: function (res) {
           console.log(res)
-          wxRequest("updateGoodsGroup",{id:self.id,status:4}).then(function (res) {
-            console.log(res);
+          wxRequest("updateGoodsGroup",{id:self.id,status:3}).then(function (res) {
+						if (res.code === 1) {
+							wx.navigateBack();
+						}
           }).catch(function (err) {
             console.log(err);
           });

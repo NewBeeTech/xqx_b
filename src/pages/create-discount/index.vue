@@ -92,11 +92,11 @@
 					</div>
 				</div>
 			</div>
-			<div v-if="!disabled" class="makeBtn" >
+			<div v-if="!disabled && !onlyView" class="makeBtn" >
 				<div @click="saveGroups">保存</div>
 				<div @click="makeGroups">创建并上架</div>
 			</div>
-			<div v-if="disabled" class="makeBtn2" >
+			<div v-if="disabled && !onlyView" class="makeBtn2" >
 				<div @click="deleteGoods">删除</div>
 				<div @click="editGoods">编辑</div>
 				<div @click="makeGroups">上架</div>
@@ -113,6 +113,7 @@
 	export default {
 		data() {
 			return {
+				onlyView: false, // 不展示底部操作
 				id: '',
 				disabled: false,
 				name: '', // 商品名称
@@ -130,6 +131,10 @@
 		onLoad: function() {
 			let that = this;
 			let id = that.$root.$mp.query.id;
+			let onlyView = that.$root.$mp.query.onlyView;
+			if (onlyView) {
+				this.onlyView = true;
+			}
 			this.id = id;
 			if (id) {
 				this.disabled = true;
