@@ -33,15 +33,16 @@
 				</div>
 				<div class="listStyle">
 					<label>返金比例</label>
-					<div>
+					<div class="form-rate">
 						<input :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="ratio" type="digit" placeholder="请设置返金比例" v-bind="ratio"/>
+						<div v-if="ratio">%</div>
 					</div>
 				</div>
 				<div class="listStyle">
 					<label>单笔交易返养老金（元）</label>
 					<div>
 						<!-- <input placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="info.currency" type="digit" placeholder="¥0.00"   v-bind="info.currency"/> -->
-						<div>{{ originPrice * ratio || '￥0.00'}}</div>
+						<div>{{ originPrice * ratio / 100 || '￥0.00'}}</div>
 					</div>
 				</div>
 				<div class="listStyle">
@@ -506,7 +507,7 @@
 						duration: 2000
 					});
 					return false;
-				} else if (this.originPrice < 0.01 || this.originPrice > 999999.99) {
+				} else if (Number(this.originPrice) < 0.01 || Number(this.originPrice) > 999999.99) {
 					wx.showToast({
 						title: '商品原价输入范围0.01 ~ 999999.99',
 						icon: 'none',
@@ -527,7 +528,7 @@
 						duration: 2000
 					});
 					return false;
-				} else if (this.ratio < 0.1 || this.ratio > 80) {
+				} else if (Number(this.ratio) < 0.1 || Number(this.ratio) > 80) {
 					wx.showToast({
 						title: '返金比例输入范围0.1 ~ 80',
 						icon: 'none',
@@ -548,14 +549,15 @@
 						duration: 2000
 					});
 					return false;
-				} else if (this.groupPrice < 0.01 || this.groupPrice > 999999.99) {
+				} else if (Number(this.groupPrice) < 0.01 || Number(this.groupPrice) > 999999.99) {
 					wx.showToast({
 						title: '商品底价输入范围0.01 ~ 999999.99',
 						icon: 'none',
 						duration: 2000
 					});
 					return false;
-				} else if (this.groupPrice > this.originPrice) {
+				} else if (Number(this.groupPrice) > Number(this.originPrice)) {
+					console.log(this.groupPrice, this.originPrice);
 					wx.showToast({
 						title: '输入商品底价不得超过商品原价',
 						icon: 'none',
@@ -576,7 +578,7 @@
 						duration: 2000
 					});
 					return false;
-				} else if (this.onceGroupPrice > this.groupPrice) {
+				} else if (Number(this.onceGroupPrice) > Number(this.groupPrice)) {
 					wx.showToast({
 						title: '输入单次砍价金额不得超过商品底价',
 						icon: 'none',
@@ -638,7 +640,11 @@
 		font-weight: 100;
 		background: #f0f0f0;
 	}
-
+	.form-rate {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
 	.listStyle {
 		height: 96rpx;
 		display: flex;
