@@ -7,14 +7,15 @@
 			</div>
 			<div class="goodImg"  >
 				<div class="good-imgs">
+					<div v-if="info.explainImgUrl.length < 20">
+						<img class="add-img" @click="chooseImage(4, 'images')"  src="/static/imgs/圆角矩形2拷贝2@2x.png" />
+					</div>
 					<div class="img-container" v-for="(item, index) in info.explainImgUrl"  >
 						<img class="close-img" src="/static/imgs/close-img.png" style="width: 40rpx; height: 40rpx;" @click="deleteImg(index)" />
 		    		<img class="good-img" :src="item" alt="" @click="previewImg(index)" :key="index">
 	        </div>
 				</div>
-				<div v-if="info.explainImgUrl.length < 20">
-					<img @click="chooseImage(4, 'images')"  src="/static/imgs/圆角矩形2拷贝2@2x.png" />
-				</div>
+
 				<label v-if="info.explainImgUrl.length < 20">	请上传商品图片</label>
 			</div>
 		</scroll-view>
@@ -69,7 +70,7 @@
     chooseImage:function (count, type) {
       let that = this
       wx.chooseImage({
-        count: 1, // 默认9
+        count: 9, // 默认9
         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
         success: function (res) {
@@ -83,7 +84,7 @@
             that[type] = [...that[type], ...tempFilePaths]
             console.log(that.images)
             // that.uploadImage("ccpp-mpic",that.images[0]);
-            that.uploadImage("ccpp-mpic", tempFilePaths[0]);
+            that.uploadImage("ccpp-mpic", tempFilePaths);
           }
 
 
@@ -92,46 +93,48 @@
     },
     uploadImage:function(bucket,filePaths){
       var self = this;
-      wxRequest('getQiniuToken', {bucket:bucket})
-        .then(res => {
-          console.log(res)
+			filePaths.map(filePath => {
+				wxRequest('getQiniuToken', {bucket:bucket})
+	        .then(res => {
+	          console.log(res)
 
-          if (res.code == 1){
-            var token = res.value
-            var date = new Date()
+	          if (res.code == 1){
+	            var token = res.value
+	            var date = new Date()
 
-            qiniu.upload(filePaths, (res) => {
-              console.log(res);
-              var type = bucket.replace("ccpp-","");
-              var imageURL = "https://"+type+".denong.com/"+res.key;
-              console.log(imageURL);
+	            qiniu.upload(filePath, (res) => {
+	              console.log(res);
+	              var type = bucket.replace("ccpp-","");
+	              var imageURL = "https://"+type+".denong.com/"+res.key;
+	              console.log(imageURL);
 
-              self.info.explainImgUrl.push(imageURL);
-							console.warn(self.info.explainImgUrl);
-            },(error) => {
-              console.log('error: ' + error);
-            },{
-              region: 'NCN',
-              domain: bucket,
-              key: date.getTime()+".jpg",
-              uptoken: token
+	              self.info.explainImgUrl.push(imageURL);
+								console.warn(self.info.explainImgUrl);
+	            },(error) => {
+	              console.log('error: ' + error);
+	            },{
+	              region: 'NCN',
+	              domain: bucket,
+	              key: date.getTime()+".jpg",
+	              uptoken: token
 
-            },(res) => {
+	            },(res) => {
 
-            });
+	            });
 
-          }else {
-            wx.showToast({
-              title: '获取失败',
-              icon: 'none',
-              duration: 2000
-            })
-          }
+	          }else {
+	            wx.showToast({
+	              title: '获取失败',
+	              icon: 'none',
+	              duration: 2000
+	            })
+	          }
 
-        })
-        .catch(err => {
-          console.log(err)
-        })
+	        })
+	        .catch(err => {
+	          console.log(err)
+	        })
+			})
     },
     bindchange () {
 
@@ -152,7 +155,7 @@
 		flex-wrap: wrap;
 	}
 	.good-img {
-		margin-right: 10rpx;
+		margin: 10rpx 10rpx;
 		width: 116rpx;
 		height: 116rpx;
 	}
@@ -196,8 +199,9 @@
 		display: flex;
 		margin-bottom: 20rpx;
 	}
-	.goodImg>div>img{
-		width: 116rpx;
+	.add-img{
+		width: 120rpx;
 		height: 116rpx;
+		margin-right: 20rpx;
 	}
 </style>

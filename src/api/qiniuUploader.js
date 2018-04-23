@@ -67,6 +67,7 @@ function upload(filePath, success, fail, options) {
 }
 
 function doUpload(filePath, success, fail, options) {
+  console.log('filePath', filePath)
     var url = uploadURLFromRegionCode(config.qiniuRegion);
     var fileName = filePath.split('//')[1];
     if (options && options.key) {

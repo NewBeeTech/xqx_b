@@ -503,7 +503,7 @@
 					return false;
 				} else if (this.ratio < 0.01 || this.ratio > 80) {
 					wx.showToast({
-						title: '商品原价输入范围0.01 ~ 80',
+						title: '返金比例输入范围0.01 ~ 80',
 						icon: 'none',
 						duration: 2000
 					});
@@ -691,6 +691,7 @@
 		align-items: center;
 		justify-content: flex-start;
 		background: white;
+		font-weight: normal;
 	}
 
 	.makeBtn>div {
@@ -716,6 +717,7 @@
 		align-items: center;
 		justify-content: flex-start;
 		background: white;
+		font-weight: normal;
 	}
 
 	.makeBtn2>div {
