@@ -41,9 +41,11 @@
   },
 	onLoad() {
 		let onlyView = this.$root.$mp.query.onlyView;
-		console.warn('onlyView: ', onlyView);
-		if (onlyView) {
+		// console.warn('onlyView: ', onlyView);
+		if (onlyView == 'true') {
 			this.onlyView = true;
+		} else {
+			this.onlyView = false;
 		}
 		try {
 			var discountInfo = JSON.parse(wx.getStorageSync("discount-info"));

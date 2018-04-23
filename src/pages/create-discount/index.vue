@@ -69,7 +69,7 @@
 				<input :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;"  auto-height placeholder="请填写砍价规则" v-model="rule"></textarea>
 			</div>
 			<div class="serviceMsg padding">
-				<div>服务说明</div>
+				<div style="font-weight: normal">服务说明</div>
 				<div class="serviceList">
 					<img v-if="!disabled"  src="/static/imgs/dui.png" />
 					<div>
@@ -696,6 +696,7 @@
 	}
 
 	.remark {
+		font-weight: normal;
 		padding: 30rpx 35rpx;
 	}
 
@@ -720,6 +721,7 @@
 	}
 
 	.serviceList {
+		font-weight: normal;
 		display: flex;
 		font-size: 28rpx;
 		padding: 20rpx 0;

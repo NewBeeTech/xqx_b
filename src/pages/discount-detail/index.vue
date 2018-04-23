@@ -176,13 +176,17 @@
         content: '下架？',
         success: function (res) {
           console.log(res)
-          wxRequest("updateGoodsGroup",{id:self.id,status:3}).then(function (res) {
-						if (res.code === 1) {
-							wx.navigateBack();
-						}
-          }).catch(function (err) {
-            console.log(err);
-          });
+					if (res.confirm) {
+						wxRequest("updateGoodsGroup",{id:self.id,status:3}).then(function (res) {
+							if (res.code === 1) {
+								wx.navigateBack();
+							}
+	          }).catch(function (err) {
+	            console.log(err);
+	          });
+					} else {
+					}
+
         }
       })
     }
