@@ -444,6 +444,9 @@
 			},
 			// 校验填写数据
 			validateForm: function() {
+				function isNumeric(n) {
+  				return !isNaN(parseFloat(n)) && isFinite(n);
+				}
 				var discountInfo = JSON.parse(wx.getStorageSync("discount-info") || '');
 				if (!this.name) {
 					wx.showToast({
@@ -487,6 +490,13 @@
 						duration: 2000
 					});
 					return false;
+				} else if (!isNumeric(this.originPrice)) {
+					wx.showToast({
+						title: '请输入正确格式的商品原价',
+						icon: 'none',
+						duration: 2000
+					});
+					return false;
 				} else if (this.originPrice < 0.01 || this.originPrice > 999999.99) {
 					wx.showToast({
 						title: '商品原价输入范围0.01 ~ 999999.99',
@@ -501,9 +511,16 @@
 						duration: 2000
 					});
 					return false;
-				} else if (this.ratio < 0.01 || this.ratio > 80) {
+				} else if (!isNumeric(this.ratio)) {
 					wx.showToast({
-						title: '返金比例输入范围0.01 ~ 80',
+						title: '请输入正确格式的返金比例',
+						icon: 'none',
+						duration: 2000
+					});
+					return false;
+				} else if (this.ratio < 0.1 || this.ratio > 80) {
+					wx.showToast({
+						title: '返金比例输入范围0.1 ~ 80',
 						icon: 'none',
 						duration: 2000
 					});
@@ -511,6 +528,13 @@
 				} else if (!this.groupPrice) {
 					wx.showToast({
 						title: '请输入商品底价',
+						icon: 'none',
+						duration: 2000
+					});
+					return false;
+				} else if (!isNumeric(this.groupPrice)) {
+					wx.showToast({
+						title: '请输入正确格式的商品底价',
 						icon: 'none',
 						duration: 2000
 					});
@@ -524,7 +548,7 @@
 					return false;
 				} else if (this.groupPrice > this.originPrice) {
 					wx.showToast({
-						title: '商品底价不得超过商品原价',
+						title: '输入商品底价不得超过商品原价',
 						icon: 'none',
 						duration: 2000
 					});
@@ -536,9 +560,16 @@
 						duration: 2000
 					});
 					return false;
+				} else if (!isNumeric(this.onceGroupPrice)) {
+					wx.showToast({
+						title: '请输入正确格式的单次砍价金额',
+						icon: 'none',
+						duration: 2000
+					});
+					return false;
 				} else if (this.onceGroupPrice > this.groupPrice) {
 					wx.showToast({
-						title: '单次砍价金额不得超过商品底价',
+						title: '输入单次砍价金额不得超过商品底价',
 						icon: 'none',
 						duration: 2000
 					});

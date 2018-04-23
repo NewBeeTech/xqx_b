@@ -51,6 +51,10 @@
   },
   onUnload(){
     wx.setStorageSync("discount-info",JSON.stringify(this.info));
+		this.info = {
+			explainContent: '',
+			explainImgUrl:[]
+		};
   },
   methods: {
 		deleteImg: function(index) {
