@@ -13,8 +13,8 @@
 							<div v-for="item in list1" class="grousList" @click="navGo('/pages/discount-detail/main?id='+item.id+'&status=1')">
 								<!-- <img :src="item.imgUrl"/> -->
 								<div class="grousListMsg">
-									<p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>
-									<p>¥{{item.price/100}} <text>¥{{item.groupPrice/100}}</text></p>
+									<p><text>{{item.name}}</text><text>返金比例：{{item.ratio}}%</text></p>
+									<p>¥{{item.groupPrice/100}} <text>¥{{item.price/100}}</text></p>
 									<p>有效期：24h</p>
 									<p>创建日期：{{item.createTimeDesc}}</p>
 									<!-- <p>砍价成功：{{item.groupPersonNum}}份 <text>砍价中：{{item.groupPersonNum}}份</text></p> -->
@@ -32,8 +32,8 @@
               <div v-for="item in list2" class="grousList" @click="navGo('/pages/create-discount/main?id='+item.id)">
                 <!-- <img :src="item.imgUrl"/> -->
                 <div class="grousListMsg">
-                  <p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>
-                  <p>¥{{item.price/100}} <text>¥{{item.groupPrice/100}}</text></p>
+                  <p><text>{{item.name}}</text><text>返金比例：{{item.ratio}}%</text></p>
+                  <p>¥{{item.groupPrice/100}} <text>¥{{item.price/100}}</text></p>
                   <p>有效期：{{item.groupAging}}h</p>
                   <p>创建日期：{{item.createTimeDesc}}</p>
                 </div>
@@ -49,8 +49,8 @@
               <div v-for="item in list3" class="grousList" @click="navGo('/pages/discount-detail/main?id='+item.id+'&status=3')">
                 <!-- <img :src="item.imgUrl"/> -->
                 <div class="grousListMsg">
-                  <p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>
-                  <p>¥{{item.price/100}} <text>¥{{item.groupPrice/100}}</text></p>
+                  <p><text>{{item.name}}</text><text>返金比例：{{item.ratio}}%</text></p>
+                  <p>¥{{item.groupPrice/100}} <text>¥{{item.price/100}}</text></p>
                   <p>有效期：24h</p>
                   <p>创建日期：{{item.createTimeDesc}}</p>
                   <!-- <p>砍价成功：{{item.groupPersonNum}}份 <text>砍价中：{{item.createTime}}份</text></p> -->

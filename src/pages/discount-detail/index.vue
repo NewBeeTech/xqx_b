@@ -30,21 +30,21 @@
 				<div class="detailRes">
 					<div>
 						<p>已砍价（份）</p>
-						<p>{{info.groupPersonNum?info.groupPersonNum:0}}</p>
+						<p>{{yiKan?yiKan:0}}</p>
 					</div>
 					<div>
 						<p>已收款（元）</p>
-						<p>{{0}}</p>
+						<p>{{yishou?yishou:0}}</p>
 					</div>
 				</div>
 				<div class="detailRes">
 					<div>
 						<p>已返金（元）</p>
-						<p>{{0}}</p>
+						<p>{{yifan?yifan:0}}</p>
 					</div>
 					<div>
 						<p>返金比例</p>
-						<p>{{info.ratio?info.ratio:0}}%</p>
+						<p>{{ratio?ratio:0}}%</p>
 					</div>
 				</div>
 			</div>
@@ -54,11 +54,11 @@
 			<div class="detailRes" v-else>
 				<div>
 					<p>砍价中（份）</p>
-					<p>{{0}}</p>
+					<p>{{kanjiazhong?kanjiazhong:0}}</p>
 				</div>
 				<div>
 					<p>返金比例</p>
-					<p>{{info.ratio}}%</p>
+					<p>{{kanjiazhongRatio?kanjiazhongRatio:0}}%</p>
 				</div>
 			</div>
 			<!--拼团中-->
@@ -79,10 +79,15 @@
       isShow: true,
       info:{},
 			name: '',
-			ratio: '',
 			price: '',
 			groupPrice: '',
 			createTimeDesc: '',
+			yiKan: '',
+			yishou: '',
+			yifan: '',
+			ratio: '',
+			kanjiazhong: '',
+			kanjiazhongRatio: '',
     }
   },
   mounted () {
@@ -106,6 +111,23 @@
             console.log(res)
             if (res.code == 1) {
               // that.info = res.value[0]
+							that.yiKan = res.value.groupNum;
+							that.yifan = res.value.successCountCurrency;
+							that.yishou = res.value.successCountMoney;
+							that.kanjiazhongRatio = res.value.ratio;
+              console.log(res);
+            }
+
+          }).catch(err => {
+          console.log(err)
+    });
+		wxRequest('queryGroupBuy',{goodsGroupId: id,status: 11 })
+          .then(res => {
+            console.log(res)
+            if (res.code == 1) {
+              // that.info = res.value[0]
+							that.kanjiazhong = res.value.groupNum;
+							that.ratio = res.value.ratio;
               console.log(res);
             }
 
