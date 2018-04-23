@@ -30,7 +30,7 @@
       </div>
     </header>
     <header>
-      <div @click="navGo('/pages/groups-list/main')">
+      <div @click="waitMoment()">
         <div><img src="/static/imgs/4.png" alt=""></div>
         <div>拼团</div>
       </div>
@@ -38,7 +38,7 @@
         <div><img src="/static/imgs/2.png" alt=""></div>
         <div>砍价</div>
       </div>
-      <div @click="scanCode">
+      <div @click="waitMoment()">
         <div><img src="/static/imgs/3.png" alt=""></div>
         <div>秒杀</div>
       </div>
@@ -194,6 +194,13 @@
 
     },
     methods: {
+      waitMoment: function() {
+        wx.showToast({
+          icon: 'none',
+          title: '敬请期待',
+          duration:2000
+        })
+      },
       getInfo: function () {
         var self = this;
         wxRequest('getShopInfo')

@@ -153,6 +153,10 @@
               wx.navigateTo({
                 url: '/pages/merchant-edit/main'
               })
+            } else if (res.code == 5000) { // 跳转到下载app页面
+              wx.navigateTo({
+                url: '/pages/download-app/main'
+              })
             }else {
               wx.showToast({
                 title: res.errorMsg,
