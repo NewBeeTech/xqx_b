@@ -522,7 +522,14 @@
 						duration: 2000
 					});
 					return false;
-				} else if (!this.onceGroupPrice) {
+				} else if (this.groupPrice > this.originPrice) {
+					wx.showToast({
+						title: '商品底价不得超过商品原价',
+						icon: 'none',
+						duration: 2000
+					});
+					return false;
+				}  else if (!this.onceGroupPrice) {
 					wx.showToast({
 						title: '请输入单次砍价金额',
 						icon: 'none',
@@ -531,7 +538,7 @@
 					return false;
 				} else if (this.onceGroupPrice > this.groupPrice) {
 					wx.showToast({
-						title: '输入金额不得高于商品底价',
+						title: '单次砍价金额不得超过商品底价',
 						icon: 'none',
 						duration: 2000
 					});
