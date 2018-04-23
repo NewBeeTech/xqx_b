@@ -41,9 +41,14 @@
 	onLoad() {
 		try {
 			var discountInfo = JSON.parse(wx.getStorageSync("discount-info"));
-			discountInfo.explainImgUrl = JSON.parse(discountInfo.explainImgUrl);
+			console.log('discountInfo', discountInfo);
+			if (Array.isArray(discountInfo.explainImgUrl)) {
+			} else {
+				discountInfo.explainImgUrl = JSON.parse(discountInfo.explainImgUrl);
+			}
 			this.info = discountInfo;
 		} catch(e) {
+			console.warn(e);
 		}
 	},
   mounted () {
