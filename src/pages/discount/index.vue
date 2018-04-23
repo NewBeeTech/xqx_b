@@ -10,7 +10,7 @@
 				<div class="grousLists">
 					<scroll-view scroll-y='true'>
 						<div class="paddingBottom">
-							<div v-for="item in list" class="grousList" @click="navGo('/pages/discount-detail/main?id='+item.id+'&status=1')">
+							<div v-for="item in list1" class="grousList" @click="navGo('/pages/discount-detail/main?id='+item.id+'&status=1')">
 								<!-- <img :src="item.imgUrl"/> -->
 								<div class="grousListMsg">
 									<p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>
@@ -29,7 +29,7 @@
 				<div class="grousLists">
 					<scroll-view scroll-y='true'>
             <div class="paddingBottom">
-              <div v-for="item in list" class="grousList" @click="navGo('/pages/create-discount/main?id='+item.id)">
+              <div v-for="item in list2" class="grousList" @click="navGo('/pages/create-discount/main?id='+item.id)">
                 <!-- <img :src="item.imgUrl"/> -->
                 <div class="grousListMsg">
                   <p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>
@@ -46,7 +46,7 @@
 				<div class="grousLists">
 					<scroll-view scroll-y='true'>
             <div class="paddingBottom">
-              <div v-for="item in list" class="grousList" @click="navGo('/pages/discount-detail/main?id='+item.id+'&status=3')">
+              <div v-for="item in list3" class="grousList" @click="navGo('/pages/discount-detail/main?id='+item.id+'&status=3')">
                 <!-- <img :src="item.imgUrl"/> -->
                 <div class="grousListMsg">
                   <p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>
@@ -73,7 +73,9 @@
   data () {
     return {
       current: 0,
-      list:[]
+      list1:[],
+      list2:[],
+      list3:[],
     }
   },
   mounted () {
@@ -109,7 +111,14 @@
           if (res.code == 1) {
 						let result = res.value;
 						result = result.map( item => ({ ...item, createTimeDesc: that.timeDesc(item.createTime) }));
-            that.list = result;
+						if (num === 1) {
+							that.list1 = result;
+						} else if (num === 0) {
+							that.list2 = result;
+						} else if (num === 3) {
+							that.list3 = result;
+						}
+            // that.list = result;
             console.warn(res);
           }
 
