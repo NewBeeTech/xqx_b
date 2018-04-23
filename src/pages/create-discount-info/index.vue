@@ -3,20 +3,20 @@
 		<scroll-view scroll-y='true' style='height: 100%;'>
 
 			<div class="padding remark">
-				<textarea placeholder="请填写商品说明" v-model="info.explainContent"></textarea>
+				<textarea :disabled="onlyView" placeholder="请填写商品说明" v-model="info.explainContent"></textarea>
 			</div>
 			<div class="goodImg"  >
 				<div class="good-imgs">
 					<div v-if="info.explainImgUrl.length < 20">
-						<img class="add-img" @click="chooseImage(4, 'images')"  src="/static/imgs/add-imgs.png" />
+						<img v-if="!onlyView" class="add-img" @click="chooseImage(4, 'images')"  src="/static/imgs/add-imgs.png" />
 					</div>
 					<div class="img-container" v-for="(item, index) in info.explainImgUrl"  >
-						<img class="close-img" src="/static/imgs/close-img.png" style="width: 40rpx; height: 40rpx;" @click="deleteImg(index)" />
+						<img v-if="!onlyView" class="close-img" src="/static/imgs/close-img.png" style="width: 40rpx; height: 40rpx;" @click="deleteImg(index)" />
 		    		<img class="good-img" :src="item" alt="" @click="previewImg(index)" :key="index">
 	        </div>
 				</div>
 
-				<label v-if="info.explainImgUrl.length < 20">	请上传商品图片</label>
+				<label v-if="info.explainImgUrl.length < 20 && !onlyView">	请上传商品图片</label>
 			</div>
 		</scroll-view>
 	</div>
@@ -31,6 +31,7 @@
   data () {
     return {
       current: 0,
+			onlyView: false,
       info:{
 				explainContent: '',
         explainImgUrl:[]
@@ -39,6 +40,11 @@
     }
   },
 	onLoad() {
+		let onlyView = this.$root.$mp.query.onlyView;
+		console.warn('onlyView: ', onlyView);
+		if (onlyView) {
+			this.onlyView = true;
+		}
 		try {
 			var discountInfo = JSON.parse(wx.getStorageSync("discount-info"));
 			console.log('discountInfo', discountInfo);

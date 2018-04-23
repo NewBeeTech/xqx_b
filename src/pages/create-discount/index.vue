@@ -18,7 +18,7 @@
 				</div>
 			</div>
 			<div class="padding">
-				<div class="listStyle" @click="navGo('/pages/create-discount-info/main')">
+				<div class="listStyle" @click="navGo('/pages/create-discount-info/main?onlyView='+onlyView)">
 					<label>商品说明</label>
 					<div class="goods-info">
 						<div class="goods-info-text">{{goodsInfoDesc}}</div>
