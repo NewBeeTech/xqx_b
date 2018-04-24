@@ -4,7 +4,7 @@
 			<div class="orderList" v-for="item in list">
 				<div class="orderMsg">
 					<label>订单号</label>
-					<p>{{item.serialNumber}}}</p>
+					<p>{{item.serialNumber}}</p>
 					<!--<span>发货</span>-->
 					<text v-if="item.orderState==1">待发货</text>
 					<text v-if="item.orderState==2">已发货</text>
