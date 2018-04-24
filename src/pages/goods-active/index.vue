@@ -49,8 +49,27 @@
     onLoad (options) {
       console.log(options.status)
       this.status = options.status
+
       this.searchGroup(1);
     },
+		onShow() {
+			if (this.status == 1) {
+				wx.setNavigationBarTitle({
+					title: '待发货'
+				});
+			} else if (this.status == 2) {
+				wx.setNavigationBarTitle({
+					title: '已发货'
+				});
+			} else if (this.status == 3) {
+				wx.setNavigationBarTitle({
+					title: '已完成'
+				});
+			}
+		},
+		unLoad() {
+			this.status = '';
+		},
     methods: {
       searchGroup (page){
 

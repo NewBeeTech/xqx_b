@@ -9,7 +9,7 @@
 					<p>¥{{groupPrice}} <text>¥{{price}}</text></p>
 					<p>有效期：24h</p>
 					<p>创建时间：{{createTimeDesc}}</p>
-					<p>下架时间：{{endTimeDesc}}</p>
+					<p v-if="close">下架时间：{{endTimeDesc}}</p>
 				</div>
 			</div>
 
@@ -158,7 +158,7 @@
   methods: {
 		timeDesc(time) {
 			const timeObj = new Date(time);
-      const min = timeObj.getMinutes() || '00';
+			const min = timeObj.getMinutes() > 10 ? timeObj.getMinutes() : '0'+timeObj.getMinutes();
       const hour = timeObj.getHours() > 10 ? timeObj.getHours() : '0'+timeObj.getHours();
       const month = timeObj.getMonth() + 1;
 			const year = timeObj.getFullYear();

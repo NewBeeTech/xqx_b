@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <img class="download-app-icon" src="/static/imgs/download-app.png" />
-    <div class="download-app-desc">您还不是CCPP特约商户，请先下载小确幸商家版APPw按成注册</div>
+    <div class="download-app-desc">您还不是CCPP特约商户，请先下载小确幸商家版APP按成注册</div>
     <div class="download-app-btn" @click="navGo('/pages/app-download/main')">立即下载APP</div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 export let api = {
-	HTTP_HOST: 'http://wmomo.wicp.net/',
+	HTTP_HOST: 'https://bmini.xqx.com/',
 	HTTP_SERVER: {
 		"useIdQueryGoodsGroup": "/mxcx/GoodsGroupController/useIdQueryGoodsGroup",
 	  "useAppLoginNameQueryMerchant":"mxcx/MerchantController/useAppLoginNameQueryMerchant",

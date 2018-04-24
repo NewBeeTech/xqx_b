@@ -150,9 +150,28 @@
           .then(res => {
             console.log(res)
             if (res.code == 1){
-              wx.navigateTo({
-                url: '/pages/merchant-edit/main'
-              })
+              wxRequest('useAppLoginNameQueryMerchant', { appLoginname: this.phoneNumber })
+                .then(resValue => {
+                  console.log(resValue)
+                  if (resValue.code == 1){
+                    wx.navigateTo({
+                      url: '/pages/index/main'
+                    })
+                  } else if (resValue.code == 4000) { // 跳转到下载app页面
+                    wx.navigateTo({
+                      url: '/pages/download-app/main'
+                    })
+                  }else {
+                    wx.showToast({
+                      title: resValue.errorMsg || '',
+                      icon: 'none',
+                      duration: 2000
+                    })
+                  }
+                })
+                .catch(err => {
+                  console.log(err)
+                })
             } else if (res.code == 5000) { // 跳转到下载app页面
               wx.navigateTo({
                 url: '/pages/download-app/main'
