@@ -1,12 +1,28 @@
 <template>
   <div class="container">
     <img class="download-app-icon" src="/static/imgs/download-app.png" />
-    <div class="download-app-desc">您还不是CCPP特约商户，请先下载小确幸商家版APP按成注册</div>
-    <div class="download-app-btn" @click="navGo('/pages/app-download/main')">立即下载APP</div>
+    <div class="download-app-desc">https://bmini.xqx.com/download/success.html 点击复制按钮，在手机浏览器打开进行下载或者在各大应用市场搜索下载！</div>
+    <div class="download-app-btn" @click="copyLink">复制链接</div>
   </div>
 </template>
 <script>
 import { wxRequest } from '@/api'
+export default {
+  methods: {
+    copyLink: function() {
+      wx.setClipboardData({
+        data: 'https://bmini.xqx.com/download/success.html',
+        success: function() {
+          wx.showToast({
+            title: '复制成功',
+            icon: 'success',
+            duration: 2000
+          });
+        }
+      })
+    },
+  }
+}
 </script>
 <style scoped>
 .download-app-icon {

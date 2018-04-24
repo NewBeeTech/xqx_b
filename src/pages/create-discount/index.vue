@@ -48,7 +48,7 @@
 					<label>单笔交易返养老金（元）</label>
 					<div>
 						<!-- <input placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="info.currency" type="digit" placeholder="¥0.00"   v-bind="info.currency"/> -->
-						<div>{{ groupPrice * ratio / 100 || '￥0.00'}}</div>
+						<div>{{ (groupPrice * ratio / 100 > 0.01 ? groupPrice * ratio / 100 : 0.01) || '￥0.00'}}</div>
 					</div>
 				</div>
 				<div class="listStyle">
@@ -95,7 +95,7 @@
 			</div>
 			<div v-if="!disabled && !onlyView" class="makeBtn" >
 				<div @click="saveGroups">保存</div>
-				<div @click="makeGroups">创建并上架</div>
+				<div @click="makeGroups">上架</div>
 			</div>
 			<div v-if="disabled && !onlyView" class="makeBtn2" >
 				<div @click="deleteGoods">删除</div>
@@ -353,7 +353,7 @@
 								groupPrice: parseInt(self.groupPrice * 100),
 								singlePrice: parseInt(self.onceGroupPrice * 100),
 								ratio: self.ratio,
-								currency: parseInt(self.originPrice*100 * self.ratio) > 1 ? parseInt(self.originPrice*100 * self.ratio) : 1 ,
+								currency: parseInt(self.groupPrice*100 * self.ratio) > 1 ? parseInt(self.groupPrice*100 * self.ratio) : 1 ,
 								groupAging: 24,
 								rule: self.rule,
 								status: 1,
@@ -376,7 +376,7 @@
 								groupPrice: parseInt(self.groupPrice * 100),
 								singlePrice: parseInt(self.onceGroupPrice * 100),
 								ratio: self.ratio,
-								currency: parseInt(self.originPrice*100 * self.ratio) > 1 ? parseInt(self.originPrice*100 * self.ratio) : 1 ,
+								currency: parseInt(self.groupPrice*100 * self.ratio) > 1 ? parseInt(self.groupPrice*100 * self.ratio) : 1 ,
 								groupAging: 24,
 								rule: self.rule,
 								status: 1,
@@ -419,7 +419,7 @@
 								groupPrice: parseInt(self.groupPrice * 100),
 								singlePrice: parseInt(self.onceGroupPrice * 100),
 								ratio: self.ratio,
-								currency: parseInt(self.originPrice*100 * self.ratio) > 1 ? parseInt(self.originPrice*100 * self.ratio) : 1 ,
+								currency: parseInt(self.groupPrice*100 * self.ratio) > 1 ? parseInt(self.groupPrice*100 * self.ratio) : 1 ,
 								groupAging: 24,
 								rule: self.rule,
 								status: 0,
@@ -442,7 +442,7 @@
 								groupPrice: parseInt(self.groupPrice * 100),
 								singlePrice: parseInt(self.onceGroupPrice * 100),
 								ratio: self.ratio,
-								currency: parseInt(self.originPrice*100 * self.ratio) > 1 ? parseInt(self.originPrice*100 * self.ratio) : 1 ,
+								currency: parseInt(self.groupPrice*100 * self.ratio) > 1 ? parseInt(self.groupPrice*100 * self.ratio) : 1 ,
 								groupAging: 24,
 								rule: self.rule,
 								status: 0,
