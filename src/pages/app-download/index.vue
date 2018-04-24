@@ -1,6 +1,6 @@
 <template>
 
-  <web-view src="http://sj.qq.com/myapp/detail.htm?apkName=com.indeedfortunate.small.android"></web-view>
+  <web-view src="https://bmini.xqx.com/download/success.html"></web-view>
 </template>
 
 <script>

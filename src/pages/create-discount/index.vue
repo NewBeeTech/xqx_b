@@ -594,9 +594,9 @@
 						duration: 2000
 					});
 					return false;
-				} else if (Number(this.onceGroupPrice) > Number(this.groupPrice)) {
+				} else if (Number(this.onceGroupPrice) < 1) {
 					wx.showToast({
-						title: '输入单次砍价金额不得超过商品底价',
+						title: '输入单次砍价金额要大于等于1元',
 						icon: 'none',
 						duration: 2000
 					});

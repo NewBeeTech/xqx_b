@@ -3,7 +3,7 @@ function Default() { }
  * 主机地址
  */
 // Default.HOST = "http://ccpp.denong.com/app_person/";
-Default.HOST = "http://mini.xqx.com/app_person/";
+Default.HOST = "https://bmini.xqx.com/app_person/";
 Default.KEY = "5QUBZ-XZVW6-5U7SE-M4OZW-VA7DE-WXFZ6";
 
 /**
@@ -132,7 +132,7 @@ Default.INVITE_INFO = "userInfov20/getInviteInfo";
 
 /**
  * 支付
- * 
+ *
  * money	String	是	实际支付金额
  * session	String	是	session
  * token	String	是	token
@@ -144,7 +144,7 @@ Default.INVITE_INFO = "userInfov20/getInviteInfo";
 Default.CREATE_PAY = "xcxwechatpay/createPay";
 
 /**
- * 
+ *
  * 商户信息含折扣信息
  * cnd	String	是	商户id
  */
