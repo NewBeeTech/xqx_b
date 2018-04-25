@@ -47,24 +47,24 @@
       <!-- @click="navGo('/pages/transaction-record/main')"-->
       <div class="sec-lin">
         <div class="item">
-          <div>{{~~value.realChargeTodaySum/100==value.realChargeTodaySum/100?value.realChargeTodaySum/100+".00":~~(value.realChargeTodaySum*100)/100}}</div>
+          <div>{{~~value.realChargeTodaySum/100==value.realChargeTodaySum/100?value.realChargeTodaySum/100:~~(value.realChargeTodaySum*100)/100}}</div>
           <div>今日营收(元)</div>
         </div>
         <div class="cneter"></div>
         <div class="item">
-          <div>{{~~value.realChargeHistorySum/100==value.realChargeHistorySum/100?value.realChargeHistorySum/100+".00":~~(value.realChargeHistorySum*100)/100}}</div>
+          <div>{{~~value.realChargeHistorySum/100==value.realChargeHistorySum/100?value.realChargeHistorySum/100:~~(value.realChargeHistorySum*100)/100}}</div>
           <div>累计营收(元)</div>
         </div>
       </div>
       <!-- @click="navGo('/pages/transaction-record/main')"-->
       <div class="sec-lin">
         <div class="item">
-          <div>{{~~value.currencyTodaySum/100==value.currencyTodaySum/100?value.currencyTodaySum/100+".00":~~(value.currencyTodaySum*100)/100}}</div>
+          <div>{{~~value.currencyTodaySum/100==value.currencyTodaySum/100?value.currencyTodaySum/100:~~(value.currencyTodaySum*100)/100}}</div>
           <div>今日返金(元)</div>
         </div>
         <div class="cneter"></div>
         <div class="item">
-          <div>{{~~value.currencyHistorySum/100==value.currencyHistorySum/100?value.currencyHistorySum/100+".00":~~(value.currencyHistorySum*100)/100}}</div>
+          <div>{{~~value.currencyHistorySum/100==value.currencyHistorySum/100?value.currencyHistorySum/100:~~(value.currencyHistorySum*100)/100}}</div>
           <div>累计返金(元)</div>
         </div>
       </div>

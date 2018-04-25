@@ -1,6 +1,7 @@
 export let api = {
 	HTTP_HOST: 'https://bmini.xqx.com/',
 	HTTP_SERVER: {
+		"updateGoodsGroupOrderExpressNumber": "/mxcx/GoodsGroupOrderController/updateGoodsGroupOrderExpressNumber", // 设置订单快递单号接口
 		"useIdQueryGoodsGroup": "/mxcx/GoodsGroupController/useIdQueryGoodsGroup",
 	  "useAppLoginNameQueryMerchant":"mxcx/MerchantController/useAppLoginNameQueryMerchant",
 		'userLogin': 'mxcx/AuthorizedController/checkAuthorization', //获取code，登录
