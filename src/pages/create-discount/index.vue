@@ -65,7 +65,7 @@
 					</div>
 				</div>
 				<div class="listStyle">
-					<label>活动返金</label>
+					<label>活动返金 <img style="width: 24rpx; height: 24rpx;" @click="showModalInfo(1)" src="/static/imgs/info-detail.png" /></label>
 					<div class="form-rate">
 						<input style="padding-right: 20rpx; margin-right: 10rpx;" :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="ratio" type="digit" placeholder="请设置返金比例" v-bind="ratio"/>
 
@@ -74,14 +74,14 @@
 				</div>
 				<div class="listStyle twoColumn">
 					<div class="listStyle1">
-						<label>用户返金</label>
+						<label>用户返金 <img style="width: 24rpx; height: 24rpx;" @click="showModalInfo(2)" src="/static/imgs/info-detail.png" /></label>
 						<div class="form-rate">
 							<!-- <input placeholder-style="color: #cbcbcb; font-weight: normal;" type="number" disabled v-model="currency" /> -->
 							<div>{{ (groupPrice * ratio / 100 * 0.9 > 0.01 ? groupPrice * ratio / 100 * 0.9 : 0.01) || '￥0.00'}}</div>
 						</div>
 					</div>
 					<div class="listStyle1">
-						<label>推广返佣</label>
+						<label>推广返佣 <img style="width: 24rpx; height: 24rpx;" @click="showModalInfo(3)" src="/static/imgs/info-detail.png" /></label>
 						<div class="form-rate">
 							<!-- <input placeholder-style="color: #cbcbcb; font-weight: normal;" type="number" disabled v-model="spreadCurrency" /> -->
 							<div>{{ (groupPrice * ratio / 100 * 0.1  > 0.01 ? groupPrice * ratio / 100 * 0.1 : 0.01 ) || '￥0.00'}}</div>
@@ -224,6 +224,35 @@
 
 		mounted() {},
 		methods: {
+			/**
+			 * 模态框进行介绍
+			 * @param  {[type]} type [description]
+			 * @return {[type]}      [description]
+			 */
+			showModalInfo: function(type) {
+				if (type == 1) {
+					wx.showModal({
+  					title: '',
+						showCancel: false,
+						confirmText: '我知道了',
+  					content: '商品活动返金金额默认为商品底价的3%，您也可以自定义返金金额。',
+					});
+				} else if (type == 2) {
+					wx.showModal({
+  					title: '',
+						showCancel: false,
+						confirmText: '我知道了',
+  					content: '用户购买商品时，将获得商品活动反金金额的10%的消费养老金。',
+					});
+				} else if (type == 3) {
+					wx.showModal({
+  					title: '',
+						showCancel: false,
+						confirmText: '我知道了',
+  					content: '用户购买商品时，将从商家设置的活动返金金额里的90%作为奖励金返还给该用户的所属商户。您也可以通过推广新用户获得奖励金。您推广的新用户在小确幸平台购买商品时，您将获得其他商户活动的奖励金。',
+					});
+				}
+			},
 			/**
 			 * 选择配送方式
 			 * @return {[type]} [description]
@@ -414,6 +443,7 @@
 								ratio: self.ratio,
 								currency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
 								spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.1) > 1 ? parseInt(self.groupPrice * self.ratio * 0.1) : 1 ,
+								deliveryMethod: self.deliveryMethod,
 								groupAging: 48,
 								rule: self.rule,
 								status: 1,
@@ -438,6 +468,7 @@
 								ratio: self.ratio,
 								currency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
 								spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.1) > 1 ? parseInt(self.groupPrice * self.ratio * 0.1) : 1 ,
+								deliveryMethod: self.deliveryMethod,
 								groupAging: 48,
 								rule: self.rule,
 								status: 1,
@@ -482,6 +513,7 @@
 								ratio: self.ratio,
 								currency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
 								spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.1) > 1 ? parseInt(self.groupPrice * self.ratio * 0.1) : 1 ,
+								deliveryMethod: self.deliveryMethod,
 								groupAging: 48,
 								rule: self.rule,
 								status: 0,
@@ -506,6 +538,7 @@
 								ratio: self.ratio,
 								currency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
 								spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.1) > 1 ? parseInt(self.groupPrice * self.ratio * 0.1) : 1 ,
+								deliveryMethod: self.deliveryMethod,
 								groupAging: 48,
 								rule: self.rule,
 								status: 0,
@@ -663,9 +696,16 @@
 						duration: 2000
 					});
 					return false;
-				} else if (Number(this.onceGroupPrice) < 1) {
+				} else if (Number(this.onceGroupPrice) < 0.1) {
 					wx.showToast({
-						title: '输入单次砍价金额要大于等于1元',
+						title: '输入单次砍价金额要大于等于0.1元',
+						icon: 'none',
+						duration: 2000
+					});
+					return false;
+				} else if (Number(this.onceGroupPrice) > Number(this.originPrice)) {
+					wx.showToast({
+						title: '单次砍价不能大于商品原价',
 						icon: 'none',
 						duration: 2000
 					});
@@ -698,6 +738,7 @@
 							self.ratio = res.value.ratio,
 							self.currency = res.value.currency;
 							self.rule = res.value.rule;
+							self.deliveryMethod = res.value.deliveryMethod;
 							// status: 0,
 							// goodsType: 3,
 						}
