@@ -14,8 +14,8 @@ export let api = {
 		'getShopInfo':'mxcx/MerchantController/queryMerchantInfo', //获取商户信息
 		'getCodeImg':'mxcx/MerchantController/getMerchantMoneyCollectQr',//获取二维码
     "updateMerchantInfo":"mxcx/MerchantController/updateMerchantInfo",
-		'createGoodsGroup':'mxcx/GoodsGroupController/createGoodsGroup',//创建活动
-    "updateGoodsGroup":"mxcx/GoodsGroupController/updateGoodsGroup",
+		'createGoodsGroup':'mxcx/GoodsGroupController/createGoodsGroupV110',//创建活动
+    "updateGoodsGroup":"mxcx/GoodsGroupController/updateGoodsGroupV110",
     "deleteGoodsGroup":"mxcx/GoodsGroupController/deleteGoodsGroup",
     "queryGoodsGroup":"mxcx/GoodsGroupController/queryGoodsGroup",
     "getProvince":"mxcx/UtilsController/getProvince",//省
