@@ -18,6 +18,13 @@
 				</div>
 			</div>
 			<div class="padding">
+				<div class="listStyle" @click="selectDispatchWay">
+					<label>配送方式</label>
+					<div class="goods-info">
+						<div class="goods-info-text">{{ deliveryMethodDesc ? deliveryMethodDesc : '邮寄/到店自提' }}</div>
+						<img src="/static/imgs/right.png" alt="" />
+					</div>
+				</div>
 				<div class="listStyle" @click="navGo('/pages/create-discount-info/main?onlyView='+onlyView)">
 					<label>商品说明</label>
 					<div class="goods-info">
@@ -37,30 +44,54 @@
 						<input :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="groupPrice" type="digit" placeholder="请输入砍价商品底价" v-bind="groupPrice"/>
 					</div>
 				</div>
-				<div class="listStyle">
+				<!-- <div class="listStyle">
 					<label>返金比例</label>
 					<div class="form-rate">
-						<input :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="ratio" type="digit" placeholder="请设置返金比例" v-bind="ratio"/>
-						<div v-if="ratio">%</div>
+						<input style="padding-right: 20rpx; margin-right: 10rpx;" :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="ratio" type="digit" placeholder="请设置返金比例" v-bind="ratio"/>
+
 					</div>
-				</div>
-				<div class="listStyle">
+					<span style="width: 20rpx;" v-if="ratio">%</span>
+				</div> -->
+				<!-- <div class="listStyle">
 					<label>单笔交易返养老金（元）</label>
 					<div>
-						<!-- <input placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="info.currency" type="digit" placeholder="¥0.00"   v-bind="info.currency"/> -->
 						<div>{{ (groupPrice * ratio / 100 > 0.01 ? groupPrice * ratio / 100 : 0.01) || '￥0.00'}}</div>
 					</div>
-				</div>
+				</div> -->
 				<div class="listStyle">
-					<label>单次砍价金额（元）</label>
+					<label>单次砍价金额</label>
 					<div>
 						<input :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="onceGroupPrice" type="digit" placeholder="请输入单次砍价金额" v-bind="onceGroupPrice"/>
 					</div>
 				</div>
 				<div class="listStyle">
+					<label>活动返金</label>
+					<div class="form-rate">
+						<input style="padding-right: 20rpx; margin-right: 10rpx;" :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="ratio" type="digit" placeholder="请设置返金比例" v-bind="ratio"/>
+
+					</div>
+					<span style="width: 20rpx;" v-if="ratio">%</span>
+				</div>
+				<div class="listStyle twoColumn">
+					<div class="listStyle1">
+						<label>用户返金</label>
+						<div class="form-rate">
+							<!-- <input placeholder-style="color: #cbcbcb; font-weight: normal;" type="number" disabled v-model="currency" /> -->
+							<div>{{ (groupPrice * ratio / 100 * 0.9 > 0.01 ? groupPrice * ratio / 100 * 0.9 : 0.01) || '￥0.00'}}</div>
+						</div>
+					</div>
+					<div class="listStyle1">
+						<label>推广返佣</label>
+						<div class="form-rate">
+							<!-- <input placeholder-style="color: #cbcbcb; font-weight: normal;" type="number" disabled v-model="spreadCurrency" /> -->
+							<div>{{ (groupPrice * ratio / 100 * 0.1  > 0.01 ? groupPrice * ratio / 100 * 0.1 : 0.01 ) || '￥0.00'}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="listStyle">
 					<label>砍价有效期</label>
 					<div>
-						<input placeholder-style="color: #cbcbcb; font-weight: normal;" type="number" disabled value="24h" />
+						<input placeholder-style="color: #cbcbcb; font-weight: normal;" type="number" disabled value="48h" />
 					</div>
 				</div>
 			</div>
@@ -123,10 +154,14 @@
 				groupPrice: '', // 商品底价
 				onceGroupPrice: '', // 单次砍价金额
 				rule: '', // 砍价规则
-				ratio: '',
+				ratio: 3,
 				type: 0,
         info:{},
-				goodsInfoDesc: '请填写商品说明'
+				goodsInfoDesc: '请填写商品说明',
+				deliveryMethod: '',
+				deliveryMethodDesc: '',
+				currency: 0.00,
+				spreadCurrency: 0.00,
 			}
 		},
 		onLoad: function() {
@@ -189,6 +224,30 @@
 
 		mounted() {},
 		methods: {
+			/**
+			 * 选择配送方式
+			 * @return {[type]} [description]
+			 */
+			selectDispatchWay: function() {
+				const that = this;
+				wx.showActionSheet({
+  				itemList: ['邮寄', '到店自提'],
+  				success: function(res) {
+    				console.log(res.tapIndex)
+						if (res.tapIndex == 0) {
+							that.deliveryMethod = 1;
+							that.deliveryMethodDesc = '邮寄';
+						} else if (res.tapIndex == 1) {
+							that.deliveryMethod = 2;
+							that.deliveryMethodDesc = '到店自提';
+						}
+						console.log(that.deliveryMethodDesc);
+  				},
+  				fail: function(res) {
+    				console.log(res.errMsg)
+  				}
+				});
+			},
 			/**
 			 * 进入编辑态
 			 * @return {[type]} [description]
@@ -353,8 +412,9 @@
 								groupPrice: parseInt(self.groupPrice * 100),
 								singlePrice: parseInt(self.onceGroupPrice * 100),
 								ratio: self.ratio,
-								currency: parseInt(self.groupPrice* self.ratio) > 1 ? parseInt(self.groupPrice * self.ratio) : 1 ,
-								groupAging: 24,
+								currency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
+								spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.1) > 1 ? parseInt(self.groupPrice * self.ratio * 0.1) : 1 ,
+								groupAging: 48,
 								rule: self.rule,
 								status: 1,
 								goodsType: 3,
@@ -376,8 +436,9 @@
 								groupPrice: parseInt(self.groupPrice * 100),
 								singlePrice: parseInt(self.onceGroupPrice * 100),
 								ratio: self.ratio,
-								currency: parseInt(self.groupPrice * self.ratio) > 1 ? parseInt(self.groupPrice * self.ratio) : 1 ,
-								groupAging: 24,
+								currency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
+								spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.1) > 1 ? parseInt(self.groupPrice * self.ratio * 0.1) : 1 ,
+								groupAging: 48,
 								rule: self.rule,
 								status: 1,
 								goodsType: 3,
@@ -419,8 +480,9 @@
 								groupPrice: parseInt(self.groupPrice * 100),
 								singlePrice: parseInt(self.onceGroupPrice * 100),
 								ratio: self.ratio,
-								currency: parseInt(self.groupPrice* self.ratio) > 1 ? parseInt(self.groupPrice* self.ratio) : 1 ,
-								groupAging: 24,
+								currency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
+								spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.1) > 1 ? parseInt(self.groupPrice * self.ratio * 0.1) : 1 ,
+								groupAging: 48,
 								rule: self.rule,
 								status: 0,
 								goodsType: 3,
@@ -442,8 +504,9 @@
 								groupPrice: parseInt(self.groupPrice * 100),
 								singlePrice: parseInt(self.onceGroupPrice * 100),
 								ratio: self.ratio,
-								currency: parseInt(self.groupPrice* self.ratio) > 1 ? parseInt(self.groupPrice* self.ratio) : 1 ,
-								groupAging: 24,
+								currency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
+								spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.1) > 1 ? parseInt(self.groupPrice * self.ratio * 0.1) : 1 ,
+								groupAging: 48,
 								rule: self.rule,
 								status: 0,
 								goodsType: 3,
@@ -495,6 +558,12 @@
 						duration: 2000
 					});
 					return false;
+				} else if (!this.deliveryMethod) {
+					wx.showToast({
+						title: '请选择配送方式',
+						icon: 'none',
+						duration: 2000
+					});
 				} else if ( discountInfo && discountInfo.explainContent && discountInfo.explainContent.length > 300) {
 					wx.showToast({
 						title: '商品说明最多可输入300字',
@@ -537,9 +606,9 @@
 						duration: 2000
 					});
 					return false;
-				} else if (Number(this.ratio) < 0.1 || Number(this.ratio) > 80) {
+				} else if (Number(this.ratio) < 3 || Number(this.ratio) > 80) {
 					wx.showToast({
-						title: '返金比例输入范围0.1 ~ 80',
+						title: '活动返金输入范围03 ~ 80',
 						icon: 'none',
 						duration: 2000
 					});
@@ -670,6 +739,27 @@
 		align-items: center;
 		justify-content: space-between;
 		border-bottom: 1rpx solid #f0f0f0;
+	}
+	.listStyle1 {
+		height: 96rpx;
+		line-height: 96rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		/* width: 100%; */
+		width: 600rpx;
+		flex-shrink: 0;
+		/* padding-left: 96rpx; */
+		margin-left: 80rpx;
+	}
+	.listStyle1>div {
+		flex: 1;
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.listStyle1>div>input {
+		text-align: right;
 	}
 
 	.listStyle>div {
@@ -836,5 +926,11 @@
 		position: default;
 		display: flex;
 		border: 1rpx solid red;
+	}
+	.twoColumn {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		height: 100%;
 	}
 </style>

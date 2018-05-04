@@ -70,7 +70,7 @@ HTTPManager.post = function (url, parm) {
           //   duration: 2000
           // })
         // }
-        
+
       },
       fail: function (error) {
         fail(error)
@@ -80,13 +80,13 @@ HTTPManager.post = function (url, parm) {
 }
 HTTPManager.login = function(){
   return new Promise(function (success, fail) {
-  
+
     wx.login({
       success: function (res) {
         console.log(res);
 
         var code = res.code;
-        
+
           wx.getUserInfo({
             success: function (res) {
               console.log(res);
@@ -94,7 +94,7 @@ HTTPManager.login = function(){
               wx.setStorage("iv", res.iv);
               /**
                * 进入小程序获取unionid 相关信息 判断是当前用户是否进入注册页面
-               * 
+               *
                * code	String	是	code
                * encryptedData	String	是	微信用户加密信息
                * iv	String	是	微信用户加密信息
@@ -102,7 +102,8 @@ HTTPManager.login = function(){
               var config = { code: code, encryptedData: res.encryptedData, iv: res.iv };
               console.log(config);
               HttpManager
-                .post("http://mini.xqx.com/app_person/" + "XCXController/get3rdSession", config).then(function (result) {
+                // .post("http://mini.xqx.com/app_person/" + "XCXController/get3rdSession", config).then(function (result) {
+                .post("http://wmomo.wicp.net/app_person/" + "XCXController/get3rdSession", config).then(function (result) {
                 console.log(result);
                 wx.hideLoading();
                 success(result);
@@ -113,7 +114,7 @@ HTTPManager.login = function(){
               });
             }
           })
-        
+
       }
     });
   })

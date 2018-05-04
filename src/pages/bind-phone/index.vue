@@ -13,9 +13,14 @@
       <div class="input">
         <input type="text" placeholder="输入验证码" placeholder-style='font-size: 18px'>
       </div>
-      <div class="text" @click="getCode">
+      <div v-if="canGetCode" class="text" @click="getCode">
         <div class="buttons">
           获取验证码
+        </div>
+      </div>
+      <div v-else="time > 0" class="text">
+        <div class="buttons" style="color: #999">
+          {{time}}秒
         </div>
       </div>
     </div>
@@ -41,8 +46,12 @@
   export default {
     data() {
       return {
+        canGetCode: true,
+        isAgree: false,
         isYes: false,
         phoneNumber: '',
+        time:60,
+        timer:null,
         verCode:""
       }
     },
@@ -115,6 +124,17 @@
           })
           return
         }
+        self.timer = setInterval(function(){
+          self.time = --self.time <= 0 ? 0 : self.time;
+          self.isAgree = self.time < -0 ? true : false;
+          self.canGetCode = self.time < -0 ? true : false;
+          if (self.time <= 0){
+            self.canGetCode = true;
+            self.isAgree = false;
+            self.time = 60;
+            clearInterval(self.timer);
+          }
+        },1000);
         var config = {mark: 5, mobileNo: this.phoneNumber};
         wx.setStorageSync('phone', this.phoneNumber);
         wxRequest('getMessageCode', config)

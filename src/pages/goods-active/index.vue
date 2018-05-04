@@ -84,6 +84,11 @@
 		},
 		unLoad() {
 			this.status = '';
+			this.current = 0;
+			this.goodsGroupOrderId = "";
+			this.expressNumber = '';
+			this.list =[];
+			this.showModal = false;
 		},
     methods: {
       searchGroup (page){

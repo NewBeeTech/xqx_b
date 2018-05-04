@@ -114,8 +114,8 @@
             if (res.code == 1) {
               // that.info = res.value[0]
 							that.yiKan = res.value.groupNum;
-							that.yifan = res.value.successCountCurrency;
-							that.yishou = res.value.successCountMoney;
+							that.yifan = res.value.successCountCurrency / 100;
+							that.yishou = res.value.successCountMoney / 100;
 							that.kanjiazhongRatio = res.value.ratio;
               console.log(res);
             }
