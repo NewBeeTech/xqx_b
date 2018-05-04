@@ -77,14 +77,14 @@
 						<label>用户返金 <img style="width: 24rpx; height: 24rpx;" @click="showModalInfo(2)" src="/static/imgs/info-detail.png" /></label>
 						<div class="form-rate">
 							<!-- <input placeholder-style="color: #cbcbcb; font-weight: normal;" type="number" disabled v-model="currency" /> -->
-							<div>{{ (groupPrice * ratio / 100 * 0.1 > 0.01 ? groupPrice * ratio / 100 * 0.9 : 0.01) || '￥0.00'}}</div>
+							<div>活动返金的10%</div>
 						</div>
 					</div>
 					<div class="listStyle1">
 						<label>推广返佣 <img style="width: 24rpx; height: 24rpx;" @click="showModalInfo(3)" src="/static/imgs/info-detail.png" /></label>
 						<div class="form-rate">
 							<!-- <input placeholder-style="color: #cbcbcb; font-weight: normal;" type="number" disabled v-model="spreadCurrency" /> -->
-							<div>{{ (groupPrice * ratio / 100 * 0.9  > 0.01 ? groupPrice * ratio / 100 * 0.1 : 0.01 ) || '￥0.00'}}</div>
+							<div>活动返金的90%</div>
 						</div>
 					</div>
 				</div>
