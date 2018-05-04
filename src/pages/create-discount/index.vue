@@ -733,6 +733,11 @@
 							if(res.value.explainContent || res.value.explainImgUrl > 0) {
 								this.goodsInfoDesc = '查看商品说明';
 							}
+							if (res.value.deliveryMethod == 1) {
+								self.deliveryMethodDesc = '邮寄';
+							} else if (res.value.deliveryMethod == 2) {
+								self.deliveryMethodDesc = '到店自提';
+							}
 							self.originPrice = res.value.price / 100;
 							self.groupPrice = res.value.groupPrice / 100;
 							self.onceGroupPrice = res.value.singlePrice / 100;
