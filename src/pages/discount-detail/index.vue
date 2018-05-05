@@ -7,7 +7,7 @@
 				<div class="grousListMsg">
 					<p><text>{{name}}</text><text>返金比例：{{infoRatio}}%</text></p>
 					<p>¥{{groupPrice}} <text>¥{{price}}</text></p>
-					<p>有效期：24h</p>
+					<p>有效期：48h</p>
 					<p>创建时间：{{createTimeDesc}}</p>
 					<p v-if="close">下架时间：{{endTimeDesc}}</p>
 				</div>

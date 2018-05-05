@@ -15,7 +15,7 @@
 								<div class="grousListMsg">
 									<p><text>{{item.name}}</text><text>返金比例：{{item.ratio}}%</text></p>
 									<p>¥{{item.groupPrice/100}} <text>¥{{item.price/100}}</text></p>
-									<p>有效期：24h</p>
+									<p>有效期：48h</p>
 									<p>创建日期：{{item.createTimeDesc}}</p>
 								</div>
 							</div>
@@ -50,7 +50,7 @@
                 <div class="grousListMsg">
                   <p><text>{{item.name}}</text><text>返金比例：{{item.ratio}}%</text></p>
                   <p>¥{{item.groupPrice/100}} <text>¥{{item.price/100}}</text></p>
-                  <p>有效期：24h</p>
+                  <p>有效期：48h</p>
                   <p>创建时间：{{item.createTimeDesc}}</p>
                   <p>下架时间：{{item.endTimeDesc}}</p>
                   <!-- <p>砍价成功：{{item.groupPersonNum}}份 <text>砍价中：{{item.createTime}}份</text></p> -->

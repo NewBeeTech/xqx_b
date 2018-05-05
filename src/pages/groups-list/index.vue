@@ -15,7 +15,7 @@
 								<div class="grousListMsg">
 									<p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>
 									<p>¥{{item.price}} <text>¥{{item.groupPrice}}</text></p>
-									<p>有效期：24h</p>
+									<p>有效期：48h</p>
 									<p>创建日期：{{item.createTime}}</p>
 									<p>已拼团：{{item.groupPersonNum}}份 <text>拼团中：{{item.groupPersonNum}}份</text></p>
 								</div>
