@@ -23,11 +23,11 @@
 					<label>商品名称</label>
 					<p>{{item.commodityName}}</p>
 				</div>
-				<div class="orderMsg">
+				<div v-if="item.name" class="orderMsg">
 					<label>用户名</label>
 					<p>{{item.name}}</p>
 				</div>
-				<div class="orderMsg">
+				<div v-if="item.phone" class="orderMsg">
 					<label>联系电话</label>
 					<p>{{item.phone}}</p>
 				</div>
@@ -35,7 +35,7 @@
 					<label>快递单号</label>
 					<p>{{item.expressNumber}}</p>
 				</div>
-				<div class="orderMsg">
+				<div v-if="item.address" class="orderMsg">
 					<label>地址</label>
 					<p>{{item.address}}</p>
 				</div>
