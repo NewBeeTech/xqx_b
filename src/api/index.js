@@ -4,7 +4,7 @@ export let api = {
 	HTTP_SERVER: {
 		"updateGoodsGroupOrderExpressNumber": "/mxcx/GoodsGroupOrderController/updateGoodsGroupOrderExpressNumber", // 设置订单快递单号接口
 		"useIdQueryGoodsGroup": "/mxcx/GoodsGroupController/useIdQueryGoodsGroup",
-	  "useAppLoginNameQueryMerchant":"mxcx/MerchantController/useAppLoginNameQueryMerchant",
+	  "useAppLoginNameQueryMerchant":"mxcx/MerchantController/useAppLoginNameQueryMerchantV110",
 		'userLogin': 'mxcx/AuthorizedController/checkAuthorization', //获取code，登录
     "getMessageCode":"mxcx/UtilsController/getMessageCode",//获取验证码
     "verificationCode":"mxcx/UtilsController/verificationCode",//手机验证码 验证
