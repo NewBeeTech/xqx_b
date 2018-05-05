@@ -559,6 +559,7 @@
 			},
 			// 校验填写数据
 			validateForm: function() {
+				// console.log(Number(this.onceGroupPrice) , Number(this.originPrice))
 				function isNumeric(n) {
   				return !isNaN(parseFloat(n)) && isFinite(n);
 				}
@@ -704,9 +705,9 @@
 						duration: 2000
 					});
 					return false;
-				} else if (Number(this.onceGroupPrice) > Number(this.originPrice)) {
+				} else if (Number(this.onceGroupPrice) >= Number(this.originPrice)) {
 					wx.showToast({
-						title: '单次砍价不能大于商品原价',
+						title: '单次砍价不能大于等于商品原价',
 						icon: 'none',
 						duration: 2000
 					});
