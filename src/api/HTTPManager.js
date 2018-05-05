@@ -103,7 +103,7 @@ HTTPManager.login = function(){
               console.log(config);
               HttpManager
                 // .post("http://mini.xqx.com/app_person/" + "XCXController/get3rdSession", config).then(function (result) {
-                .post("http://wmomo.wicp.net/app_person/" + "XCXController/get3rdSession", config).then(function (result) {
+                .post("https://bmini.xqx.com/app_person/" + "XCXController/get3rdSession", config).then(function (result) {
                 console.log(result);
                 wx.hideLoading();
                 success(result);

@@ -11,7 +11,7 @@
     </div>
     <div class="user-from sec">
       <div class="input">
-        <input type="text" placeholder="输入验证码" placeholder-style='font-size: 18px'>
+        <input type="text" placeholder="输入验证码" placeholder-style='font-size: 18px' v-model="verCode">
       </div>
       <div v-if="canGetCode" class="text" @click="getCode">
         <div class="buttons">
@@ -141,9 +141,9 @@
           .then(res => {
             console.log(res)
             if (res.code == 1){
-              if (res.value.verCode) {
-                self.verCode = res.value.verCode
-              }
+              // if (res.value.verCode) {
+              //   self.verCode = res.value.verCode
+              // }
             }else {
               wx.showToast({
                 title: '获取失败',
