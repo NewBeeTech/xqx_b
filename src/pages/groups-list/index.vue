@@ -62,7 +62,7 @@
 				</div>
 			</swiper-item>
 		</swiper>
-		<div class="makeGroups" @click="navGo('/pages/make-groups/main?type=0')">创建拼团</div>
+		<div class="makeGroups" @click="navGo('/pages/create-makeGroups/main')">创建拼团</div>
 	</div>
 
 </template>
@@ -87,6 +87,16 @@
       this.searchGroup(this.current);
     },
   methods: {
+		timeDesc(time) {
+			const timeObj = new Date(time);
+      const min = timeObj.getMinutes() > 10 ? timeObj.getMinutes() : '0'+timeObj.getMinutes();
+      const hour = timeObj.getHours() > 10 ? timeObj.getHours() : '0'+timeObj.getHours();
+      const month = timeObj.getMonth() + 1;
+			const year = timeObj.getFullYear();
+      const day = timeObj.getDate();
+			console.log(`${year}-${month}-${day} ${hour}:${min}`);
+			return `${year}-${month}-${day} ${hour}:${min}`;
+		},
 		searchGroup (status){
       var num = 0;
       if(this.current == 0){num = 1}
