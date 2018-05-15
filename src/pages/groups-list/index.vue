@@ -10,7 +10,7 @@
 				<div class="grousLists">
 					<scroll-view scroll-y='true'>
 						<div class="paddingBottom">
-							<div v-for="item in list" class="grousList" @click="navGo('/pages/groups-detail/main?type='+item.id)">
+							<div v-for="item in list1" class="grousList" @click="navGo('/pages/groups-detail/main?type='+item.id)">
 								<img :src="item.imgUrl"/>
 								<div class="grousListMsg">
 									<p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>
@@ -29,7 +29,7 @@
 				<div class="grousLists">
 					<scroll-view scroll-y='true'>
             <div class="paddingBottom">
-              <div v-for="item in list" class="grousList" @click="navGo('/pages/groups-detail/main?type='+item.id)">
+              <div v-for="item in list2" class="grousList" @click="navGo('/pages/groups-detail/main?type='+item.id)">
                 <img :src="item.imgUrl"/>
                 <div class="grousListMsg">
                   <p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>
@@ -47,7 +47,7 @@
 				<div class="grousLists">
 					<scroll-view scroll-y='true'>
             <div class="paddingBottom">
-              <div v-for="item in list" class="grousList" @click="navGo('/pages/groups-detail/main?type='+item.id)">
+              <div v-for="item in list3" class="grousList" @click="navGo('/pages/groups-detail/main?type='+item.id)">
                 <img :src="item.imgUrl"/>
                 <div class="grousListMsg">
                   <p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>
@@ -74,6 +74,9 @@
   data () {
     return {
       current: 0,
+			list1:[],
+      list2:[],
+      list3:[],
       list:[]
     }
   },
@@ -84,19 +87,31 @@
       this.searchGroup(this.current);
     },
   methods: {
-    searchGroup (status){
+		searchGroup (status){
       var num = 0;
       if(this.current == 0){num = 1}
       if(this.current == 1){num = 0}
       if(this.current == 2){num = 3}
       let that = this;
       //		获取首页信息
-      wxRequest('queryGoodsGroup',{status:num})
+      wxRequest('queryGoodsGroup',{
+				status:num,
+				goodsType: 1,
+			})
         .then(res => {
           console.log(res)
           if (res.code == 1) {
-            that.list = res.value
-            console.log(res);
+						let result = res.value;
+						result = result.map( item => ({ ...item, createTimeDesc: that.timeDesc(item.createTime), endTimeDesc: that.timeDesc(item.endTime), }));
+						if (num === 1) {
+							that.list1 = result;
+						} else if (num === 0) {
+							that.list2 = result;
+						} else if (num === 3) {
+							that.list3 = result;
+						}
+            // that.list = result;
+            console.warn(res);
           }
 
         }).catch(err => {

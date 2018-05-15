@@ -30,7 +30,7 @@
       </div>
     </header>
     <header>
-      <div @click="waitMoment()">
+      <div @click="navationTo('/pages/groups-list/main')">
         <div><img src="/static/imgs/4.png" alt=""></div>
         <div>拼团</div>
       </div>
