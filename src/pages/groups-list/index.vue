@@ -10,7 +10,7 @@
 				<div class="grousLists">
 					<scroll-view scroll-y='true'>
 						<div class="paddingBottom">
-							<div v-for="item in list1" class="grousList" @click="navGo('/pages/groups-detail/main?type='+item.id)">
+							<div v-for="item in list1" class="grousList" @click="navGo('/pages/makeGroups-detail/main?id='+item.id+'&status=1')">
 								<img :src="item.imgUrl"/>
 								<div class="grousListMsg">
 									<p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>
@@ -47,7 +47,7 @@
 				<div class="grousLists">
 					<scroll-view scroll-y='true'>
             <div class="paddingBottom">
-              <div v-for="item in list3" class="grousList" @click="navGo('/pages/groups-detail/main?type='+item.id)">
+              <div v-for="item in list3" class="grousList" @click="navGo('/pages/makeGroups-detail/main?id='+item.id+'&status=3')">
                 <img :src="item.imgUrl"/>
                 <div class="grousListMsg">
                   <p><text>{{item.name}}</text><text>返佣比例：{{item.ratio}}%</text></p>
