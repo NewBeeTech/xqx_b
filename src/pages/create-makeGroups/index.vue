@@ -196,6 +196,37 @@
 		},
 		mounted() {},
 		methods: {
+			/**
+			 * 进入编辑态
+			 * @return {[type]} [description]
+			 */
+			editGoods: function() {
+				this.disabled = false;
+			},
+			/**
+			 * 删除砍价
+			 * @return {[type]} [description]
+			 */
+			deleteGoods: function() {
+				const id = this.id;
+				if (id) {
+					wxRequest('deleteGoodsGroup', {
+						id,
+						status: 4,
+					})
+						.then(res => {
+							if (res.code === 1) {
+								wx.navigateBack();
+							}
+						}).catch(err => {
+							console.log(err)
+	          wx.showToast({
+	            title:err.message,
+	            duration:2000
+	          })
+						})
+				}
+			},
       /**
 			 * 预览图片
 			 * @return {[type]} [description]
