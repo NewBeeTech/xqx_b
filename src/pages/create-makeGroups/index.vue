@@ -25,6 +25,13 @@
 				</div>
 			</div> -->
 			<div class="padding">
+				<div class="listStyle" @click="selectDispatchWay">
+					<label>配送方式</label>
+					<div class="goods-info">
+						<div class="goods-info-text">{{ deliveryMethodDesc ? deliveryMethodDesc : '邮寄/到店自提' }}</div>
+						<img src="/static/imgs/right.png" alt="" />
+					</div>
+				</div>
         <div class="listStyle" @click="navGo('/pages/create-makeGroups-info/main?onlyView='+onlyView)">
 					<label>商品说明</label>
 					<div class="goods-info">
@@ -50,13 +57,29 @@
 						<input :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="groupPrice" type="digit" placeholder="请输入砍价商品底价" v-bind="groupPrice"/>
 					</div>
 				</div>
-        <div class="listStyle">
-					<label>返金比例</label>
+				<div class="listStyle">
+					<label>活动返金 <img style="width: 24rpx; height: 24rpx;" @click="showModalInfo(1)" src="/static/imgs/info-detail.png" /></label>
 					<div class="form-rate">
 						<input style="padding-right: 20rpx; margin-right: 10rpx;" :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;" v-model="ratio" type="digit" placeholder="请设置返金比例" v-bind="ratio"/>
 
 					</div>
 					<span style="width: 20rpx;" v-if="ratio">%</span>
+				</div>
+				<div class="listStyle twoColumn">
+					<div class="listStyle1">
+						<label>用户返金 <img style="width: 24rpx; height: 24rpx;" @click="showModalInfo(2)" src="/static/imgs/info-detail.png" /></label>
+						<div class="form-rate">
+							<!-- <input placeholder-style="color: #cbcbcb; font-weight: normal;" type="number" disabled v-model="currency" /> -->
+							<div>活动返金的10%</div>
+						</div>
+					</div>
+					<div class="listStyle1">
+						<label>推广返佣 <img style="width: 24rpx; height: 24rpx;" @click="showModalInfo(3)" src="/static/imgs/info-detail.png" /></label>
+						<div class="form-rate">
+							<!-- <input placeholder-style="color: #cbcbcb; font-weight: normal;" type="number" disabled v-model="spreadCurrency" /> -->
+							<div>活动返金的90%</div>
+						</div>
+					</div>
 				</div>
 				<!-- <div class="listStyle">
 					<label>单笔交易返养老金（元）</label>
@@ -64,45 +87,20 @@
 						<input v-model="info.currency" type="digit" placeholder="¥0.00"   v-bind="info.currency"/>
 					</div>
 				</div> -->
-				<div class="listStyle">
+				<div class="listStyle" @click="selectGroupPersonNum">
 					<label>参团人数</label>
-					<div>
+					<!-- <div>
 						<input v-model="groupPersonNum" type="number" placeholder="请输入2～200" @blur="checkPersonNum"/>
+					</div> -->
+					<div class="goods-info">
+						<div class="goods-info-text">{{ groupPersonNumDesc ? groupPersonNumDesc : '请选择' }}</div>
+						<img src="/static/imgs/right.png" alt="" />
 					</div>
 				</div>
         <div class="listStyle">
 					<label>拼团有效期</label>
 					<div>
 						<input placeholder-style="color: #cbcbcb; font-weight: normal;" type="number" disabled value="48h" />
-					</div>
-				</div>
-			</div>
-      <div class="padding remark">
-				<div>拼团规则</div>
-				<input :disabled="disabled" placeholder-style="color: #cbcbcb; font-weight: normal;"  auto-height placeholder="请填写砍价规则" v-model="rule"></textarea>
-			</div>
-			<div class="serviceMsg padding">
-				<div style="font-weight: normal">服务说明</div>
-				<div class="serviceList">
-					<img v-if="!disabled"  src="/static/imgs/dui.png" />
-					<div>
-						<p>全场包邮</p>
-						<p>所有商品均无条件包邮</p>
-					</div>
-				</div>
-				<div class="serviceList">
-					<img v-if="!disabled" src="/static/imgs/dui.png" />
-					<div>
-						<p>消费即得养老金</p>
-						<p>每一笔消费都能获得相应的比例的养老金</p>
-					</div>
-
-				</div>
-				<div class="serviceList">
-					<img v-if="!disabled"  src="/static/imgs/dui.png" />
-					<div>
-						<p>假一赔十</p>
-						<p>若收到的商品是假冒品牌，可获得加倍的赔偿</p>
 					</div>
 				</div>
 			</div>
@@ -135,9 +133,10 @@
 				originPrice: '', // 商品原价
 				groupPrice: '', // 商品底价
 				onceGroupPrice: '', // 单次砍价金额
-        groupPersonNum: '', // 拼团人数
+        groupPersonNum: '2', // 拼团人数
+				groupPersonNumDesc: '2人',
 				rule: '', // 砍价规则
-				ratio: '',
+				ratio: 3,
 				type: 0,
         info:{},
 				goodsInfoDesc: '请填写商品说明',
@@ -196,6 +195,82 @@
 		},
 		mounted() {},
 		methods: {
+			/**
+			 * 模态框进行介绍
+			 * @param  {[type]} type [description]
+			 * @return {[type]}      [description]
+			 */
+			showModalInfo: function(type) {
+				if (type == 1) {
+					wx.showModal({
+  					title: '',
+						showCancel: false,
+						confirmText: '我知道了',
+  					content: '商品活动返金金额默认为商品底价的3%，您也可以自定义返金金额。',
+					});
+				} else if (type == 2) {
+					wx.showModal({
+  					title: '',
+						showCancel: false,
+						confirmText: '我知道了',
+  					content: '用户购买商品时，将获得商品活动反金金额的10%的消费养老金。',
+					});
+				} else if (type == 3) {
+					wx.showModal({
+  					title: '',
+						showCancel: false,
+						confirmText: '我知道了',
+  					content: '用户购买商品时，将从商家设置的活动返金金额里的90%作为奖励金返还给该用户的所属商户。您也可以通过推广新用户获得奖励金。您推广的新用户在小确幸平台购买商品时，您将获得其他商户活动的奖励金。',
+					});
+				}
+			},
+			/**
+			 * 选择配送方式
+			 * @return {[type]} [description]
+			 */
+			selectDispatchWay: function() {
+				const that = this;
+				wx.showActionSheet({
+					itemList: ['邮寄', '到店自提'],
+					success: function(res) {
+						console.log(res.tapIndex)
+						if (res.tapIndex == 0) {
+							that.deliveryMethod = 1;
+							that.deliveryMethodDesc = '邮寄';
+						} else if (res.tapIndex == 1) {
+							that.deliveryMethod = 2;
+							that.deliveryMethodDesc = '到店自提';
+						}
+						console.log(that.deliveryMethodDesc);
+					},
+					fail: function(res) {
+						console.log(res.errMsg)
+					}
+				});
+			},
+			selectGroupPersonNum() {
+				console.warn('click');
+				const that = this;
+				wx.showActionSheet({
+					itemList: ['2人', '4人', '6人'],
+					success: function(res) {
+						console.log(res.tapIndex)
+						if (res.tapIndex == 0) {
+							that.groupPersonNum = 2;
+							that.groupPersonNumDesc = '2人';
+						} else if (res.tapIndex == 1) {
+							that.groupPersonNum = 4;
+							that.groupPersonNumDesc = '4人';
+						}  else if (res.tapIndex == 2) {
+							that.groupPersonNum = 6;
+							that.groupPersonNumDesc = '6人';
+						}
+					},
+					fail: function(res) {
+						console.log(res.errMsg)
+					}
+				});
+			},
 			/**
 			 * 进入编辑态
 			 * @return {[type]} [description]
