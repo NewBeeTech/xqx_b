@@ -9,7 +9,7 @@
     <div class="user-from  sec">
       <div class="text">设置登录密码</div>
       <div class="input">
-        <input @input="bindKeyInput" type="text" maxlength="16" minlength="8" placeholder="请设置登录密码" placeholder-style='font-size: 15px'  @blur="checkPassword" :value="info.app_password">
+        <input @input="bindKeyInput" type="text" maxlength="16" minlength="8" placeholder="请设置登录密码" placeholder-style='font-size: 15px' v-model="info.app_password"  @blur="checkPassword" :value="info.app_password">
       </div>
     </div>
     <div class="user-from top sec">
@@ -287,9 +287,20 @@
     },
     methods: {
       bindKeyInput(e){
-        if(/[a-zA-Z0-9]+$/.test(e.mp.detail.value)){
-           this.info.app_password=e.mp.detail.value
-        }else{
+        const that=this;
+        let currentpage=getCurrentPages();
+        currentpage=currentpage[0];
+        console.log(currentpage.data)
+        let pagedata=currentpage.data;
+        if(!/[a-zA-Z0-9]+$/.test(e.mp.detail.value)){
+          let str='',resstr=this.info.app_password
+          for(var i=0;i<resstr.length;i++){
+            if(/[a-zA-Z0-9]+$/.test(resstr.charAt(i))){
+              str+=resstr.charAt(i)
+            }
+          }
+          pagedata.$root[0].info.app_password=str;
+          currentpage.setData({$root:pagedata.$root})
           wx.showToast({
             title: '只支持数字和字母',
             icon: 'none',
