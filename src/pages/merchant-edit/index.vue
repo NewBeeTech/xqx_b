@@ -299,6 +299,7 @@
               str+=resstr.charAt(i)
             }
           }
+          console.log(currentpage)
           pagedata.$root[0].info.app_password=str;
           currentpage.setData({$root:pagedata.$root})
           wx.showToast({
