@@ -287,8 +287,7 @@
     },
     methods: {
       bindKeyInput(e){
-
-        if(/[\u4e00-\u9fa5_a-zA-Z0-9]+$/.test(e.mp.detail.value)){
+        if(/[a-zA-Z0-9]+$/.test(e.mp.detail.value)){
            this.info.app_password=e.mp.detail.value
         }else{
           wx.showToast({
