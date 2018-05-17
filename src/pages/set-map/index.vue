@@ -13,13 +13,23 @@
       </map>
     </div>
     <scroll-view class="result_contaniner" scroll-y style="height: 60vh; background: #fff">
-      <div class="scorll-item" v-for="item in list" @click="chooseLocation(item)">
+      <!-- <div class="scorll-item" v-for="item in list" @click="chooseLocation(item)">
         <div>{{item.title}}</div>
         <div>{{item.address}}</div>
-      </div>
+      </div> -->
+      <radio-group class="radio-group" bindchange="radioChange">
+        <label class="radio scorll-item" v-for="item in list" @click="chooseLocation(item)">
+          <radio :value="item.title"/>
+          <div class="chooseitem">
+            <div>{{item.title}}</div>
+            <div>{{item.address}}</div>
+          </div>
+
+        </label>
+      </radio-group>
 
     </scroll-view>
-    <button class="button">确定</button>
+    <button  @click="sum" class="button">确定</button>
   </div>
 </template>
 
@@ -34,7 +44,8 @@
     data() {
       return {
         list: [],
-        loc: {}
+        loc: {},
+        btnonoff:true
       }
     },
     onLoad() {
@@ -43,20 +54,43 @@
       wx.getLocation({
         type: 'wgs84',
         success: function (res) {
+          console.log(res)
           self.loc.latitude = res.latitude;
           self.loc.longitude = res.longitude;
           self.mapCtx.moveToLocation();
+          // qqmapsdk.reverseGeocoder({
+          //   location:{latitude: res.latitude,longitude: res.longitude},
+          //   success: function (res) {
+          //     console.log(res);
+          //     const data={location:{lat:self.loc.latitude,lng:self.loc.longitude},title:res.result.ad_info.address}
+          //     wx.setStorageSync("chooseAddress",JSON.stringify(data));
+          //     self.btnonoff=false;
+          //   },
+          //   fail: function (res) {
+          //     console.log(res);
+          //   }
+          // });
         }
       })
     },
     methods: {
+      sum(){
+        if(this.btnonoff){
+          wx.showToast({
+            title: '请输入关键词进行搜索',
+            icon: 'none',
+            duration: 2000
+          })
+        }else{
+          wx.navigateBack()
+        }  
+      },
       search(e) {
         console.log(e)
 
         var self = this;
-        qqmapsdk.search({
+        qqmapsdk.getSuggestion({
           keyword: e.target.value,
-          location: {latitude: this.loc.latitude, longitude: this.loc.longitude},
           success: function (res) {
             console.log(res.data);
             self.list = res.data;
@@ -72,13 +106,17 @@
       chooseLocation: function (e) {
         console.log(e)
         wx.setStorageSync("chooseAddress",JSON.stringify(e));
-        wx.navigateBack();
+        this.btnonoff=false;
+        // wx.navigateBack();
       }
     }
   }
 </script>
 
 <style lang="stylus">
+.chooseitem{
+  display:inline-block;
+}
 .page
   height 100%
   overflow hidden
@@ -102,9 +140,16 @@
     width 100%
 
     .scorll-item
+      position relative
+      display block
       background #fff
       margin-left 30rpx
       border-bottom 2rpx solid #B0B0B0
+
+    radio
+       position absolute
+       right 40rpx
+       top   40rpx
 
     div
       padding-top 20rpx

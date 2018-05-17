@@ -6,6 +6,12 @@
         <input type="text" minlength="1" placeholder="请输入商户名称" placeholder-style='font-size: 15px' v-model="info.name" @blur="checkName" :value="info.name">
       </div>
     </div>
+    <div class="user-from  sec">
+      <div class="text">设置登录密码</div>
+      <div class="input">
+        <input @input="bindKeyInput" type="text" maxlength="16" minlength="8" placeholder="请设置登录密码" placeholder-style='font-size: 15px'  @blur="checkPassword" :value="info.app_password">
+      </div>
+    </div>
     <div class="user-from top sec">
       <div class="text">商户logo</div>
       <div>
@@ -192,6 +198,8 @@
           console.log(res);
           if (res.code == 1) {
              that.objectMultiArray[0]=res.value
+             console.log(1111111)
+             console.log(res.value)
              that.area.sheng=res.value[0].araename;
           }
           if (res.code == 4000) {
@@ -257,7 +265,7 @@
         address = JSON.parse(address);
         this.info.latitude = address.location.lat;
         this.info.longitude = address.location.lng;
-        this.mark = address.title;
+        this.mark ='已标记'|| address.title;
       }
       if (wx.getStorageSync("hangye")) {
         var hangye = JSON.parse(wx.getStorageSync("hangye"));
@@ -278,11 +286,39 @@
 
     },
     methods: {
+      bindKeyInput(e){
+
+        if(/[\u4e00-\u9fa5_a-zA-Z0-9]+$/.test(e.mp.detail.value)){
+           this.info.app_password=e.mp.detail.value
+        }else{
+          wx.showToast({
+            title: '只支持数字和字母',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      },
       checkName(e){
         console.log(e);
         if (e.target.value.length==0){
           wx.showToast({
-            title: '请输入商品名称',
+            title: '请输入商户名称',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      },
+      checkPassword(e){
+        console.log(e);
+        if (e.target.value.length==0){
+          wx.showToast({
+            title: '请设置登录密码',
+            icon: 'none',
+            duration: 2000
+          })
+        }else if(e.target.value.length<8){
+          wx.showToast({
+            title: '登录密码位数应为8-16位',
             icon: 'none',
             duration: 2000
           })
@@ -591,6 +627,7 @@
         this.info.sessionKey=this.token;
         var message = "";
         if (!this.info.name){message = "请输入商户名称"}
+        if (!this.info.app_password){message = "请设置登录密码"}else if(this.info.app_password.length<8){message = "登录密码位数应为8-16位"}
         if (!this.logo){message = "请上传商户logo"}
         if (!this.info.businessIndName){message = "请输入行业名称"}
         if (!this.images.length){message = "请上传商品图片"}
@@ -601,6 +638,7 @@
         if (!this.info.storePhone){message = "请输入客服电话"}
         if (!this.info.businessHours){message = "请选择营业时间"}
         if (!this.info.personInChargeName){message = "请输入联系人姓名"}
+        if (!this.info.personInChargePhone){message="请输入联系人电话"}
         if (!this.info.ratio){message = "请设置返金金额"}
         if (!this.info.integralRatio){message = "请设置积分设置"}
         console.log(this.info)
@@ -628,6 +666,7 @@
 </script>
 
 <style lang="stylus" scoped>
+  .nomargin{margin-top:0 !import;}
   .submit
     width 90%
     height 90rpx
