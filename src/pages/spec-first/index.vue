@@ -5,15 +5,25 @@
 			<div class="c_spec_3">
 				<!--<img src="../img/钱 .png"/ class="c_spec_4">-->
 				￥
-				<input type="text" placeholder="请输入充值金额" class="c_spec_5"  placeholder-style='font-size: 18px;'/>
+				<input type="text" v-model="price" placeholder="请输入充值金额" class="c_spec_5"  placeholder-style='font-size: 18px;'/>
 			</div>
 		</div>
-		<button class="c_spec_6">确认充值</button>
+		<button @click="sum" class="c_spec_6">确认充值</button>
   </div>
 </template>
 
 <script>
 export default {
+  data(){
+    return{
+      price:''
+    }
+  },
+  methods:{
+    sum:function(){
+      console.log(this.price)
+    }
+  }
 
 }
 </script>
@@ -24,7 +34,7 @@ html,body{
   height: 100%;
   border: 1px solid white;
   box-sizing: border-box;
-}	
+}
 .c_spec_1{
   box-sizing: border-box;
   border: 1px solid white;

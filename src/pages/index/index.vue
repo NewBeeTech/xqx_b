@@ -1,7 +1,7 @@
 <template>
   <div class="main">
-    <header>
-      <!-- <div @click="navGo('/pages/receipt-code/main')">
+    <!-- <header>
+      <div @click="navGo('/pages/receipt-code/main')">
         <div><img src="/static/imgs/Artboard@2x.png" alt=""></div>
         <div>收款码</div>
       </div>
@@ -13,8 +13,8 @@
       <div @click="navationTo('/pages/user-price/main')">
         <div><img src="/static/imgs/8.png" alt=""></div>
         <div>钱包</div>
-      </div> -->
-    </header>
+      </div>
+    </header> -->
     <header>
       <div @click="navGo('/pages/goods-active/main?status=1')">
         <div><img src="/static/imgs/1.png" alt=""></div>
@@ -106,6 +106,7 @@
       <div>您还未进行资质认证，下载小确幸商家版APP完成认证后，可体验更多营销服务哦～</div>
       <div @click="navGo('/pages/download-app/main')">立即下载</div>
     </footer>
+    <!-- <button type="warn" open-type="getUserInfo" @getuserinfo="getUserInfoTest">授权</button> -->
     <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button>
   </div>
 </template>
@@ -194,6 +195,10 @@
 
     },
     methods: {
+      getUserInfoTest:function(e){
+        console.log(e)
+
+      },
       waitMoment: function() {
         wx.showToast({
           icon: 'none',
@@ -234,6 +239,9 @@
         wx.scanCode({
           success: (res) => {
             console.log(res)
+            if (res.errMsg == "scanCode:ok") {
+
+            }
           }
         })
       },

@@ -2,9 +2,9 @@
   <div class="wraper">
 		<div class="balance">
 			<p>账户余额</p>
-			<p>{{info.avail_money}}</p>
+			<p>{{info.availMoney}}</p>
 		</div>
-		<div class="dj">冻结金额￥<span>{{info.blocked_money}}</span> <mark @click="show"><img class="icon1" src="/static/imgs/wenhao.png"></mark></div>
+		<div class="dj">冻结金额￥<span>{{info.blockedMoney}}</span> <mark @click="show"><img class="icon1" src="/static/imgs/wenhao.png"></mark></div>
 		<div class="main">
 			<div @click="navGo('/pages/spec-first/main')">充值</div>
 			<div @click="download()">提现</div>
@@ -41,8 +41,8 @@
         .then(res => {
           console.log(res);
           self.info = res.value;
-          self.info.blocked_money = toDoubleNum(self.info.blocked_money);
-          self.info.avail_money = toDoubleNum(self.info.avail_money);
+          self.info.blockedMoney = toDoubleNum(self.info.blockedMoney);
+          self.info.availMoney = toDoubleNum(self.info.availMoney);
         })
         .catch(err => {
           console.log(err)

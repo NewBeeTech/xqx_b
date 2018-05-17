@@ -1,7 +1,7 @@
 <template>
   <div class="contain">
     <scroll-view scroll-y class="scroll left">
-      <div @click="loadTwo(item.id)" :class="{active: checked === item.name}" v-for="(item, index) in leftList" :key="index">{{item.name}}</div>
+      <div @click="loadTwo(item.id,index)" :class="{active: checked == index}" v-for="(item, index) in leftList" :key="index">{{item.name}}</div>
     </scroll-view>
     <scroll-view scroll-y class="scroll right">
       <div @click="rightClick(item)" :class="{active: checkedRight === item}" v-for="(item, index) in rightList" :key="index">{{item.name}}</div>
@@ -14,7 +14,7 @@
 export default {
   data () {
     return {
-      checked: '美食',
+      checked: 0,
       checkedRight: '',
       leftList:[],
       rightList:[]
@@ -27,14 +27,13 @@ export default {
   },
   onLoad(){
     this.loadOne();
-    this.loadTwo(10);
+    this.loadTwo(10,0);
   },
   methods: {
     loadOne (){
       var self = this;
       wxRequest('getOneIndustry')
         .then(res => {
-
           self.leftList = res.value;
           console.log(self.leftList[0].name);
         })
@@ -42,11 +41,12 @@ export default {
           console.log(err)
         })
     },
-    loadTwo (id){
+    loadTwo (id,index){
       var self = this;
+      self.checked=index;
       wxRequest('getTowIndustry',{towKey:id})
         .then(res => {
-
+          console.log(res.value)
           self.rightList = res.value;
 
         })

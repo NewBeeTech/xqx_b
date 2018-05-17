@@ -27,7 +27,7 @@
             <div class="choose" v-for="(item, index) in images" :key="index">
               <img class="chooseImage" :src="item" alt="" @longtap="deleteImage(index)">
             </div>
-            <div class="choose" @click="chooseImage(4,'images')" v-if="images.length < 1">
+            <div class="choose" @click="chooseImage(4,'images')" v-if="images.length < 4">
               <span>+</span>
             </div>
           </div>
@@ -43,12 +43,17 @@
     </div>
     <div class="select-container top sec">
       <div class="select-line">
-        <div>所在地区</div>
-        <!-- <div>选择省／市／区</div> -->
-        <picker mode="region" @change="bindRegionChange" :value="region" :custom-item="customItem">
+        <!-- <div>所在地区</div> -->
+        <div>选择省/市/区</div>
+        <!-- <picker mode="region" @change="bindRegionChange" :value="region" :custom-item="customItem">
           <div class="picker">
             {{region[0]}}/{{region[1]}}/{{region[2]}} <img class="right_" src="/static/imgs/right.png" alt="">
           </div>
+        </picker> -->
+        <picker v-if="isload" mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" range-key="araename" :range="objectMultiArray">
+          <view class="picker">
+            {{objectMultiArray[0][multiIndex[0]].araename}}-{{objectMultiArray[1][multiIndex[1]].araename}}-{{objectMultiArray[2][multiIndex[2]].araename}}
+          </view>
         </picker>
       </div>
 
@@ -140,26 +145,38 @@
 <script>
   import {wxRequest} from '@/api'
   import {qiniu} from "../../api/qiniuUploader"
+  var Default = require("../../api//Default.js");
 
   export default {
     data() {
       return {
-        region: ['广东省', '广州市', '海珠区'],
+        task:'',
+        token:'',
         images: [],
         logo: '',
         yyTime: {},
+        area:{},
         shangq: '',
+        region:'',
         type: 0,
         info: {
-          ratio:0
+          ratio:'',
+          carouselFigure:{}
         },
         imageIndex: 0,
-        mark:""
+        mark:"",
+        objectMultiArray: [[], [], []],
+        multiIndex: [0, 0, 0],
+        isload:false
       }
     },
     onLoad: function (option) {
       let that = this
       let type = this.$root.$mp.query.type
+      const token=wx.getStorageSync('token');
+      const rdata={proKey:"0",token:token}
+      this.token=token;
+      console.log(rdata)
       that.type = type
       if (type == 1) {
         wx.setNavigationBarTitle({
@@ -170,7 +187,63 @@
           title: '注册商户'
         })
       }
-      // this.loadCity();
+      wxRequest('getProvince', rdata)
+        .then(res => {
+          console.log(res);
+          if (res.code == 1) {
+             that.objectMultiArray[0]=res.value
+             that.area.sheng=res.value[0].araename;
+          }
+          if (res.code == 4000) {
+            wx.showToast({
+              title: '网络错误，请稍后再试',
+              icon: 'none',
+              duration: 2000
+            })
+          }
+          return res;
+        })
+        .then(res=>{
+          wxRequest('getCity', {cityKey:"110000",token:rdata.token})
+            .then(res => {
+              console.log(res);
+              if (res.code == 1) {
+                 that.objectMultiArray[1]=res.value
+                 that.area.shi=res.value[0].araename;
+              }
+              if (res.code == 4000) {
+                wx.showToast({
+                  title: '网络错误，请稍后再试',
+                  icon: 'none',
+                  duration: 2000
+                })
+              }
+              return res;
+            })
+        })
+        .then(res=>{
+          wxRequest('getCounty', {countyKey:'110100',token:rdata.token})
+            .then(res => {
+              console.log(res);
+              if (res.code == 1) {
+                 that.objectMultiArray[2]=res.value
+                 that.isload=true;
+                 that.area.id=res.value[0].id;
+                 that.area.q=res.value[0].araename;
+                 wx.setStorageSync('areaid',res.value[0].id)
+              }
+              if (res.code == 4000) {
+                wx.showToast({
+                  title: '网络错误，请稍后再试',
+                  icon: 'none',
+                  duration: 2000
+                })
+              }
+            })
+        })
+        .catch(err => {
+        console.log(err)
+      })
     },
     computed: {
       isLang() {
@@ -304,10 +377,8 @@
                     if (self.imageIndex == 3) {
                       self.info.carouselFigure.imgThree = imageURL
                     }
-
-                    ++self.imageIndex;
                   }
-
+                  ++self.imageIndex;
 
                 }
               }, (error) => {
@@ -340,14 +411,160 @@
           url: '/pages/industry-select/main'
         })
       },
-      bindRegionChange(e) {
-        console.log(e);
-        let that = this
-        // console.log('picker发送选择改变，携带值为', e)
-        that.region = (e.mp.detail.value);
+      bindMultiPickerChange: function (e) {
+        console.log('picker发送选择改变，携带值为', e.mp.detail.value)
+        this.multiIndex= e.mp.detail.value
+        console.log(this.objectMultiArray[2][e.mp.detail.value[2]].id)
+        this.areaid=this.objectMultiArray[2][e.mp.detail.value[2]].id;
+        this.area={sheng:this.objectMultiArray[0][e.mp.detail.value[0]].araename,shi:this.objectMultiArray[1][e.mp.detail.value[1]].araename,q:this.objectMultiArray[2][e.mp.detail.value[2]].araename,id:this.objectMultiArray[2][e.mp.detail.value[2]].id}
+        wx.setStorageSync('areaid',this.area.id)
+      },
+      bindMultiPickerColumnChange: function (e) {
+        const that=this;
+        let currentpage=getCurrentPages();
+        currentpage=currentpage[0];
+        console.log(currentpage.data)
+        console.log(e)
+        console.log('修改的列为', e.mp.detail.column, '，值为', e.mp.detail.value);
+        if(that.task){
+          that.task.abort()//中断上一次请求保持数据最新
+        }
+        if(e.mp.detail.column==0){
+          console.log(this.token)
+          let Arraydata=[that.objectMultiArray[0],[{araename: "加载中", lng: 121.472641, id: 0, lat: 31.231707}],[{araename: "加载中", lng: 121.472641, id: 0, lat: 31.231707}]];
+          let pagedata=currentpage.data;
+          pagedata.$root[0].objectMultiArray=Arraydata;
+          this.objectMultiArray=Arraydata;
+          this.multiIndex[1]=0;
+          this.multiIndex[2]=0;
+          currentpage.setData({$root:pagedata.$root})
+          that.task=wx.request({
+            url: Default.HOST+'mxcx/UtilsController/getCity', //仅为示例，并非真实的接口地址
+            data: {cityKey:this.objectMultiArray[0][e.mp.detail.value].id,token:this.token,sessionKey:this.token},
+            method:'POST',
+            header: {
+                'content-type': 'application/x-www-form-urlencoded' // 默认值
+            },
+            success: function(res) {
+              console.log(res.data)
+              if (res.data.code == 1) {
+                 let Arraydata=[that.objectMultiArray[0],res.data.value,that.objectMultiArray[2]];
+                 let pagedata=currentpage.data;
+                 pagedata.$root[0].objectMultiArray=Arraydata;
+                 that.objectMultiArray=Arraydata;
+                 //that.multiIndex[1]=0;
+                 currentpage.setData({$root:pagedata.$root})
+                 that.task=wx.request({
+                   url: Default.HOST+'mxcx/UtilsController/getCounty', //仅为示例，并非真实的接口地址
+                   data: {countyKey:that.objectMultiArray[1][0].id,token:that.token,sessionKey:that.token},
+                   method:'POST',
+                   header: {
+                       'content-type': 'application/x-www-form-urlencoded' // 默认值
+                   },
+                   success: function(res) {
+                     console.log(res.data)
+                     if (res.data.code == 1) {
+                       let Arraydata=[that.objectMultiArray[0],that.objectMultiArray[1],res.data.value];
+                       let pagedata=currentpage.data;
+                       pagedata.$root[0].objectMultiArray=Arraydata;
+                       that.objectMultiArray=Arraydata;
+                       //that.multiIndex[2]=0;
+                       currentpage.setData({$root:pagedata.$root})
+                     }
+                     if (res.data.code == 4000) {
+                       wx.showToast({
+                         title: '网络错误，请稍后再试',
+                         icon: 'none',
+                         duration: 2000
+                       })
+                     }
+                   }
+                 })
+              }
+              if (res.data.code == 4000) {
+                wx.showToast({
+                  title: '网络错误，请稍后再试',
+                  icon: 'none',
+                  duration: 2000
+                })
+              }
+            }
+          })
 
-        console.log(that.region);
-        that.businessLicenseAreaid = "110107";
+          // wxRequest('getCity', {cityKey:this.objectMultiArray[0][e.mp.detail.value].id,token:this.token})
+          //   .then(res => {
+          //     console.log(res);
+          //     console.log(res.code == 1)
+          //     if (res.code == 1) {
+          //        let Arraydata=[that.objectMultiArray[0],res.value,that.objectMultiArray[2]];
+          //        let pagedata=currentpage.data;
+          //        pagedata.$root[0].objectMultiArray=Arraydata;
+          //        that.objectMultiArray=Arraydata;
+          //        currentpage.setData({$root:pagedata.$root})
+          //     }
+          //     if (res.code == 4000) {
+          //       wx.showToast({
+          //         title: '网络错误，请稍后再试',
+          //         icon: 'none',
+          //         duration: 2000
+          //       })
+          //     }
+          //   })
+        }else if(e.mp.detail.column==1){
+          let Arraydata=[that.objectMultiArray[0],that.objectMultiArray[1],[{araename: "加载中", lng: 121.472641, id: 0, lat: 31.231707}]];
+          let pagedata=currentpage.data;
+          pagedata.$root[0].objectMultiArray=Arraydata;
+          that.objectMultiArray=Arraydata;
+          that.multiIndex[2]=0;
+          currentpage.setData({$root:pagedata.$root})
+          that.task=wx.request({
+            url: Default.HOST+'mxcx/UtilsController/getCounty', //仅为示例，并非真实的接口地址
+            data: {countyKey:that.objectMultiArray[1][e.mp.detail.value].id,token:this.token,sessionKey:this.token},
+            method:'POST',
+            header: {
+                'content-type': 'application/x-www-form-urlencoded' // 默认值
+            },
+            success: function(res) {
+              console.log(res.data)
+              if (res.data.code == 1) {
+                let Arraydata=[that.objectMultiArray[0],that.objectMultiArray[1],res.data.value];
+                let pagedata=currentpage.data;
+                pagedata.$root[0].objectMultiArray=Arraydata;
+                that.objectMultiArray=Arraydata;
+                that.multiIndex[2]=0;
+                currentpage.setData({$root:pagedata.$root})
+              }
+              if (res.data.code == 4000) {
+                wx.showToast({
+                  title: '网络错误，请稍后再试',
+                  icon: 'none',
+                  duration: 2000
+                })
+              }
+            }
+          })
+          // wxRequest('getCounty', {countyKey:that.objectMultiArray[1][e.mp.detail.value].id,token:that.token})
+          //   .then(res => {
+          //     console.log(res);
+          //     if (res.code == 1) {
+          //       let Arraydata=[that.objectMultiArray[0],that.objectMultiArray[1],res.value];
+          //       let pagedata=currentpage.data;
+          //       pagedata.$root[0].objectMultiArray=Arraydata;
+          //       that.objectMultiArray=Arraydata;
+          //       currentpage.setData({$root:pagedata.$root})
+          //     }
+          //     if (res.code == 4000) {
+          //       wx.showToast({
+          //         title: '网络错误，请稍后再试',
+          //         icon: 'none',
+          //         duration: 2000
+          //       })
+          //     }
+          //   })
+        }
+        let data=this.multiIndex
+        data[e.mp.detail.column] = e.mp.detail.value;
+        this.multiIndex=data;
       },
       loadAraeName: function () {
         var self = this;
@@ -368,23 +585,25 @@
         });
       },
       toSava() {
-
+        console.log(this.area)
+        this.region=this.area.sheng+'/'+this.area.shi+'/'+this.area.q;
         this.info.appLoginname = wx.getStorageSync('phone');
+        this.info.sessionKey=this.token;
         var message = "";
         if (!this.info.name){message = "请输入商户名称"}
         if (!this.logo){message = "请上传商户logo"}
         if (!this.info.businessIndName){message = "请输入行业名称"}
         if (!this.images.length){message = "请上传商品图片"}
         if (!this.info.businessIndName){message = "请选择行业"}
-        if (!this.region){message = "请选择所在地区"}
-        if (!this.mark){message = "请选择地图标记"}
+        if (!this.region||this.area.shi=='加载中'||this.area.q=='加载中'){message = "请选择所在地区";}else{this.info.region=this.region;this.info.businessLicenseAreaid=this.area.id}
+        if (!this.mark){message = "请选择地图标记";}else{this.info.mark=this.mark;}
         if (!this.info.businessDistrict){message = "请选择商圈"}
         if (!this.info.storePhone){message = "请输入客服电话"}
         if (!this.info.businessHours){message = "请选择营业时间"}
         if (!this.info.personInChargeName){message = "请输入联系人姓名"}
         if (!this.info.ratio){message = "请设置返金金额"}
         if (!this.info.integralRatio){message = "请设置积分设置"}
-
+        console.log(this.info)
         if (message){
           wx.showToast({
             title: message,
@@ -393,7 +612,6 @@
           })
           return;
         }
-
         wxRequest('merchantRegister', this.info)
           .then(res => {
             console.log(res);
@@ -491,6 +709,7 @@
       position relative
       .choose
         display inline-block
+        vertical-align middle
         margin-right 10rpx
         width 200rpx
         height 112rpx

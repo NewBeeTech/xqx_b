@@ -51,6 +51,8 @@
     },
     methods: {
       search(e) {
+        console.log(e)
+
         var self = this;
         qqmapsdk.search({
           keyword: e.target.value,
