@@ -6,30 +6,83 @@
 			<div class="c_spec7_4">扫一扫向我付款</div>
 		</div>
 		<div class="c_spec7_5" @click="saveImg">保存收款码到相册</div>
-		<div class="c_spec7_6">
-			<div class="c_spec7_7">
-				<div class="c_spec7_8">收款优惠活动</div>
-				<div class="c_spec7_9">
-					设置 <img class="icon" src="/static/imgs/right.png" alt="">
-				</div>
-			</div>
+		<div class="c_spec7_12">
+			<div class="c_spec7_10">
+				<div class="c_spec7_11">收款优惠活动</div>
+			 <div class="active_list" @click="navGo('/pages/preferential-active/main')">
+				 <div v-if="full" class="list">
+					 <div v-for="(item,key) in full" :key="index" class="item">
+					 	满{{item.full}}减{{item.subtract}}
+					 </div>
+				 </div>
+				 <div v-else-if="rebate" class="list">
+				 	  {{rebate}}
+				 </div>
+				 <div v-else class="list">
+				 	  设置
+				 </div>
+				 <img class="icon" src="/static/imgs/right.png" alt="">
+			 </div>
+		 </div>
 		</div>
-		<div class="c_spec7_10"></div>
 	</div>
 </template>
 
 <script>
 	import { wxRequest } from '@/api'
+	const Default=require("../../api//Default.js");
 	export default {
 		data() {
 			return {
-				codeImg: ''
+				token:'',
+				codeImg: '',
+				full:[{full:10,subtract:2},{full:10,subtract:2}],
+				rebate:''
 			}
 		},
 		onLoad: function() {
+			const that=this;
 			this.getCodeImg()
+			wx.getStorage({
+			  key: 'token',
+			  success: function(res) {
+			      console.log(res.data)
+						that.token=res.data;
+						that.getActive()
+			  }
+			})
 		},
 		methods: {
+			//获取活动
+			getActive(){
+				const that=this,data1={sessionKey:this.token,discountMode:'MD'},data2={sessionKey:this.token,discountMode:'MR'};
+				wx.request({
+          url: Default.HOST+'mxcx/MerchantController/merchantQueryActivities',
+          data:data1,
+          method:'POST',
+          header: {
+              'content-type': 'application/x-www-form-urlencoded' // 默认值
+          },
+          success: function(res) {
+						if(res.data.code==1){
+							that.full=res.data.value;
+						}
+					}
+				})
+				wx.request({
+          url: Default.HOST+'mxcx/MerchantController/merchantQueryActivities',
+          data:data2,
+          method:'POST',
+          header: {
+              'content-type': 'application/x-www-form-urlencoded' // 默认值
+          },
+          success: function(res) {
+					   if(res.data.code==1){
+							 that.rebate=res.data.value;
+						 }
+					}
+				})
+			},
 			//获取二维码
 			getCodeImg() {
 				let that = this;
@@ -144,7 +197,7 @@
 	}
 
 	.c_spec7_7 {
-		width: 343px;
+		width:686rpx;
 		height: 100%;
 		margin: auto;
 		display: flex;
@@ -153,12 +206,28 @@
 		font-size: 15px;
 		color: #000;
 	}
-
-	.c_spec7_10 {
-		width: 99%;
-		height: 121px;
-		position: absolute;
-		bottom: 0;
+  .c_spec7_12{
+		width:100%;
 		background-color: white;
+		margin-top:10px;
+		padding:15px 0;
+		position: fixed;
+		bottom: 0;
 	}
+	.c_spec7_10 {
+		width:686rpx;
+		margin:auto;
+		font-size: 15px;
+		color: #000;
+		display: flex;
+		justify-content: space-between;
+		align-items: top;
+	}
+	.active_list{
+		display: flex;
+		justify-content: space-between;
+	}
+	.icon{margin-left:10px;}
+	.item{margin-top:10px;}
+	.list .item:nth-of-type(1){margin-top:0;}
 </style>

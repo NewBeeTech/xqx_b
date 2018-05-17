@@ -1,7 +1,6 @@
 <template>
   <div class="container">
-    <!-- <button class="button" size="default"  open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">一键绑定手机号</button> -->
-
+    <button class="button" size="default"  open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">一键绑定手机号</button>
     <div class="bind-title">手动绑定手机号</div>
     <div class="user-from">
       <div class="text" style="width: 40%">手机号</div>
@@ -42,6 +41,7 @@
 
 <script>
   import {wxRequest} from '@/api'
+  var Default = require("../../api//Default.js");
 
   export default {
     data() {
@@ -52,14 +52,14 @@
         phoneNumber: '',
         time:60,
         timer:null,
-        verCode:""
+        verCode:"",
+        token:''
       }
     },
 
     mounted() {
-
+     this.token=wx.getStorageSync('token')
     },
-
     methods: {
 
       getPhoneNumber: function (numRes) {
@@ -141,9 +141,7 @@
           .then(res => {
             console.log(res)
             if (res.code == 1){
-              // if (res.value.verCode) {
-              //   self.verCode = res.value.verCode
-              // }
+
             }else {
               wx.showToast({
                 title: '获取失败',
@@ -165,50 +163,64 @@
         //   })
         //   return
         // }
-        var config = {verCode:this.verCode,mobileNo:this.phoneNumber}
-        wxRequest('verificationCode', config)
-          .then(res => {
-            console.log(res)
-            if (res.code == 1){
-              wxRequest('useAppLoginNameQueryMerchant', { appLoginname: this.phoneNumber })
-                .then(resValue => {
-                  console.log(resValue)
-                  if (resValue.code == 1){
-                    wx.navigateTo({
-                      url: '/pages/index/main'
-                    })
-                  } else if (resValue.code == 4000) { // 跳转到下载app页面
-                    wx.navigateTo({
-                      url: '/pages/download-app/main'
-                    })
-                  }else {
+        const self=this;
+        if(!this.phoneNumber){
+          wx.showToast({
+            title: '请输入验证码',
+            icon: 'none',
+            duration: 2000
+          })
+          return false;
+        }
+        var config = {verCode:this.verCode,mobileNo:this.phoneNumber,}
+        wx.request({
+          url: Default.HOST+'mxcx/UtilsController/verificationCode',
+          data:config,
+          method:'POST',
+          header: {
+              'content-type': 'application/x-www-form-urlencoded' // 默认值
+          },
+          success: function(res) {
+            console.log(res.data)
+            if (res.data.code == 1) {
+              const reqdata={sessionKey:self.token,appLoginname:config.mobileNo}
+              wx.request({
+                url: Default.HOST+'mxcx/MerchantController/useAppLoginNameQueryMerchant',
+                data:reqdata,
+                method:'POST',
+                header: {
+                    'content-type': 'application/x-www-form-urlencoded' // 默认值
+                },
+                success: function(res) {
+                  console.log(res)
+                  if(res.data.code==1){
+                    if(res.data.value.audit==0){
+                      wx.redirectTo({url: '/pages/merchant-edit/main'})
+                    }else if(res.data.value.audit==1){
+                      wx.redirectTo({url: '/pages/index/main'})
+                    }else{
+                      wx.redirectTo({url: '/pages/index/main'})
+                    }
+                  }else if(res.data.code==4000){
+                     wx.redirectTo({url: '/pages/merchant-edit/main'})
+                  }else{
                     wx.showToast({
-                      title: resValue.errorMsg || '',
+                      title: res.data.errorMsg||'网络错误，请稍后再试',
                       icon: 'none',
                       duration: 2000
                     })
                   }
-                })
-                .catch(err => {
-                  console.log(err)
-                })
-            } else if (res.code == 5000) { // 跳转到下载app页面
-              wx.navigateTo({
-                url: '/pages/download-app/main'
+                }
               })
-            }else {
+            }else{
               wx.showToast({
-                title: res.errorMsg,
+                title: res.data.errorMsg||'网络错误，请稍后再试',
                 icon: 'none',
                 duration: 2000
               })
             }
-
-          })
-          .catch(err => {
-            console.log(err)
-          })
-
+          }
+        })
       }
     }
   }

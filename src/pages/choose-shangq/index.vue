@@ -17,9 +17,9 @@ export default {
     }
   },
   onLoad (){
-
     var self = this;
-    wxRequest('getBusinessCircle',{businessCircleKey:"130702"})
+    const areaid=wx.getStorageSync('areaid');
+    wxRequest('getBusinessCircle',{businessCircleKey:areaid})
       .then(res => {
 
         self.selectList = res.value;
