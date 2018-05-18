@@ -83,24 +83,12 @@
 
       <div class="sec-lin">
         <div class="item">
-          <div>{{fanvalue.fanTodaySum==""?0:fanvalue.fanTodaySum}}</div>
-          <div>今日新增粉丝</div>
-        </div>
-        <div class="cneter"></div>
-        <div class="item">
-          <div>{{fanvalue.fanHistorySum==""?0:fanvalue.fanHistorySum}}</div>
+          <div>{{fanSum==""?0:fanSum}}</div>
           <div>累计粉丝</div>
         </div>
-      </div>
-
-      <div class="sec-lin">
-        <div class="item">
-          <div>￥{{getvalue.getTodaySum==""?0:getvalue.getTodaySum}}</div>
-          <div>今日推广收益</div>
-        </div>
         <div class="cneter"></div>
         <div class="item">
-          <div>￥{{getvalue.getHistorySum==""?0:getvalue.getHistorySum}}</div>
+          <div>￥{{getSum==""?0:getSum}}</div>
           <div>累计推广收益</div>
         </div>
       </div>
@@ -149,14 +137,8 @@
           personTodaySum: '',
           personHistorySum: ''
         },
-        fanvalue:{
-          fanTodaySum:'',
-          fanHistorySum:''
-        },
-        getvalue:{
-          getTodaySum:'',
-          getHistorySum:''
-        }
+        fanSum:'',
+        getSum:''
       }
     },
     created() {
@@ -247,7 +229,9 @@
         wxRequest('getFan')
           .then(res => {
             console.log(res);
-            that.fanvalue=res.value
+            if(res.code==1){
+              that.fansum=res.value.fansNum
+            }
           })
           .catch(err => {
             console.log(err)
@@ -258,7 +242,14 @@
         wxRequest('getGet')
           .then(res => {
             console.log(res);
-            that.getvalue=res.value
+            if(res.code==1){
+              let num=0;
+              for(var i=0;i<res.value.length;i++){
+                num+=res.value[i].real_charge
+              }
+              num=num/100
+              that.getvalue=num
+            }
           })
           .catch(err => {
             console.log(err)
