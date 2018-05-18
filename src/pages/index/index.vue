@@ -81,7 +81,7 @@
         </div>
       </div>
 
-      <div class="sec-lin" @click="navGo('/pages/my-client/main')">
+      <div class="sec-lin">
         <div class="item">
           <div>{{fanvalue.fanTodaySum==""?0:fanvalue.fanTodaySum}}</div>
           <div>今日新增粉丝</div>
