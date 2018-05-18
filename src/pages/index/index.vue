@@ -69,7 +69,7 @@
         </div>
       </div>
       <!--@click="navGo('/pages/my-client/main')"-->
-      <div class="sec-lin">
+      <div class="sec-lin" @click="navGo('/pages/my-client/main')">
         <div class="item">
           <div>{{value.personTodaySum==""?0:value.personTodaySum}}</div>
           <div>今日新增客户</div>
@@ -78,6 +78,30 @@
         <div class="item">
           <div>{{value.personHistorySum==""?0:value.personHistorySum}}</div>
           <div>累计客户</div>
+        </div>
+      </div>
+
+      <div class="sec-lin" @click="navGo('/pages/my-client/main')">
+        <div class="item">
+          <div>{{fanvalue.fanTodaySum==""?0:fanvalue.fanTodaySum}}</div>
+          <div>今日新增粉丝</div>
+        </div>
+        <div class="cneter"></div>
+        <div class="item">
+          <div>{{fanvalue.fanHistorySum==""?0:fanvalue.fanHistorySum}}</div>
+          <div>累计粉丝</div>
+        </div>
+      </div>
+
+      <div class="sec-lin">
+        <div class="item">
+          <div>￥{{getvalue.getTodaySum==""?0:getvalue.getTodaySum}}</div>
+          <div>今日推广收益</div>
+        </div>
+        <div class="cneter"></div>
+        <div class="item">
+          <div>￥{{getvalue.getHistorySum==""?0:getvalue.getHistorySum}}</div>
+          <div>累计推广收益</div>
         </div>
       </div>
     </section>
@@ -124,6 +148,14 @@
           currencyHistorySum: '',
           personTodaySum: '',
           personHistorySum: ''
+        },
+        fanvalue:{
+          fanTodaySum:'',
+          fanHistorySum:''
+        },
+        getvalue:{
+          getTodaySum:'',
+          getHistorySum:''
         }
       }
     },
@@ -163,6 +195,8 @@
                     if (res.code == 1) {
                       console.log(res.code);
                       that.getHomeMsg();
+                      that.getFan();
+                      that.getGet();
                     }
                     if (res.code == 4000) {
                       wx.navigateTo({
@@ -189,6 +223,8 @@
 
       if (wx.getStorageSync('token')){
         this.getHomeMsg();
+        this.getFan();
+        this.getGet();
         this.getInfo();
         // this.getUserInfo();
       }
@@ -205,6 +241,28 @@
           title: '敬请期待',
           duration:2000
         })
+      },
+      getFan:function(){
+        var self = this;
+        wxRequest('getFan')
+          .then(res => {
+            console.log(res);
+            that.fanvalue=res.value
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      },
+      getGet:function(){
+        var self = this;
+        wxRequest('getGet')
+          .then(res => {
+            console.log(res);
+            that.getvalue=res.value
+          })
+          .catch(err => {
+            console.log(err)
+          })
       },
       getInfo: function () {
         var self = this;
@@ -315,6 +373,8 @@
         width 1px
         height 13px
         background #ccc
+      .longh
+        height 35px
       .item
         width 49%
         text-align center

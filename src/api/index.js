@@ -27,7 +27,9 @@ export let api = {
     "queryGoodsGroupOrderState":"mxcx/GoodsGroupOrderController/queryGoodsGroupOrderState",
     "getMerchantMoneyCollectQr":"mxcx/MerchantController/getMerchantMoneyCollectQr",
     "decryptPhoneNumber":"mxcx/AuthorizedController/decryptPhoneNumber",
-    "queryGroupBuy":"mxcx/GroupBuyController/queryGroupBuy"
+    "queryGroupBuy":"mxcx/GroupBuyController/queryGroupBuy",
+		"getFan":"mxcx/PersonController/fansList",
+		"getGet":"mxcx/GoodsGroupController/viewRevenueStatistics"
 	}
 }
 export let wxRequest = function(server, parm) {
