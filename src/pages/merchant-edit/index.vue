@@ -182,6 +182,8 @@
       let type = this.$root.$mp.query.type
       const token=wx.getStorageSync('token');
       const rdata={proKey:"0",token:token}
+      let arrindex=0;
+      let arr=[];
       this.token=token;
       console.log(rdata)
       that.type = type
@@ -194,14 +196,18 @@
           title: '注册商户'
         })
       }
+      //that.objectMultiArray=[[{araename: ""}],[{araename: ""}],[{araename: "", lng: 121.472641, id: 0, lat: 31.231707}]]
       wxRequest('getProvince', rdata)
         .then(res => {
           console.log(res);
           if (res.code == 1) {
              that.objectMultiArray[0]=res.value
-             console.log(1111111)
              console.log(res.value)
              that.area.sheng=res.value[0].araename;
+             arrindex++
+             if(arrindex==3){
+               that.isload=true;
+             }
           }
           if (res.code == 4000) {
             wx.showToast({
@@ -210,49 +216,48 @@
               duration: 2000
             })
           }
-          return res;
         })
-        .then(res=>{
-          wxRequest('getCity', {cityKey:"110000",token:rdata.token})
-            .then(res => {
-              console.log(res);
-              if (res.code == 1) {
-                 that.objectMultiArray[1]=res.value
-                 that.area.shi=res.value[0].araename;
-              }
-              if (res.code == 4000) {
-                wx.showToast({
-                  title: '网络错误，请稍后再试',
-                  icon: 'none',
-                  duration: 2000
-                })
-              }
-              return res;
-            })
-        })
-        .then(res=>{
-          wxRequest('getCounty', {countyKey:'110100',token:rdata.token})
-            .then(res => {
-              console.log(res);
-              if (res.code == 1) {
-                 that.objectMultiArray[2]=res.value
+        wxRequest('getCity', {cityKey:"110000",token:rdata.token})
+          .then(res => {
+            console.log(res);
+            if (res.code == 1) {
+               that.objectMultiArray[1]=res.value
+               that.area.shi=res.value[0].araename;
+               arrindex++
+               if(arrindex==3){
                  that.isload=true;
-                 that.area.id=res.value[0].id;
-                 that.area.q=res.value[0].araename;
-                 wx.setStorageSync('areaid',res.value[0].id)
-              }
-              if (res.code == 4000) {
-                wx.showToast({
-                  title: '网络错误，请稍后再试',
-                  icon: 'none',
-                  duration: 2000
-                })
-              }
-            })
-        })
-        .catch(err => {
-        console.log(err)
-      })
+               }
+            }
+            if (res.code == 4000) {
+              wx.showToast({
+                title: '网络错误，请稍后再试',
+                icon: 'none',
+                duration: 2000
+              })
+            }
+          })
+
+        wxRequest('getCounty', {countyKey:'110100',token:rdata.token})
+          .then(res => {
+            console.log(res);
+            if (res.code == 1) {
+               arrindex++
+               that.objectMultiArray[2]=res.value
+               that.area.id=res.value[0].id;
+               that.area.q=res.value[0].araename;
+               if(arrindex==3){
+                 that.isload=true;
+               }
+               wx.setStorageSync('areaid',res.value[0].id)
+            }
+            if (res.code == 4000) {
+              wx.showToast({
+                title: '网络错误，请稍后再试',
+                icon: 'none',
+                duration: 2000
+              })
+            }
+          })
     },
     computed: {
       isLang() {
@@ -261,6 +266,7 @@
     },
 
     onShow() {
+      console.log('onshow')
       var address = wx.getStorageSync("chooseAddress");
       if (address) {
         address = JSON.parse(address);
@@ -290,8 +296,8 @@
       bindKeyInput(e){
         console.log(e)
         const that=this;
+        this.pass=e.mp.detail.value
         if(!/[a-zA-Z0-9]+$/.test(e.mp.detail.value)){
-          this.pass='00000'
           let str='',resstr=this.info.app_password
           for(var i=0;i<resstr.length;i++){
             if(/[a-zA-Z0-9]+$/.test(resstr.charAt(i))){
@@ -301,13 +307,13 @@
           console.log(str)
           this.pass=str;
           this.info.app_password=str;
-          console.log(this.info.app_password)
           wx.showToast({
             title: '只支持数字和字母',
             icon: 'none',
             duration: 2000
           })
         }
+        console.log(this.info.app_password)
       },
       checkName(e){
         console.log(e);
@@ -484,7 +490,8 @@
           this.objectMultiArray=Arraydata;
           this.multiIndex[1]=0;
           this.multiIndex[2]=0;
-          currentpage.setData({$root:pagedata.$root})
+          this.objectMultiArray=Arraydata
+          //currentpage.setData({$root:pagedata.$root})
           that.task=wx.request({
             url: Default.HOST+'mxcx/UtilsController/getCity', //仅为示例，并非真实的接口地址
             data: {cityKey:this.objectMultiArray[0][e.mp.detail.value].id,token:this.token,sessionKey:this.token},
