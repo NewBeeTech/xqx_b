@@ -188,7 +188,8 @@
 			this.ratio = '';
 			this.type = 0;
 			this.info = {};
-      this.groupPersonNum = '';
+      this.groupPersonNum = '2';
+			this.groupPersonNumDesc = '2人',
 			this.onlyView = false; // 不展示底部操作
 			this.goodsInfoDesc = '请填写商品说明';
 			this.deliveryMethod =  '';
@@ -739,6 +740,7 @@
 							} else if (res.value.deliveryMethod == 2) {
 								self.deliveryMethodDesc = '到店自提';
 							}
+							self.deliveryMethod = res.value.deliveryMethod;
 							self.originPrice = res.value.price / 100;
 							self.groupPrice = res.value.groupPrice / 100;
 							self.onceGroupPrice = res.value.singlePrice / 100;
