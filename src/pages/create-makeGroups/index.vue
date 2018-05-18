@@ -191,6 +191,8 @@
       this.groupPersonNum = '';
 			this.onlyView = false; // 不展示底部操作
 			this.goodsInfoDesc = '请填写商品说明';
+			this.deliveryMethod =  '';
+			this.deliveryMethodDesc = '';
 			wx.setStorageSync("group-info", "");
 		},
 		mounted() {},
@@ -443,10 +445,9 @@
 								ratio: self.ratio,
 								currency: parseInt(self.groupPrice* self.ratio ) > 1 ? parseInt(self.groupPrice * self.ratio) : 1 ,
 								// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
-								// deliveryMethod: self.deliveryMethod,
+								deliveryMethod: self.deliveryMethod,
 								groupPersonNum: self.groupPersonNum,
 								groupAging: 48,
-								rule: self.rule,
 								status: 1,
 								goodsType: 1,
 							})
@@ -469,10 +470,9 @@
 								ratio: self.ratio,
 								currency: parseInt(self.groupPrice* self.ratio ) > 1 ? parseInt(self.groupPrice * self.ratio ) : 1 ,
 								// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
-								// deliveryMethod: self.deliveryMethod,
+								deliveryMethod: self.deliveryMethod,
 								groupPersonNum: self.groupPersonNum,
 								groupAging: 48,
-								rule: self.rule,
 								status: 1,
 								goodsType: 1,
 							})
@@ -516,6 +516,7 @@
 								currency: parseInt(self.groupPrice* self.ratio) > 1 ? parseInt(self.groupPrice * self.ratio) : 1 ,
 								// personCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
 								// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
+								deliveryMethod: self.deliveryMethod,
 								groupPersonNum: self.groupPersonNum,
 								groupAging: 48,
 								rule: self.rule,
@@ -541,7 +542,7 @@
 								ratio: self.ratio,
 								currency: parseInt(self.groupPrice* self.ratio) > 1 ? parseInt(self.groupPrice * self.ratio) : 1 ,
 								// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
-								// deliveryMethod: self.deliveryMethod,
+								deliveryMethod: self.deliveryMethod,
 								groupPersonNum: self.groupPersonNum,
 								groupAging: 48,
 								rule: self.rule,
@@ -733,11 +734,11 @@
 							if(res.value.explainContent || res.value.explainImgUrl > 0) {
 								this.goodsInfoDesc = '查看商品说明';
 							}
-							// if (res.value.deliveryMethod == 1) {
-							// 	self.deliveryMethodDesc = '邮寄';
-							// } else if (res.value.deliveryMethod == 2) {
-							// 	self.deliveryMethodDesc = '到店自提';
-							// }
+							if (res.value.deliveryMethod == 1) {
+								self.deliveryMethodDesc = '邮寄';
+							} else if (res.value.deliveryMethod == 2) {
+								self.deliveryMethodDesc = '到店自提';
+							}
 							self.originPrice = res.value.price / 100;
 							self.groupPrice = res.value.groupPrice / 100;
 							self.onceGroupPrice = res.value.singlePrice / 100;
