@@ -3,7 +3,7 @@
     <div class="user-from top sec">
       <div class="text">商户名称</div>
       <div class="input">
-        <input type="text" minlength="1" placeholder="请输入商户名称" placeholder-style='font-size: 15px' v-model="info.name" @blur="checkName" :value="info.name">
+        <input type="text" minlength="1" maxlength="15" placeholder="请输入商户名称" placeholder-style='font-size: 15px' v-model="info.name" @blur="checkName" :value="info.name">
       </div>
     </div>
     <div class="user-from  sec">
@@ -102,7 +102,7 @@
         <div class="select-line  top sec">
           <div>客服电话</div>
           <div class="input">
-            <input type="digit" placeholder="请输入客服电话" placeholder-style='font-size: 15px' v-model="info.storePhone">
+            <input type="digit" max-length="14" placeholder="请输入客服电话" placeholder-style='font-size: 15px' v-model="info.storePhone" @blur="checktel">
           </div>
         </div>
         <div class="select-line">
@@ -117,31 +117,36 @@
         <div class="select-line  top sec">
           <div>联系人</div>
           <div class="input">
-            <input type="text" placeholder="请输入联系人姓名" placeholder-style='font-size: 15px'
+            <input type="text" placeholder="请输入联系人姓名" placeholder-style='font-size: 15px' @blur="checklname"
                    v-model="info.personInChargeName" :value="info.personInChargeName">
           </div>
         </div>
         <div class="select-line">
           <div>联系人电话</div>
           <div class="input">
-            <input type="digit" placeholder="请输入联系人电话" placeholder-style='font-size: 15px'
+            <input type="digit" placeholder="请输入联系人电话" placeholder-style='font-size: 15px' @blur="checkphone"
                    v-model="info.personInChargePhone" :value="info.personInChargePhone">
           </div>
         </div>
         <div class="select-line">
           <div>返金设置</div>
-          <div class="input">
-            <input type="digit" placeholder="默认0.1%" placeholder-style='font-size: 15px'
-                   v-model="info.ratio" :value="info.ratio">
+          <div class="percent">
+            <div class="input">
+              <input type="digit" placeholder="请设置返金比例" placeholder-style='font-size: 15px' @blur="chectratio"
+                     v-model="info.ratio" :value="info.ratio">
+            </div>
+            <div v-if="ishow" class="danwei">
+               %
+            </div>
           </div>
         </div>
-        <div class="select-line">
+        <!-- <div class="select-line">
           <div>积分设置</div>
           <div class="input">
             <input type="digit" placeholder="最小0.1最大80" placeholder-style='font-size: 15px'
                    v-model="info.integralRatio" min="0.1" max="80" :value="info.integralRatio">
           </div>
-        </div>
+        </div> -->
       </div>
       <button class="submit" @click="toSava">保存</button>
     </div>
@@ -156,6 +161,7 @@
   export default {
     data() {
       return {
+        ishow:true,
         pass:'',
         task:'',
         token:'',
@@ -310,10 +316,46 @@
           wx.showToast({
             title: '只支持数字和字母',
             icon: 'none',
-            duration: 2000
+            duration: 3000
           })
         }
         console.log(this.info.app_password)
+      },
+      checktel(e){
+        if(!/^[0-9]{1,14}$/.test(e.target.value)){
+          wx.showToast({
+            title: '请输入正确的客服电话',
+            icon: 'none',
+            duration: 3000
+          })
+        }
+      },
+      chectratio(e){
+        if(e.target.value>80||e.target.value<0.1){
+          wx.showToast({
+            title: '返金比例设置范围0.1~80',
+            icon: 'none',
+            duration: 3000
+          })
+        }
+      },
+      checklname(e){
+        if(!/^[A-Za-z\u4e00-\u9fa5]+$/.test(e.target.value)){
+          wx.showToast({
+            title: '只支持汉字和字母',
+            icon: 'none',
+            duration: 3000
+          })
+        }
+      },
+      checkphone(e){
+        if(!/^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$/.test(e.target.value)){
+          wx.showToast({
+            title: '请输入正确手机号',
+            icon: 'none',
+            duration: 3000
+          })
+        }
       },
       checkName(e){
         console.log(e);
@@ -321,7 +363,7 @@
           wx.showToast({
             title: '请输入商户名称',
             icon: 'none',
-            duration: 2000
+            duration: 3000
           })
         }
       },
@@ -653,12 +695,12 @@
         if (!this.region||this.area.shi=='加载中'||this.area.q=='加载中'){message = "请选择所在地区";}else{this.info.region=this.region;this.info.businessLicenseAreaid=this.area.id}
         if (!this.mark){message = "请选择地图标记";}else{this.info.mark=this.mark;}
         if (!this.info.businessDistrict){message = "请选择商圈"}
-        if (!this.info.storePhone){message = "请输入客服电话"}
+        if (!/^[0-9]{1,14}$/.test(this.info.storePhone)){message = "请输入正确的客服电话"}
         if (!this.info.businessHours){message = "请选择营业时间"}
-        if (!this.info.personInChargeName){message = "请输入联系人姓名"}
-        if (!this.info.personInChargePhone){message="请输入联系人电话"}
-        if (!this.info.ratio){message = "请设置返金金额"}
-        if (!this.info.integralRatio){message = "请设置积分设置"}
+        if (!this.info.personInChargeName){message = "请输入联系人姓名"}else if(!/^[A-Za-z\u4e00-\u9fa5]+$/.test(this.info.personInChargeName)){message = "联系人姓名只支持汉字和字母"}
+        if (!/^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$/.test(this.info.personInChargePhone)){message="请输入正确的联系人电话"}
+        if (!this.info.ratio){message = "请设置返金金额"}else if(this.info.ratio>80||this.info.ratio<0.1){message = "返金比例设置范围0.1~80"}
+        // if (!this.info.integralRatio){message = "请设置积分设置"}
         console.log(this.info)
         if (message){
           wx.showToast({
@@ -811,6 +853,9 @@
       div:last-child
         color #8F8E94
         text-align right
+      .percent
+        display flex
+        align-items center
 
   // margin-right 13px
   .register-tip
