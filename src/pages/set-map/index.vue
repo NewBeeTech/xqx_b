@@ -18,7 +18,7 @@
         <div>{{item.address}}</div>
       </div> -->
       <radio-group class="radio-group" bindchange="radioChange">
-        <label class="radio scorll-item" v-for="item in list" @click="chooseLocation(item)">
+        <label class="radio scorll-item" v-for="(item,index) in list" :key="index" @click="chooseLocation(item)">
           <radio :value="item.title"/>
           <div class="chooseitem">
             <div>{{item.title}}</div>
@@ -83,7 +83,7 @@
           })
         }else{
           wx.navigateBack()
-        }  
+        }
       },
       search(e) {
         console.log(e)
