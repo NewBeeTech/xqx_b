@@ -252,16 +252,22 @@
 				console.warn('click');
 				const that = this;
 				wx.showActionSheet({
-					itemList: ['2人', '4人', '6人'],
+					itemList: ['2人', '3人', '4人', '5人', '6人'],
 					success: function(res) {
 						console.log(res.tapIndex)
 						if (res.tapIndex == 0) {
 							that.groupPersonNum = 2;
 							that.groupPersonNumDesc = '2人';
 						} else if (res.tapIndex == 1) {
+							that.groupPersonNum = 3;
+							that.groupPersonNumDesc = '3人';
+						}  else if (res.tapIndex == 2) {
 							that.groupPersonNum = 4;
 							that.groupPersonNumDesc = '4人';
-						}  else if (res.tapIndex == 2) {
+						}  else if (res.tapIndex == 3) {
+							that.groupPersonNum = 5;
+							that.groupPersonNumDesc = '5人';
+						}  else if (res.tapIndex == 5) {
 							that.groupPersonNum = 6;
 							that.groupPersonNumDesc = '6人';
 						}
