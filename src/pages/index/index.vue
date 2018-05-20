@@ -230,7 +230,7 @@
           .then(res => {
             console.log(res);
             if(res.code==1){
-              that.fansum=res.value.fansNum
+              self.fansum=res.value.fansNum
             }
           })
           .catch(err => {
