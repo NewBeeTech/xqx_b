@@ -270,7 +270,7 @@
 						}  else if (res.tapIndex == 3) {
 							that.groupPersonNum = 5;
 							that.groupPersonNumDesc = '5人';
-						}  else if (res.tapIndex == 5) {
+						}  else if (res.tapIndex == 4) {
 							that.groupPersonNum = 6;
 							that.groupPersonNumDesc = '6人';
 						}
