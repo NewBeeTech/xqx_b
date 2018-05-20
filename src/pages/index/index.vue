@@ -248,7 +248,7 @@
                 num+=res.value[i].real_charge
               }
               num=num/100
-              that.getvalue=num
+              self.getvalue=num
             }
           })
           .catch(err => {
