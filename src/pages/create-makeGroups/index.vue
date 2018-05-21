@@ -454,7 +454,15 @@
 							})
 			          .then(res => {
 			            console.log(res)
-			            wx.navigateBack()
+									if (res.code == 1) {
+			            	wx.navigateBack()
+									} else {
+										wx.showToast({
+											title: res.errorMsg || ' ',
+											icon: 'none',
+											duration: 2000
+										});
+									}
 			            //				that.codeImg = res.value
 			          }).catch(err => {
 			          console.log(err)
@@ -479,7 +487,15 @@
 							})
 			          .then(res => {
 			            console.log(res)
-			            wx.navigateBack()
+									if (res.code == 1) {
+			            	wx.navigateBack()
+									} else {
+										wx.showToast({
+											title: res.errorMsg || ' ',
+											icon: 'none',
+											duration: 2000
+										});
+									}
 			            //				that.codeImg = res.value
 			          }).catch(err => {
 			          console.log(err)
@@ -526,7 +542,15 @@
 							})
 			          .then(res => {
 			            console.log(res)
-			            wx.navigateBack()
+									if (res.code == 1) {
+			            	wx.navigateBack()
+									} else {
+										wx.showToast({
+											title: res.errorMsg || ' ',
+											icon: 'none',
+											duration: 2000
+										});
+									}
 			            //				that.codeImg = res.value
 			          }).catch(err => {
 			          console.log(err)
@@ -552,7 +576,15 @@
 							})
 			          .then(res => {
 			            console.log(res)
-			            wx.navigateBack()
+									if (res.code == 1) {
+			            	wx.navigateBack()
+									} else {
+										wx.showToast({
+											title: res.errorMsg || ' ',
+											icon: 'none',
+											duration: 2000
+										});
+									}
 			            //				that.codeImg = res.value
 			          }).catch(err => {
 			          console.log(err)
@@ -756,6 +788,12 @@
 							self.groupPersonNum = res.value.groupPersonNum;
 							// status: 0,
 							// goodsType: 3,
+						} else {
+							wx.showToast({
+								title: res.errorMsg || ' ',
+								icon: 'none',
+								duration: 2000
+							});
 						}
 		      	console.log(res)
 		      }).catch(err => {
