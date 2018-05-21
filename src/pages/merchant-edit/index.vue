@@ -9,7 +9,7 @@
     <div class="user-from  sec">
       <div class="text">设置登录密码</div>
       <div class="input">
-        <input @input="bindKeyInput" type="text" maxlength="16" minlength="8" placeholder="请设置登录密码" placeholder-style='font-size: 15px' v-model="info.app_password"  @blur="checkPassword" :value="pass">
+        <input @input="bindKeyInput" type="text" maxlength="16" minlength="8" placeholder="请设置登录密码" placeholder-style='font-size: 15px' v-model="info.appPassword"  @blur="checkPassword" :value="pass">
       </div>
     </div>
     <div class="user-from top sec">
@@ -308,7 +308,7 @@
         const that=this;
         this.pass=e.mp.detail.value
         if(!/[a-zA-Z0-9]+$/.test(e.mp.detail.value)){
-          let str='',resstr=this.info.app_password
+          let str='',resstr=this.info.appPassword
           for(var i=0;i<resstr.length;i++){
             if(/[a-zA-Z0-9]+$/.test(resstr.charAt(i))){
               str+=resstr.charAt(i)
@@ -316,14 +316,14 @@
           }
           console.log(str)
           this.pass=str;
-          this.info.app_password=str;
+          this.info.appPassword=str;
           wx.showToast({
             title: '只支持数字和字母',
             icon: 'none',
             duration: 3000
           })
         }
-        console.log(this.info.app_password)
+        console.log(this.info.appPassword)
       },
       checkperman(e){
         if(!/^[0-9]+.?[0-9]*$/.test(e.target.value)){
@@ -698,10 +698,10 @@
         this.info.sessionKey=this.token;
         var message = "";
         if (!this.info.name){message = "请输入商户名称"}
-        if (!this.info.app_password){message = "请设置登录密码"}else if(this.info.app_password.length<8){message = "登录密码位数应为8-16位"}
+        if (!this.info.appPassword){message = "请设置登录密码"}else if(this.info.appPassword.length<8){message = "登录密码位数应为8-16位"}
         if (!this.logo){message = "请上传商户logo"}
         if (!this.info.businessIndName){message = "请输入行业名称"}
-        if (this.images.length<=0){message = "请上传商品图片"}else{this.info.carouselFigure=JSON.stringify(this.info.carouselFigure)}
+        if (this.images.length<=0){message = "请上传商品图片"}else{this.info.carouselFigure=this.info.carouselFigure.imgOne?JSON.stringify(this.info.carouselFigure):this.info.carouselFigure}
         if (!this.info.businessIndName){message = "请选择行业"}
         if (!this.region||this.area.shi=='加载中'||this.area.q=='加载中'||!this.area.shi||!this.area.q||!this.area.sheng){message = "请选择所在地区";}else{this.info.businessCityName=this.region;this.info.businessLicenseAreaid=this.area.id}
         if (!this.mark){message = "请选择地图标记";}
