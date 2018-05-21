@@ -105,7 +105,7 @@ export default {
         }
         console.log(data)
         wx.request({
-          url: Default.HOST+'mxcx/MerchantController/merchantActivities',
+          url: Default.HOST+'xcxm/MerchantController/merchantActivities',
           data:data,
           method:'POST',
           header: {
