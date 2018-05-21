@@ -598,6 +598,12 @@
 						duration: 2000
 					});
 					return false;
+				} else if (!this.deliveryMethod) {
+					wx.showToast({
+						title: '请选择配送方式',
+						icon: 'none',
+						duration: 2000
+					});
 				} else if ( discountInfo && discountInfo.explainContent && discountInfo.explainContent.length > 300) {
 					wx.showToast({
 						title: '商品说明最多可输入300字',
