@@ -2,34 +2,34 @@ export let api = {
 	// HTTP_HOST: 'https://bmini.xqx.com/',
 	HTTP_HOST: 'http://wmomo.wicp.net/',
 	HTTP_SERVER: {
-		"updateGoodsGroupOrderExpressNumber": "/mxcx/GoodsGroupOrderController/updateGoodsGroupOrderExpressNumber", // 设置订单快递单号接口
-		"useIdQueryGoodsGroup": "/mxcx/GoodsGroupController/useIdQueryGoodsGroup",
-	  "useAppLoginNameQueryMerchant":"mxcx/MerchantController/useAppLoginNameQueryMerchantV110",
-		'userLogin': 'mxcx/AuthorizedController/checkAuthorization', //获取code，登录
-    "getMessageCode":"mxcx/UtilsController/getMessageCode",//获取验证码
-    "verificationCode":"mxcx/UtilsController/verificationCode",//手机验证码 验证
-    "getQiniuToken":"mxcx/QiniuController/getQiniuToken",
-    "merchantRegister":"mxcx/MerchantController/merchantRegister",
-    'homeMsg':"mxcx/TradeController/incomeStatisticsMap",
-		'getShopInfo':'mxcx/MerchantController/queryMerchantInfo', //获取商户信息
-		'getCodeImg':'mxcx/MerchantController/getMerchantMoneyCollectQr',//获取二维码
-    "updateMerchantInfo":"mxcx/MerchantController/updateMerchantInfo",
-		'createGoodsGroup':'mxcx/GoodsGroupController/createGoodsGroupV110',//创建活动
-    "updateGoodsGroup":"mxcx/GoodsGroupController/updateGoodsGroupV110",
-    "deleteGoodsGroup":"mxcx/GoodsGroupController/deleteGoodsGroup",
-    "queryGoodsGroup":"mxcx/GoodsGroupController/queryGoodsGroup",
-    "getProvince":"mxcx/UtilsController/getProvince",//省
-    "getCity":"mxcx/UtilsController/getCity",//市
-    "getCounty":"mxcx/UtilsController/getCounty",//县
-    "getBusinessCircle":"mxcx/UtilsController/getBusinessCircle",
-    "getOneIndustry":"mxcx/UtilsController/getOneIndustry",//获取行业1级数据
-    "getTowIndustry":"mxcx/UtilsController/getTowIndustry",//获取行业2级数据
-    "queryGoodsGroupOrderState":"mxcx/GoodsGroupOrderController/queryGoodsGroupOrderState",
-    "getMerchantMoneyCollectQr":"mxcx/MerchantController/getMerchantMoneyCollectQr",
-    "decryptPhoneNumber":"mxcx/AuthorizedController/decryptPhoneNumber",
-    "queryGroupBuy":"mxcx/GroupBuyController/queryGroupBuy",
-		"getFan":"mxcx/PersonController/fansList",
-		"getGet":"mxcx/GoodsGroupController/viewRevenueStatistics"
+		"updateGoodsGroupOrderExpressNumber": "/xcxm/GoodsGroupOrderController/updateGoodsGroupOrderExpressNumber", // 设置订单快递单号接口
+		"useIdQueryGoodsGroup": "/xcxm/GoodsGroupController/useIdQueryGoodsGroup",
+	  "useAppLoginNameQueryMerchant":"xcxm/MerchantController/useAppLoginNameQueryMerchantV110",
+		'userLogin': 'xcxm/AuthorizedController/checkAuthorization', //获取code，登录
+    "getMessageCode":"xcxm/UtilsController/getMessageCode",//获取验证码
+    "verificationCode":"xcxm/UtilsController/verificationCode",//手机验证码 验证
+    "getQiniuToken":"xcxm/QiniuController/getQiniuToken",
+    "merchantRegister":"xcxm/MerchantController/merchantRegister",
+    'homeMsg':"xcxm/TradeController/incomeStatisticsMap",
+		'getShopInfo':'xcxm/MerchantController/queryMerchantInfo', //获取商户信息
+		'getCodeImg':'xcxm/MerchantController/getMerchantMoneyCollectQr',//获取二维码
+    "updateMerchantInfo":"xcxm/MerchantController/updateMerchantInfo",
+		'createGoodsGroup':'xcxm/GoodsGroupController/createGoodsGroupV110',//创建活动
+    "updateGoodsGroup":"xcxm/GoodsGroupController/updateGoodsGroupV110",
+    "deleteGoodsGroup":"xcxm/GoodsGroupController/deleteGoodsGroup",
+    "queryGoodsGroup":"xcxm/GoodsGroupController/queryGoodsGroup",
+    "getProvince":"xcxm/UtilsController/getProvince",//省
+    "getCity":"xcxm/UtilsController/getCity",//市
+    "getCounty":"xcxm/UtilsController/getCounty",//县
+    "getBusinessCircle":"xcxm/UtilsController/getBusinessCircle",
+    "getOneIndustry":"xcxm/UtilsController/getOneIndustry",//获取行业1级数据
+    "getTowIndustry":"xcxm/UtilsController/getTowIndustry",//获取行业2级数据
+    "queryGoodsGroupOrderState":"xcxm/GoodsGroupOrderController/queryGoodsGroupOrderState",
+    "getMerchantMoneyCollectQr":"xcxm/MerchantController/getMerchantMoneyCollectQr",
+    "decryptPhoneNumber":"xcxm/AuthorizedController/decryptPhoneNumber",
+    "queryGroupBuy":"xcxm/GroupBuyController/queryGroupBuy",
+		"getFan":"xcxm/PersonController/fansList",
+		"getGet":"xcxm/GoodsGroupController/viewRevenueStatistics"
 	}
 }
 export let wxRequest = function(server, parm) {
