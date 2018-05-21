@@ -202,12 +202,23 @@
       }
     },
     onShow: function () {
-
+      const that=this;
       if (wx.getStorageSync('token')){
-        this.getHomeMsg();
-        this.getFan();
-        this.getGet();
-        this.getInfo();
+        const data={sessionKey:wx.getStorageSync('token')}
+        wxRequest('getShopInfo',data)
+        .then(res =>{
+          if(res.code==1){
+            that.getHomeMsg();
+            that.getFan();
+            that.getGet();
+            that.getInfo();
+          }
+          if (res.code == 4000) {
+            wx.navigateTo({
+              url: '/pages/bind-phone/main'
+            })
+          }
+        })
         // this.getUserInfo();
       }
 

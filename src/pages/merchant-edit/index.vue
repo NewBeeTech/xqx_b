@@ -690,7 +690,7 @@
         if (!this.info.app_password){message = "请设置登录密码"}else if(this.info.app_password.length<8){message = "登录密码位数应为8-16位"}
         if (!this.logo){message = "请上传商户logo"}
         if (!this.info.businessIndName){message = "请输入行业名称"}
-        if (!this.images.length){message = "请上传商品图片"}
+        if (!this.images.length){message = "请上传商品图片"}else{this.carouselFigure=JSON.stringify(this.carouselFigure)}
         if (!this.info.businessIndName){message = "请选择行业"}
         if (!this.region||this.area.shi=='加载中'||this.area.q=='加载中'){message = "请选择所在地区";}else{this.info.region=this.region;this.info.businessLicenseAreaid=this.area.id}
         if (!this.mark){message = "请选择地图标记";}else{this.info.mark=this.mark;}
@@ -718,6 +718,7 @@
                 url: '/pages/index/main'
               })
             }else{
+              wx.hideLoading();
               wx.showToast({
                 title:res.errorMsg,
                 icon:"none",
