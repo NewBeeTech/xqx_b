@@ -349,7 +349,7 @@
         }
       },
       checkphone(e){
-        if(!/^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$/.test(e.target.value)){
+        if(!/^[1][3,4,5,7,8][0-9]{9}$/.test(e.target.value)){
           wx.showToast({
             title: '请输入正确手机号',
             icon: 'none',
@@ -698,7 +698,7 @@
         if (!/^[0-9]{1,14}$/.test(this.info.storePhone)){message = "请输入正确的客服电话"}
         if (!this.info.businessHours){message = "请选择营业时间"}
         if (!this.info.personInChargeName){message = "请输入联系人姓名"}else if(!/^[A-Za-z\u4e00-\u9fa5]+$/.test(this.info.personInChargeName)){message = "联系人姓名只支持汉字和字母"}
-        if (!/^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$/.test(this.info.personInChargePhone)){message="请输入正确的联系人电话"}
+        if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(this.info.personInChargePhone)){message="请输入正确的联系人电话"}
         if (!this.info.ratio){message = "请设置返金金额"}else if(this.info.ratio>80||this.info.ratio<0.1){message = "返金比例设置范围0.1~80"}
         // if (!this.info.integralRatio){message = "请设置积分设置"}
         console.log(this.info)
