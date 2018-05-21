@@ -2,6 +2,7 @@
 function HTTPManager() { }
 HTTPManager.get = function (url, parm) {
   wx.showLoading({
+    mask: true,
     title: '加载中',
   })
   return new Promise(function (success, fail) {
@@ -33,6 +34,7 @@ HTTPManager.post = function (url, parm) {
   wx.hideLoading();
   wx.showLoading({
     title: '加载中',
+    mask: true,
   });
   // parm.userId = "20291";
   parm.token = wx.getStorageSync('token');
