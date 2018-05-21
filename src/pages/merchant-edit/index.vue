@@ -713,9 +713,18 @@
         wxRequest('merchantRegister', this.info)
           .then(res => {
             console.log(res);
-            wx.navigateTo({
-              url: '/pages/index/main'
-            })
+            if(res.code==1){
+              wx.navigateTo({
+                url: '/pages/index/main'
+              })
+            }else{
+              wx.showToast({
+                title:res.errorMsg,
+                icon:"none",
+                duration: 2000
+              })
+            }
+
           })
           .catch(err => {
             console.log(err)
