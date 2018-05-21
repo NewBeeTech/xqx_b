@@ -58,7 +58,7 @@
         </picker> -->
         <picker v-if="isload" mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" range-key="araename" :range="objectMultiArray">
           <view class="picker">
-            {{objectMultiArray[0][multiIndex[0]].araename}}-{{objectMultiArray[1][multiIndex[1]].araename}}-{{objectMultiArray[2][multiIndex[2]].araename}}
+            {{objectMultiArray[0][multiIndex[0]].araename}}/{{objectMultiArray[1][multiIndex[1]].araename}}/{{objectMultiArray[2][multiIndex[2]].araename}}
           </view>
         </picker>
       </div>
@@ -85,24 +85,28 @@
       </div>
     </div>
 
-    <div v-if="isLang == 1">
+    <div class="select-line">
       <div class="register-tip">推荐您注册的人员编号，如有请填写</div>
-      <div class="user-from top sec">
-        <div class="text">推荐人编号</div>
-        <div class="input">
-          <input type="digit" placeholder="请输入推荐人编号" placeholder-style='font-size: 15px' v-model="info.counterid">
-        </div>
-      </div>
-
-      <button class="button sub" size="digit" @click="submit">下一步</button>
     </div>
 
-    <div v-else class="select-container">
+    <div class="select-container">
       <div class="select-container">
+        <div class="select-line  top sec">
+          <div>推荐人编号</div>
+          <div class="input">
+            <input type="digit" max-length="15" placeholder="请输入推荐人编号" placeholder-style='font-size: 15px' v-model="info.counterid">
+          </div>
+        </div>
         <div class="select-line  top sec">
           <div>客服电话</div>
           <div class="input">
             <input type="digit" max-length="14" placeholder="请输入客服电话" placeholder-style='font-size: 15px' v-model="info.storePhone" @blur="checktel">
+          </div>
+        </div>
+        <div class="select-line  top sec">
+          <div>邮箱</div>
+          <div class="input">
+            <input type="text" max-length="14" placeholder="请输入邮箱" placeholder-style='font-size: 15px' v-model="info.contractEmail" @blur="checkemail">
           </div>
         </div>
         <div class="select-line">
@@ -321,6 +325,15 @@
         }
         console.log(this.info.app_password)
       },
+      checkperman(e){
+        if(!/^[0-9]+.?[0-9]*$/.test(e.target.value)){
+          wx.showToast({
+            title: '请输入正确的推荐人编号',
+            icon: 'none',
+            duration: 3000
+          })
+        }
+      },
       checktel(e){
         if(!/^[0-9]{1,14}$/.test(e.target.value)){
           wx.showToast({
@@ -434,7 +447,7 @@
             } else {
               that[type] = [...that[type], ...tempFilePaths]
               console.log(that.images)
-              that.uploadImage("ccpp-mpic", that.images[0]);
+              that.uploadImage("ccpp-mpic", that.images[that.images.length-1]);
             }
 
 
@@ -443,14 +456,14 @@
       },
       uploadImage: function (bucket, filePaths) {
         var self = this;
+        const index=self.imageIndex;
+        self.imageIndex=self.imageIndex+1;
         wxRequest('getQiniuToken', {bucket: bucket})
           .then(res => {
             console.log(res)
-
             if (res.code == 1) {
               var token = res.value
               var date = new Date()
-
               qiniu.upload(filePaths, (res) => {
                 console.log(res);
                 var type = bucket.replace("ccpp-", "");
@@ -460,21 +473,19 @@
                 if (type == "logo") {
                   self.info.storeLogo = imageURL;
                 } else {
-                  if (self.imageIndex == 0) {
+                  if (index == 0) {
                     self.info.storeBackgroundPicture = imageURL;
                   } else {
-                    if (self.imageIndex == 1) {
+                    if (index == 1) {
                       self.info.carouselFigure.imgOne = imageURL
                     }
-                    if (self.imageIndex == 2) {
+                    if (index == 2) {
                       self.info.carouselFigure.imgTwo = imageURL
                     }
-                    if (self.imageIndex == 3) {
+                    if (index == 3) {
                       self.info.carouselFigure.imgThree = imageURL
                     }
                   }
-                  self.imageIndex=self.imageIndex+1;
-
                 }
               }, (error) => {
                 console.log('error: ' + error);
@@ -692,8 +703,8 @@
         if (!this.info.businessIndName){message = "请输入行业名称"}
         if (this.images.length<=0){message = "请上传商品图片"}else{this.info.carouselFigure=JSON.stringify(this.info.carouselFigure)}
         if (!this.info.businessIndName){message = "请选择行业"}
-        if (!this.region||this.area.shi=='加载中'||this.area.q=='加载中'){message = "请选择所在地区";}else{this.info.region=this.region;this.info.businessLicenseAreaid=this.area.id}
-        if (!this.mark){message = "请选择地图标记";}else{this.info.mark=this.mark;}
+        if (!this.region||this.area.shi=='加载中'||this.area.q=='加载中'||!this.area.shi||!this.area.q||!this.area.sheng){message = "请选择所在地区";}else{this.info.businessCityName=this.region;this.info.businessLicenseAreaid=this.area.id}
+        if (!this.mark){message = "请选择地图标记";}
         if (!this.info.businessDistrict){message = "请选择商圈"}
         if (!/^[0-9]{1,14}$/.test(this.info.storePhone)){message = "请输入正确的客服电话"}
         if (!this.info.businessHours){message = "请选择营业时间"}
