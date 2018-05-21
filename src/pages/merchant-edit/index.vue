@@ -681,8 +681,6 @@
         });
       },
       toSava() {
-        this.info.carouselFigure=JSON.stringify(this.info.carouselFigure)
-        console.log(this.info)
         console.log(this.area)
         this.region=this.area.sheng+'/'+this.area.shi+'/'+this.area.q;
         this.info.appLoginname = wx.getStorageSync('phone');
