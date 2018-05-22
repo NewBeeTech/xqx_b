@@ -3,7 +3,7 @@
     <div class="user-from top sec">
       <div class="text">商户名称</div>
       <div class="input">
-        <input type="text" minlength="1" maxlength="15" placeholder="请输入商户名称" placeholder-style='font-size: 15px' v-model="info.name" @blur="checkName" :value="info.name">
+        <input type="text" minlength="1" maxlength="30" placeholder="请输入商户名称" placeholder-style='font-size: 15px' v-model="info.name" @blur="checkName" :value="info.name">
       </div>
     </div>
     <div class="user-from  sec">
@@ -66,7 +66,7 @@
       <div class="select-line">
         <div>详细地址</div>
         <div class="input">
-          <input type="text" placeholder="请输入详细地址" placeholder-style='font-size: 15px' v-model="info.detailAddress">
+          <input type="text" max-length="50" placeholder="请输入详细地址" placeholder-style='font-size: 15px' v-model="info.detailAddress">
         </div>
       </div>
       <div class="select-line">
@@ -121,7 +121,7 @@
         <div class="select-line  top sec">
           <div>联系人</div>
           <div class="input">
-            <input type="text" placeholder="请输入联系人姓名" placeholder-style='font-size: 15px' @blur="checklname"
+            <input type="text" max-length="20" placeholder="请输入联系人姓名" placeholder-style='font-size: 15px' @blur="checklname"
                    v-model="info.personInChargeName" :value="info.personInChargeName">
           </div>
         </div>
@@ -498,7 +498,7 @@
                     }
                     if (index == 3) {
                       sself.upimages[3]=imageURL;
-    
+
                     }
                   }
                 }
