@@ -252,33 +252,35 @@
 				});
 			},
 			selectGroupPersonNum() {
-				console.warn('click');
-				const that = this;
-				wx.showActionSheet({
-					itemList: ['2人', '3人', '4人', '5人', '6人'],
-					success: function(res) {
-						console.log(res.tapIndex)
-						if (res.tapIndex == 0) {
-							that.groupPersonNum = 2;
-							that.groupPersonNumDesc = '2人';
-						} else if (res.tapIndex == 1) {
-							that.groupPersonNum = 3;
-							that.groupPersonNumDesc = '3人';
-						}  else if (res.tapIndex == 2) {
-							that.groupPersonNum = 4;
-							that.groupPersonNumDesc = '4人';
-						}  else if (res.tapIndex == 3) {
-							that.groupPersonNum = 5;
-							that.groupPersonNumDesc = '5人';
-						}  else if (res.tapIndex == 4) {
-							that.groupPersonNum = 6;
-							that.groupPersonNumDesc = '6人';
+				if(this.disabled) {
+				} else {
+					const that = this;
+					wx.showActionSheet({
+						itemList: ['2人', '3人', '4人', '5人', '6人'],
+						success: function(res) {
+							console.log(res.tapIndex)
+							if (res.tapIndex == 0) {
+								that.groupPersonNum = 2;
+								that.groupPersonNumDesc = '2人';
+							} else if (res.tapIndex == 1) {
+								that.groupPersonNum = 3;
+								that.groupPersonNumDesc = '3人';
+							}  else if (res.tapIndex == 2) {
+								that.groupPersonNum = 4;
+								that.groupPersonNumDesc = '4人';
+							}  else if (res.tapIndex == 3) {
+								that.groupPersonNum = 5;
+								that.groupPersonNumDesc = '5人';
+							}  else if (res.tapIndex == 4) {
+								that.groupPersonNum = 6;
+								that.groupPersonNumDesc = '6人';
+							}
+						},
+						fail: function(res) {
+							console.log(res.errMsg)
 						}
-					},
-					fail: function(res) {
-						console.log(res.errMsg)
-					}
-				});
+					});
+				}
 			},
 			/**
 			 * 进入编辑态
@@ -778,6 +780,24 @@
 							} else if (res.value.deliveryMethod == 2) {
 								self.deliveryMethodDesc = '到店自提';
 							}
+
+							if (res.value.groupPersonNum == 2) {
+								self.groupPersonNum = 3;
+								self.groupPersonNumDesc = '2人';
+							} else if (res.value.groupPersonNum == 3) {
+								self.groupPersonNum = 3;
+								self.groupPersonNumDesc = '3人';
+							}  else if (res.value.groupPersonNum == 4) {
+								self.groupPersonNum = 4;
+								self.groupPersonNumDesc = '4人';
+							}  else if (res.value.groupPersonNum == 5) {
+								self.groupPersonNum = 5;
+								self.groupPersonNumDesc = '5人';
+							}  else if (res.value.groupPersonNum == 6) {
+								self.groupPersonNum = 6;
+								self.groupPersonNumDesc = '6人';
+							}
+
 							self.deliveryMethod = res.value.deliveryMethod;
 							self.originPrice = res.value.price / 100;
 							self.groupPrice = res.value.groupPrice / 100;
