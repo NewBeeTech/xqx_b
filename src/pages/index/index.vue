@@ -175,10 +175,20 @@
                     console.log(res);
                     wx.setStorageSync('token', res.value);
                     if (res.code == 1) {
-                      console.log(res.code);
-                      that.getHomeMsg();
-                      that.getFan();
-                      that.getGet();
+                      const data={sessionKey:res.value}
+                      wxRequest('getShopInfo',data)
+                      .then(res =>{
+                        if(res.code==1){
+                          that.getHomeMsg();
+                          that.getFan();
+                          that.getGet();
+                        }
+                        if (res.code == 4000) {
+                          wx.navigateTo({
+                            url: '/pages/bind-phone/main'
+                          })
+                        }
+                      })
                     }
                     if (res.code == 4000) {
                       wx.navigateTo({

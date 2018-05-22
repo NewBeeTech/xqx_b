@@ -46,6 +46,7 @@
   export default {
     data() {
       return {
+        btnonoff:true,
         canGetCode: true,
         isAgree: false,
         isYes: false,
@@ -155,14 +156,7 @@
           })
       },
       submit() {
-        // if (this.isYes==false){
-        //   wx.showToast({
-        //     title: "请完整填写信息",
-        //     icon: 'none',
-        //     duration: 2000
-        //   })
-        //   return
-        // }
+        if(!this.btnonoff){return false;}
         const self=this;
         if(!this.phoneNumber){
           wx.showToast({
@@ -172,6 +166,7 @@
           })
           return false;
         }
+        this.btnonoff=false;
         var config = {verCode:this.verCode,mobileNo:this.phoneNumber,}
         wx.request({
           url: Default.HOST+'xcxm/UtilsController/verificationCode',
@@ -204,6 +199,7 @@
                   }else if(res.data.code==4000){
                      wx.redirectTo({url: '/pages/merchant-edit/main'})
                   }else{
+                    self.btnonoff=true;
                     wx.showToast({
                       title: res.data.errorMsg||'网络错误，请稍后再试',
                       icon: 'none',
@@ -213,6 +209,7 @@
                 }
               })
             }else{
+              self.btnonoff=true;
               wx.showToast({
                 title: res.data.errorMsg||'网络错误，请稍后再试',
                 icon: 'none',
