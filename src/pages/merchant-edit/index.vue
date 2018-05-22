@@ -33,7 +33,7 @@
             <div class="choose" v-for="(item, index) in images" :key="index">
               <img class="chooseImage" :src="item" alt="" @longtap="deleteImage(index)">
             </div>
-            <div class="choose" @click="chooseImage(4,'images')" v-if="images.length < 4">
+            <div class="choose" @click="chooseImage(1,'images')" v-if="images.length < 4">
               <span>+</span>
             </div>
           </div>
@@ -486,20 +486,19 @@
                   self.info.storeLogo = imageURL;
                 } else {
                   if (index == 0) {
-                    self.upimages.storeBackgroundPicture=imageURL;
                     self.upimages[0]=imageURL;
                   } else {
                     if (index == 1) {
                       self.upimages[1]=imageURL;
-                      self.upimages.carouselFigure.imgOne = imageURL
+
                     }
                     if (index == 2) {
                       self.upimages[2]=imageURL;
-                      self.upimages.carouselFigure.imgTwo = imageURL
+
                     }
                     if (index == 3) {
                       sself.upimages[3]=imageURL;
-                      self.upimages.carouselFigure.imgThree = imageURL
+    
                     }
                   }
                 }
