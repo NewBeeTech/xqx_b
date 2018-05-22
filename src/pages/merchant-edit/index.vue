@@ -170,6 +170,7 @@
         task:'',
         token:'',
         images: [],
+        upimages:[],
         logo: '',
         yyTime: {},
         area:{},
@@ -413,6 +414,8 @@
             if (res.confirm) {
               console.log(self.images)
               self.images.splice(index, 1);
+              self.imageIndex=self.imageIndex-1;
+              self.upimages.splice(index, 1);
               console.log(self.images)
             } else if (res.cancel) {
 
@@ -483,16 +486,20 @@
                   self.info.storeLogo = imageURL;
                 } else {
                   if (index == 0) {
-                    self.info.storeBackgroundPicture = imageURL;
+                    self.upimages.storeBackgroundPicture=imageURL;
+                    self.upimages[0]=imageURL;
                   } else {
                     if (index == 1) {
-                      self.info.carouselFigure.imgOne = imageURL
+                      self.upimages[1]=imageURL;
+                      self.upimages.carouselFigure.imgOne = imageURL
                     }
                     if (index == 2) {
-                      self.info.carouselFigure.imgTwo = imageURL
+                      self.upimages[2]=imageURL;
+                      self.upimages.carouselFigure.imgTwo = imageURL
                     }
                     if (index == 3) {
-                      self.info.carouselFigure.imgThree = imageURL
+                      sself.upimages[3]=imageURL;
+                      self.upimages.carouselFigure.imgThree = imageURL
                     }
                   }
                 }
@@ -706,11 +713,30 @@
         this.info.appLoginname = wx.getStorageSync('phone');
         this.info.sessionKey=this.token;
         var message = "";
-        if (!this.info.name){message = "请输入商户名称"}else if(this.info.name!=this.filteremoji(this.info.name)){message = "商户名不支持表情符"}
+        if (!this.info.name){message = "请输入商户名称"}else if(this.info.name.length==1){message='商户名称最少俩个字符'}else if(this.info.name!=this.filteremoji(this.info.name)){message = "商户名不支持表情符"}
         if (!this.info.appPasswd){message = "请设置登录密码"}else if(this.info.appPasswd.length<8){message = "登录密码位数应为8-16位"}
         if (!this.logo){message = "请上传商户logo"}
         if (!this.info.businessIndName){message = "请输入行业名称"}
-        if (this.images.length<=0){message = "请上传商品图片"}else{this.info.carouselFigure=this.info.carouselFigure.imgOne?JSON.stringify(this.info.carouselFigure):this.info.carouselFigure}
+        if (this.images.length<=0){
+             message = "请上传商品图片"
+        }else{
+               this.info.storeBackgroundPicture=this.upimages[0]
+               const data={}
+               for(var i=1;i<this.upimages.length;i++){
+                   if(i==1){
+                     data.imgOne=this.upimages[i]||'fail'
+                   }
+                   if(i==2){
+                     data.imgTwo=this.upimages[i]||'fail'
+                   }
+                   if(i==3){
+                     data.imgThree=this.upimages[i]||'fail'
+                   }
+               }
+               if(data){
+                 this.info.carouselFigure=JSON.stringify(data)
+               }
+              }
         if (!this.info.businessIndName){message = "请选择行业"}
         if (!this.region||this.area.shi=='加载中'||this.area.q=='加载中'||!this.area.shi||!this.area.q||!this.area.sheng){message = "请选择所在地区";}else{this.info.businessCityName=this.region;this.info.businessLicenseAreaid=this.area.id}
         if (!this.mark){message = "请选择地图标记";}

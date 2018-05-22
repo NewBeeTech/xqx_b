@@ -31,7 +31,7 @@
         <img src="/static/imgs/isyes.png" alt="" >
       </div>
       <div class="tiaokuan">
-        我已阅读并同意《小确幸商户服务条款）
+        我已阅读并同意《小确幸商户服务条款》
       </div>
     </div>
     <button class="button sub" size="default" @click="submit()">确定</button>
