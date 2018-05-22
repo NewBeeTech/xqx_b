@@ -720,7 +720,7 @@
         var message = "";
         if (!this.info.name){message = "请输入商户名称"}else if(this.info.name.length==1){message='商户名称最少俩个字符'}else if(this.info.name!=this.filteremoji(this.info.name)){message = "商户名不支持表情符"}
         if (!this.info.appPasswd){message = "请设置登录密码"}else if(this.info.appPasswd.length<8){message = "登录密码位数应为8-16位"}
-        if (!this.info.logo){message = "请上传商户logo"}
+        if (!this.info.storeLogo){message = "请上传商户logo"}
         if (!this.info.businessIndName){message = "请输入行业名称"}
         if (this.upimages.length<=0){
              message = "请上传商品图片"
