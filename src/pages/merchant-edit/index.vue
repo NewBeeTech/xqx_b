@@ -66,7 +66,7 @@
       <div class="select-line">
         <div>详细地址</div>
         <div class="input">
-          <input type="text" max-length="50" placeholder="请输入详细地址" placeholder-style='font-size: 15px' v-model="info.detailAddress">
+          <input type="text" maxlength="50" placeholder="请输入详细地址" placeholder-style='font-size: 15px' v-model="info.detailAddress">
         </div>
       </div>
       <div class="select-line">
@@ -94,19 +94,19 @@
         <div class="select-line  top sec">
           <div>推荐人编号</div>
           <div class="input">
-            <input type="digit" max-length="15" placeholder="请输入推荐人编号" placeholder-style='font-size: 15px' v-model="info.counterid">
+            <input type="digit" maxlength="15" placeholder="请输入推荐人编号" placeholder-style='font-size: 15px' v-model="info.counterid">
           </div>
         </div>
         <div class="select-line  top sec">
           <div>客服电话</div>
           <div class="input">
-            <input type="digit" max-length="14" placeholder="请输入客服电话" placeholder-style='font-size: 15px' v-model="info.storePhone" @blur="checktel">
+            <input type="digit" maxlength="14" placeholder="请输入客服电话" placeholder-style='font-size: 15px' v-model="info.storePhone" @blur="checktel">
           </div>
         </div>
         <div class="select-line  top sec">
           <div>邮箱</div>
           <div class="input">
-            <input type="text" max-length="14" placeholder="请输入邮箱" placeholder-style='font-size: 15px' v-model="info.contractEmail" @blur="checkemail">
+            <input type="text" maxlength="14" placeholder="请输入邮箱" placeholder-style='font-size: 15px' v-model="info.contractEmail" @blur="checkemail">
           </div>
         </div>
         <div class="select-line">
@@ -121,7 +121,7 @@
         <div class="select-line  top sec">
           <div>联系人</div>
           <div class="input">
-            <input type="text" max-length="20" placeholder="请输入联系人姓名" placeholder-style='font-size: 15px' @blur="checklname"
+            <input type="text" maxlength="20" placeholder="请输入联系人姓名" placeholder-style='font-size: 15px' @blur="checklname"
                    v-model="info.personInChargeName" :value="info.personInChargeName">
           </div>
         </div>
@@ -165,6 +165,7 @@
   export default {
     data() {
       return {
+        btnonoff:true,
         ishow:true,
         pass:'',
         task:'',
@@ -469,7 +470,9 @@
       uploadImage: function (bucket, filePaths) {
         var self = this;
         const index=self.imageIndex;
-        self.imageIndex=self.imageIndex+1;
+        if(bucket.replace("ccpp-", "")!="logo"){
+          self.imageIndex=self.imageIndex+1;
+        }
         wxRequest('getQiniuToken', {bucket: bucket})
           .then(res => {
             console.log(res)
@@ -707,6 +710,7 @@
         });
       },
       toSava() {
+        if(!this.btnonoff){return false;}
         console.log(this.area)
         this.region=this.area.sheng+'/'+this.area.shi+'/'+this.area.q;
         this.info.appLoginname = wx.getStorageSync('phone');
@@ -716,7 +720,7 @@
         if (!this.info.appPasswd){message = "请设置登录密码"}else if(this.info.appPasswd.length<8){message = "登录密码位数应为8-16位"}
         if (!this.logo){message = "请上传商户logo"}
         if (!this.info.businessIndName){message = "请输入行业名称"}
-        if (this.images.length<=0){
+        if (this.upimages.length<=0){
              message = "请上传商品图片"
         }else{
                this.info.storeBackgroundPicture=this.upimages[0]
@@ -742,6 +746,7 @@
         if (!this.info.businessDistrict){message = "请选择商圈"}
         if (!/^[0-9]{1,14}$/.test(this.info.storePhone)){message = "请输入正确的客服电话"}
         if (!this.info.businessHours){message = "请选择营业时间"}
+        if(this.info.contractEmail&&this.info.contractEmail!=this.filteremoji(this.info.contractEmail)){message="邮箱不支持表情符"}
         if (!this.info.detailAddress){message='请填写详细地址'}else if(this.info.detailAddress!=this.filteremoji(this.info.detailAddress)){message = "详细地址不支持表情符"}
         if (!this.info.personInChargeName){message = "请输入联系人姓名"}else if(!/^[A-Za-z\u4e00-\u9fa5]+$/.test(this.info.personInChargeName)){message = "联系人姓名只支持汉字和字母"}
         if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(this.info.personInChargePhone)){message="请输入正确的联系人电话"}
@@ -756,6 +761,8 @@
           })
           return;
         }
+        this.btnonoff=false;
+        const that=this;
         wxRequest('merchantRegister', this.info)
           .then(res => {
             console.log(res);
@@ -765,6 +772,7 @@
               })
             }else{
               wx.hideLoading();
+              that.btnonoff=true;
               wx.showToast({
                 title:res.errorMsg,
                 icon:"none",
@@ -775,6 +783,7 @@
           })
           .catch(err => {
             console.log(err)
+            that.btnonoff=true;
           })
       }
     }
