@@ -188,9 +188,12 @@
 			this.ratio = '';
 			this.type = 0;
 			this.info = {};
-      this.groupPersonNum = '';
+      this.groupPersonNum = '2';
+			this.groupPersonNumDesc = '2人',
 			this.onlyView = false; // 不展示底部操作
 			this.goodsInfoDesc = '请填写商品说明';
+			this.deliveryMethod =  '';
+			this.deliveryMethodDesc = '';
 			wx.setStorageSync("group-info", "");
 		},
 		mounted() {},
@@ -267,7 +270,7 @@
 						}  else if (res.tapIndex == 3) {
 							that.groupPersonNum = 5;
 							that.groupPersonNumDesc = '5人';
-						}  else if (res.tapIndex == 5) {
+						}  else if (res.tapIndex == 4) {
 							that.groupPersonNum = 6;
 							that.groupPersonNumDesc = '6人';
 						}
@@ -443,16 +446,23 @@
 								ratio: self.ratio,
 								currency: parseInt(self.groupPrice* self.ratio ) > 1 ? parseInt(self.groupPrice * self.ratio) : 1 ,
 								// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
-								// deliveryMethod: self.deliveryMethod,
+								deliveryMethod: self.deliveryMethod,
 								groupPersonNum: self.groupPersonNum,
 								groupAging: 48,
-								rule: self.rule,
 								status: 1,
 								goodsType: 1,
 							})
 			          .then(res => {
 			            console.log(res)
-			            wx.navigateBack()
+									if (res.code == 1) {
+			            	wx.navigateBack()
+									} else {
+										wx.showToast({
+											title: res.errorMsg || ' ',
+											icon: 'none',
+											duration: 2000
+										});
+									}
 			            //				that.codeImg = res.value
 			          }).catch(err => {
 			          console.log(err)
@@ -469,16 +479,23 @@
 								ratio: self.ratio,
 								currency: parseInt(self.groupPrice* self.ratio ) > 1 ? parseInt(self.groupPrice * self.ratio ) : 1 ,
 								// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
-								// deliveryMethod: self.deliveryMethod,
+								deliveryMethod: self.deliveryMethod,
 								groupPersonNum: self.groupPersonNum,
 								groupAging: 48,
-								rule: self.rule,
 								status: 1,
 								goodsType: 1,
 							})
 			          .then(res => {
 			            console.log(res)
-			            wx.navigateBack()
+									if (res.code == 1) {
+			            	wx.navigateBack()
+									} else {
+										wx.showToast({
+											title: res.errorMsg || ' ',
+											icon: 'none',
+											duration: 2000
+										});
+									}
 			            //				that.codeImg = res.value
 			          }).catch(err => {
 			          console.log(err)
@@ -516,6 +533,7 @@
 								currency: parseInt(self.groupPrice* self.ratio) > 1 ? parseInt(self.groupPrice * self.ratio) : 1 ,
 								// personCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
 								// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
+								deliveryMethod: self.deliveryMethod,
 								groupPersonNum: self.groupPersonNum,
 								groupAging: 48,
 								rule: self.rule,
@@ -524,7 +542,15 @@
 							})
 			          .then(res => {
 			            console.log(res)
-			            wx.navigateBack()
+									if (res.code == 1) {
+			            	wx.navigateBack()
+									} else {
+										wx.showToast({
+											title: res.errorMsg || ' ',
+											icon: 'none',
+											duration: 2000
+										});
+									}
 			            //				that.codeImg = res.value
 			          }).catch(err => {
 			          console.log(err)
@@ -541,7 +567,7 @@
 								ratio: self.ratio,
 								currency: parseInt(self.groupPrice* self.ratio) > 1 ? parseInt(self.groupPrice * self.ratio) : 1 ,
 								// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
-								// deliveryMethod: self.deliveryMethod,
+								deliveryMethod: self.deliveryMethod,
 								groupPersonNum: self.groupPersonNum,
 								groupAging: 48,
 								rule: self.rule,
@@ -550,7 +576,15 @@
 							})
 			          .then(res => {
 			            console.log(res)
-			            wx.navigateBack()
+									if (res.code == 1) {
+			            	wx.navigateBack()
+									} else {
+										wx.showToast({
+											title: res.errorMsg || ' ',
+											icon: 'none',
+											duration: 2000
+										});
+									}
 			            //				that.codeImg = res.value
 			          }).catch(err => {
 			          console.log(err)
@@ -596,6 +630,12 @@
 						duration: 2000
 					});
 					return false;
+				} else if (!this.deliveryMethod) {
+					wx.showToast({
+						title: '请选择配送方式',
+						icon: 'none',
+						duration: 2000
+					});
 				} else if ( discountInfo && discountInfo.explainContent && discountInfo.explainContent.length > 300) {
 					wx.showToast({
 						title: '商品说明最多可输入300字',
@@ -733,11 +773,12 @@
 							if(res.value.explainContent || res.value.explainImgUrl > 0) {
 								this.goodsInfoDesc = '查看商品说明';
 							}
-							// if (res.value.deliveryMethod == 1) {
-							// 	self.deliveryMethodDesc = '邮寄';
-							// } else if (res.value.deliveryMethod == 2) {
-							// 	self.deliveryMethodDesc = '到店自提';
-							// }
+							if (res.value.deliveryMethod == 1) {
+								self.deliveryMethodDesc = '邮寄';
+							} else if (res.value.deliveryMethod == 2) {
+								self.deliveryMethodDesc = '到店自提';
+							}
+							self.deliveryMethod = res.value.deliveryMethod;
 							self.originPrice = res.value.price / 100;
 							self.groupPrice = res.value.groupPrice / 100;
 							self.onceGroupPrice = res.value.singlePrice / 100;
@@ -747,6 +788,12 @@
 							self.groupPersonNum = res.value.groupPersonNum;
 							// status: 0,
 							// goodsType: 3,
+						} else {
+							wx.showToast({
+								title: res.errorMsg || ' ',
+								icon: 'none',
+								duration: 2000
+							});
 						}
 		      	console.log(res)
 		      }).catch(err => {

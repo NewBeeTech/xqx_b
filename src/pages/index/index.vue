@@ -69,7 +69,7 @@
         </div>
       </div>
       <!--@click="navGo('/pages/my-client/main')"-->
-      <div class="sec-lin" @click="navGo('/pages/my-client/main')">
+      <div class="sec-lin">
         <div class="item">
           <div>{{value.personTodaySum==""?0:value.personTodaySum}}</div>
           <div>今日新增客户</div>
@@ -118,7 +118,11 @@
       <div>您还未进行资质认证，下载小确幸商家版APP完成认证后，可体验更多营销服务哦～</div>
       <div @click="navGo('/pages/download-app/main')">立即下载</div>
     </footer>
+<<<<<<< HEAD
      <button type="warn" open-type="getUserInfo" @getuserinfo="getUserInfoTest">授权</button>
+=======
+    <button type="warn" open-type="getUserInfo" @getuserinfo="getUserInfoTest">授权</button>
+>>>>>>> dev
     <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber"></button>
   </div>
 </template>
@@ -202,12 +206,23 @@
       }
     },
     onShow: function () {
-
+      const that=this;
       if (wx.getStorageSync('token')){
-        this.getHomeMsg();
-        this.getFan();
-        this.getGet();
-        this.getInfo();
+        const data={sessionKey:wx.getStorageSync('token')}
+        wxRequest('getShopInfo',data)
+        .then(res =>{
+          if(res.code==1){
+            that.getHomeMsg();
+            that.getFan();
+            that.getGet();
+            that.getInfo();
+          }
+          if (res.code == 4000) {
+            wx.navigateTo({
+              url: '/pages/bind-phone/main'
+            })
+          }
+        })
         // this.getUserInfo();
       }
 
@@ -230,7 +245,7 @@
           .then(res => {
             console.log(res);
             if(res.code==1){
-              that.fansum=res.value.fansNum
+              self.fansum=res.value.fansNum
             }
           })
           .catch(err => {
@@ -248,7 +263,7 @@
                 num+=res.value[i].real_charge
               }
               num=num/100
-              that.getvalue=num
+              self.getvalue=num
             }
           })
           .catch(err => {

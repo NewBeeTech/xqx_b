@@ -9,7 +9,7 @@
     <div class="user-from  sec">
       <div class="text">设置登录密码</div>
       <div class="input">
-        <input @input="bindKeyInput" type="text" maxlength="16" minlength="8" placeholder="请设置登录密码" placeholder-style='font-size: 15px' v-model="info.app_password"  @blur="checkPassword" :value="pass">
+        <input @input="bindKeyInput" type="text" maxlength="16" minlength="8" placeholder="请设置登录密码" placeholder-style='font-size: 15px' v-model="info.appPasswd"  @blur="checkPassword" :value="pass">
       </div>
     </div>
     <div class="user-from top sec">
@@ -58,7 +58,7 @@
         </picker> -->
         <picker v-if="isload" mode="multiSelector" @change="bindMultiPickerChange" @columnchange="bindMultiPickerColumnChange" :value="multiIndex" range-key="araename" :range="objectMultiArray">
           <view class="picker">
-            {{objectMultiArray[0][multiIndex[0]].araename}}-{{objectMultiArray[1][multiIndex[1]].araename}}-{{objectMultiArray[2][multiIndex[2]].araename}}
+            {{objectMultiArray[0][multiIndex[0]].araename}}/{{objectMultiArray[1][multiIndex[1]].araename}}/{{objectMultiArray[2][multiIndex[2]].araename}}
           </view>
         </picker>
       </div>
@@ -85,24 +85,28 @@
       </div>
     </div>
 
-    <div v-if="isLang == 1">
+    <div class="select-line">
       <div class="register-tip">推荐您注册的人员编号，如有请填写</div>
-      <div class="user-from top sec">
-        <div class="text">推荐人编号</div>
-        <div class="input">
-          <input type="digit" placeholder="请输入推荐人编号" placeholder-style='font-size: 15px' v-model="info.counterid">
-        </div>
-      </div>
-
-      <button class="button sub" size="digit" @click="submit">下一步</button>
     </div>
 
-    <div v-else class="select-container">
+    <div class="select-container">
       <div class="select-container">
+        <div class="select-line  top sec">
+          <div>推荐人编号</div>
+          <div class="input">
+            <input type="digit" max-length="15" placeholder="请输入推荐人编号" placeholder-style='font-size: 15px' v-model="info.counterid">
+          </div>
+        </div>
         <div class="select-line  top sec">
           <div>客服电话</div>
           <div class="input">
             <input type="digit" max-length="14" placeholder="请输入客服电话" placeholder-style='font-size: 15px' v-model="info.storePhone" @blur="checktel">
+          </div>
+        </div>
+        <div class="select-line  top sec">
+          <div>邮箱</div>
+          <div class="input">
+            <input type="text" max-length="14" placeholder="请输入邮箱" placeholder-style='font-size: 15px' v-model="info.contractEmail" @blur="checkemail">
           </div>
         </div>
         <div class="select-line">
@@ -299,12 +303,21 @@
 
     },
     methods: {
+      filteremoji(content){
+          var ranges = [
+              '\ud83c[\udf00-\udfff]',
+              '\ud83d[\udc00-\ude4f]',
+              '\ud83d[\ude80-\udeff]'
+          ];
+          var emojireg = content .replace(new RegExp(ranges.join('|'), 'g'), '');
+          return emojireg;
+      },
       bindKeyInput(e){
         console.log(e)
         const that=this;
         this.pass=e.mp.detail.value
         if(!/[a-zA-Z0-9]+$/.test(e.mp.detail.value)){
-          let str='',resstr=this.info.app_password
+          let str='',resstr=this.info.appPasswd
           for(var i=0;i<resstr.length;i++){
             if(/[a-zA-Z0-9]+$/.test(resstr.charAt(i))){
               str+=resstr.charAt(i)
@@ -312,14 +325,23 @@
           }
           console.log(str)
           this.pass=str;
-          this.info.app_password=str;
+          this.info.appPasswd=str;
           wx.showToast({
             title: '只支持数字和字母',
             icon: 'none',
             duration: 3000
           })
         }
-        console.log(this.info.app_password)
+        console.log(this.info.appPasswd)
+      },
+      checkperman(e){
+        if(!/^[0-9]+.?[0-9]*$/.test(e.target.value)){
+          wx.showToast({
+            title: '请输入正确的推荐人编号',
+            icon: 'none',
+            duration: 3000
+          })
+        }
       },
       checktel(e){
         if(!/^[0-9]{1,14}$/.test(e.target.value)){
@@ -349,7 +371,7 @@
         }
       },
       checkphone(e){
-        if(!/^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$/.test(e.target.value)){
+        if(!/^[1][3,4,5,7,8][0-9]{9}$/.test(e.target.value)){
           wx.showToast({
             title: '请输入正确手机号',
             icon: 'none',
@@ -434,7 +456,7 @@
             } else {
               that[type] = [...that[type], ...tempFilePaths]
               console.log(that.images)
-              that.uploadImage("ccpp-mpic", that.images[0]);
+              that.uploadImage("ccpp-mpic", that.images[that.images.length-1]);
             }
 
 
@@ -443,14 +465,14 @@
       },
       uploadImage: function (bucket, filePaths) {
         var self = this;
+        const index=self.imageIndex;
+        self.imageIndex=self.imageIndex+1;
         wxRequest('getQiniuToken', {bucket: bucket})
           .then(res => {
             console.log(res)
-
             if (res.code == 1) {
               var token = res.value
               var date = new Date()
-
               qiniu.upload(filePaths, (res) => {
                 console.log(res);
                 var type = bucket.replace("ccpp-", "");
@@ -460,21 +482,19 @@
                 if (type == "logo") {
                   self.info.storeLogo = imageURL;
                 } else {
-                  if (self.imageIndex == 0) {
+                  if (index == 0) {
                     self.info.storeBackgroundPicture = imageURL;
                   } else {
-                    if (self.imageIndex == 1) {
+                    if (index == 1) {
                       self.info.carouselFigure.imgOne = imageURL
                     }
-                    if (self.imageIndex == 2) {
+                    if (index == 2) {
                       self.info.carouselFigure.imgTwo = imageURL
                     }
-                    if (self.imageIndex == 3) {
+                    if (index == 3) {
                       self.info.carouselFigure.imgThree = imageURL
                     }
                   }
-                  ++self.imageIndex;
-
                 }
               }, (error) => {
                 console.log('error: ' + error);
@@ -535,7 +555,7 @@
           this.objectMultiArray=Arraydata
           //currentpage.setData({$root:pagedata.$root})
           that.task=wx.request({
-            url: Default.HOST+'mxcx/UtilsController/getCity', //仅为示例，并非真实的接口地址
+            url: Default.HOST+'xcxm/UtilsController/getCity', //仅为示例，并非真实的接口地址
             data: {cityKey:this.objectMultiArray[0][e.mp.detail.value].id,token:this.token,sessionKey:this.token},
             method:'POST',
             header: {
@@ -551,7 +571,7 @@
                  //that.multiIndex[1]=0;
                  currentpage.setData({$root:pagedata.$root})
                  that.task=wx.request({
-                   url: Default.HOST+'mxcx/UtilsController/getCounty', //仅为示例，并非真实的接口地址
+                   url: Default.HOST+'xcxm/UtilsController/getCounty', //仅为示例，并非真实的接口地址
                    data: {countyKey:that.objectMultiArray[1][0].id,token:that.token,sessionKey:that.token},
                    method:'POST',
                    header: {
@@ -614,7 +634,7 @@
           that.multiIndex[2]=0;
           currentpage.setData({$root:pagedata.$root})
           that.task=wx.request({
-            url: Default.HOST+'mxcx/UtilsController/getCounty', //仅为示例，并非真实的接口地址
+            url: Default.HOST+'xcxm/UtilsController/getCounty', //仅为示例，并非真实的接口地址
             data: {countyKey:that.objectMultiArray[1][e.mp.detail.value].id,token:this.token,sessionKey:this.token},
             method:'POST',
             header: {
@@ -686,20 +706,21 @@
         this.info.appLoginname = wx.getStorageSync('phone');
         this.info.sessionKey=this.token;
         var message = "";
-        if (!this.info.name){message = "请输入商户名称"}
-        if (!this.info.app_password){message = "请设置登录密码"}else if(this.info.app_password.length<8){message = "登录密码位数应为8-16位"}
+        if (!this.info.name){message = "请输入商户名称"}else if(this.info.name!=this.filteremoji(this.info.name)){message = "商户名不支持表情符"}
+        if (!this.info.appPasswd){message = "请设置登录密码"}else if(this.info.appPasswd.length<8){message = "登录密码位数应为8-16位"}
         if (!this.logo){message = "请上传商户logo"}
         if (!this.info.businessIndName){message = "请输入行业名称"}
-        if (!this.images.length){message = "请上传商品图片"}
+        if (this.images.length<=0){message = "请上传商品图片"}else{this.info.carouselFigure=this.info.carouselFigure.imgOne?JSON.stringify(this.info.carouselFigure):this.info.carouselFigure}
         if (!this.info.businessIndName){message = "请选择行业"}
-        if (!this.region||this.area.shi=='加载中'||this.area.q=='加载中'){message = "请选择所在地区";}else{this.info.region=this.region;this.info.businessLicenseAreaid=this.area.id}
-        if (!this.mark){message = "请选择地图标记";}else{this.info.mark=this.mark;}
+        if (!this.region||this.area.shi=='加载中'||this.area.q=='加载中'||!this.area.shi||!this.area.q||!this.area.sheng){message = "请选择所在地区";}else{this.info.businessCityName=this.region;this.info.businessLicenseAreaid=this.area.id}
+        if (!this.mark){message = "请选择地图标记";}
         if (!this.info.businessDistrict){message = "请选择商圈"}
         if (!/^[0-9]{1,14}$/.test(this.info.storePhone)){message = "请输入正确的客服电话"}
         if (!this.info.businessHours){message = "请选择营业时间"}
+        if (!this.info.detailAddress){message='请填写详细地址'}else if(this.info.detailAddress!=this.filteremoji(this.info.detailAddress)){message = "详细地址不支持表情符"}
         if (!this.info.personInChargeName){message = "请输入联系人姓名"}else if(!/^[A-Za-z\u4e00-\u9fa5]+$/.test(this.info.personInChargeName)){message = "联系人姓名只支持汉字和字母"}
-        if (!/^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\\d{8}$/.test(this.info.personInChargePhone)){message="请输入正确的联系人电话"}
-        if (!this.info.ratio){message = "请设置返金金额"}else if(this.info.ratio>80||this.info.ratio<0.1){message = "返金比例设置范围0.1~80"}
+        if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(this.info.personInChargePhone)){message="请输入正确的联系人电话"}
+        if (!this.info.ratio){message = "请设置返金比例"}else if(this.info.ratio>80||this.info.ratio<0.1){message = "返金比例设置范围0.1~80"}else if(!/^[0-9]+([.][0-9]{1}){0,1}$/.test(this.info.ratio)){message = "返金比例请保留一位小数"}
         // if (!this.info.integralRatio){message = "请设置积分设置"}
         console.log(this.info)
         if (message){
@@ -713,9 +734,19 @@
         wxRequest('merchantRegister', this.info)
           .then(res => {
             console.log(res);
-            wx.navigateTo({
-              url: '/pages/index/main'
-            })
+            if(res.code==1){
+              wx.navigateTo({
+                url: '/pages/index/main'
+              })
+            }else{
+              wx.hideLoading();
+              wx.showToast({
+                title:res.errorMsg,
+                icon:"none",
+                duration: 2000
+              })
+            }
+
           })
           .catch(err => {
             console.log(err)

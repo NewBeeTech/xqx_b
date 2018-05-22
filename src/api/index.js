@@ -4,7 +4,11 @@ export let api = {
 	HTTP_SERVER: {
 		"updateGoodsGroupOrderExpressNumber": "/xcxm/GoodsGroupOrderController/updateGoodsGroupOrderExpressNumber", // 设置订单快递单号接口
 		"useIdQueryGoodsGroup": "/xcxm/GoodsGroupController/useIdQueryGoodsGroup",
+<<<<<<< HEAD
 	  "useAppLoginNameQueryMerchant":"xcxm/MerchantController/useAppLoginNameQueryMerchantV110",
+=======
+	  "useAppLoginNameQueryMerchant":"xcxm/MerchantController/useAppLoginNameQueryMerchant",
+>>>>>>> dev
 		'userLogin': 'xcxm/AuthorizedController/checkAuthorization', //获取code，登录
     "getMessageCode":"xcxm/UtilsController/getMessageCode",//获取验证码
     "verificationCode":"xcxm/UtilsController/verificationCode",//手机验证码 验证
@@ -14,8 +18,13 @@ export let api = {
 		'getShopInfo':'xcxm/MerchantController/queryMerchantInfo', //获取商户信息
 		'getCodeImg':'xcxm/MerchantController/getMerchantMoneyCollectQr',//获取二维码
     "updateMerchantInfo":"xcxm/MerchantController/updateMerchantInfo",
+<<<<<<< HEAD
 		'createGoodsGroup':'xcxm/GoodsGroupController/createGoodsGroupV110',//创建活动
     "updateGoodsGroup":"xcxm/GoodsGroupController/updateGoodsGroupV110",
+=======
+		'createGoodsGroup':'xcxm/GoodsGroupController/createGoodsGroup',//创建活动
+    "updateGoodsGroup":"xcxm/GoodsGroupController/updateGoodsGroup",
+>>>>>>> dev
     "deleteGoodsGroup":"xcxm/GoodsGroupController/deleteGoodsGroup",
     "queryGoodsGroup":"xcxm/GoodsGroupController/queryGoodsGroup",
     "getProvince":"xcxm/UtilsController/getProvince",//省

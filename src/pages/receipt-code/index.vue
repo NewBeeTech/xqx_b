@@ -57,7 +57,7 @@
 			getActive(){
 				const that=this,data1={sessionKey:this.token,discountMode:'MD'},data2={sessionKey:this.token,discountMode:'MR'};
 				wx.request({
-          url: Default.HOST+'mxcx/MerchantController/merchantQueryActivities',
+          url: Default.HOST+'xcxm/MerchantController/merchantQueryActivities',
           data:data1,
           method:'POST',
           header: {
@@ -70,7 +70,7 @@
 					}
 				})
 				wx.request({
-          url: Default.HOST+'mxcx/MerchantController/merchantQueryActivities',
+          url: Default.HOST+'xcxm/MerchantController/merchantQueryActivities',
           data:data2,
           method:'POST',
           header: {

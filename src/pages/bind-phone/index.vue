@@ -174,7 +174,7 @@
         }
         var config = {verCode:this.verCode,mobileNo:this.phoneNumber,}
         wx.request({
-          url: Default.HOST+'mxcx/UtilsController/verificationCode',
+          url: Default.HOST+'xcxm/UtilsController/verificationCode',
           data:config,
           method:'POST',
           header: {
@@ -185,7 +185,7 @@
             if (res.data.code == 1) {
               const reqdata={sessionKey:self.token,appLoginname:config.mobileNo}
               wx.request({
-                url: Default.HOST+'mxcx/MerchantController/useAppLoginNameQueryMerchant',
+                url: Default.HOST+'xcxm/MerchantController/useAppLoginNameQueryMerchant',
                 data:reqdata,
                 method:'POST',
                 header: {
