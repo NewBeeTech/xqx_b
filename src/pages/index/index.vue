@@ -69,7 +69,7 @@
         </div>
       </div>
       <!--@click="navGo('/pages/my-client/main')"-->
-      <div class="sec-lin" @click="navGo('/pages/my-client/main')">
+      <div class="sec-lin">
         <div class="item">
           <div>{{value.personTodaySum==""?0:value.personTodaySum}}</div>
           <div>今日新增客户</div>

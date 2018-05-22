@@ -303,6 +303,15 @@
 
     },
     methods: {
+      filteremoji(content){
+          var ranges = [
+              '\ud83c[\udf00-\udfff]',
+              '\ud83d[\udc00-\ude4f]',
+              '\ud83d[\ude80-\udeff]'
+          ];
+          var emojireg = content .replace(new RegExp(ranges.join('|'), 'g'), '');
+          return emojireg;
+      },
       bindKeyInput(e){
         console.log(e)
         const that=this;
@@ -697,7 +706,7 @@
         this.info.appLoginname = wx.getStorageSync('phone');
         this.info.sessionKey=this.token;
         var message = "";
-        if (!this.info.name){message = "请输入商户名称"}
+        if (!this.info.name){message = "请输入商户名称"}else if(this.info.name!=this.filteremoji(this.info.name)){message = "商户名不支持表情符"}
         if (!this.info.appPasswd){message = "请设置登录密码"}else if(this.info.appPasswd.length<8){message = "登录密码位数应为8-16位"}
         if (!this.logo){message = "请上传商户logo"}
         if (!this.info.businessIndName){message = "请输入行业名称"}
@@ -708,9 +717,10 @@
         if (!this.info.businessDistrict){message = "请选择商圈"}
         if (!/^[0-9]{1,14}$/.test(this.info.storePhone)){message = "请输入正确的客服电话"}
         if (!this.info.businessHours){message = "请选择营业时间"}
+        if (!this.info.detailAddress){message='请填写详细地址'}else if(this.info.detailAddress!=this.filteremoji(this.info.detailAddress)){message = "详细地址不支持表情符"}
         if (!this.info.personInChargeName){message = "请输入联系人姓名"}else if(!/^[A-Za-z\u4e00-\u9fa5]+$/.test(this.info.personInChargeName)){message = "联系人姓名只支持汉字和字母"}
         if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(this.info.personInChargePhone)){message="请输入正确的联系人电话"}
-        if (!this.info.ratio){message = "请设置返金金额"}else if(this.info.ratio>80||this.info.ratio<0.1){message = "返金比例设置范围0.1~80"}
+        if (!this.info.ratio){message = "请设置返金比例"}else if(this.info.ratio>80||this.info.ratio<0.1){message = "返金比例设置范围0.1~80"}else if(!/^[0-9]+([.][0-9]{1}){0,1}$/.test(this.info.ratio)){message = "返金比例请保留一位小数"}
         // if (!this.info.integralRatio){message = "请设置积分设置"}
         console.log(this.info)
         if (message){
