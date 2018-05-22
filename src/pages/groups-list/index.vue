@@ -70,6 +70,25 @@
 <script>
   import {wxRequest} from '@/api'
 
+	var _lastTime = null
+function throttle(fn, gapTime) {
+    if (gapTime == null || gapTime == undefined) {
+        gapTime = 1500
+    }
+
+    // let _lastTime = null
+
+    // 返回新的函数
+    return function () {
+        let _nowTime = + new Date()
+        console.log(_nowTime, _lastTime, gapTime);
+        if (_nowTime - _lastTime > gapTime || !_lastTime) {
+            fn.apply(this, arguments)   //将this和参数传给原函数
+            _lastTime = _nowTime
+        }
+    }
+}
+
 	export default {
   data () {
     return {
@@ -129,14 +148,22 @@
       })
     },
     bindchange (e) {
-      console.log(e.target.current)
-      this.current = e.target.current
-      this.searchGroup(this.current);
+			const that = this;
+			throttle(function() {
+				console.log(e.target.current)
+	      that.current = e.target.current
+	      that.searchGroup(that.current);
+			}, 200)();
+
     },
     tabChange (e){
-    		console.log(e.target.id)
-    		this.current = e.target.id;
-      this.searchGroup(this.current);
+			const that = this;
+			throttle(function() {
+				console.log(e.target.id)
+    		that.current = e.target.id;
+      that.searchGroup(that.current);
+		}, 200)();
+
     },
     submit (id) {
       wx.navigateTo({

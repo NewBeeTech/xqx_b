@@ -768,7 +768,7 @@
 							self.logo = res.value.imgUrl;
 							wx.setStorageSync("group-info",JSON.stringify({
 								explainContent: res.value.explainContent,
-								explainImgUrl: res.value.explainImgUrl,
+								explainImgUrl: res.value.explainImgUrl && JSON.parse(res.value.explainImgUrl),
 							}));
 							if(res.value.explainContent || res.value.explainImgUrl > 0) {
 								this.goodsInfoDesc = '查看商品说明';
