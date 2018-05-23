@@ -435,74 +435,85 @@
 						} else {
 							var discountInfo = JSON.parse(wx.getStorageSync("group-info"));
 						}
-						if (self.id) {
-							wxRequest('updateGoodsGroup', {
-								id: self.id,
-								name: self.name,
-								imgUrl: self.logo,
-								explainContent: discountInfo.explainContent,
-								explainImgUrl: JSON.stringify(discountInfo.explainImgUrl),
-								price: parseInt(self.originPrice * 100),
-								groupPrice: parseInt(self.groupPrice * 100),
-								// singlePrice: parseInt(self.onceGroupPrice * 100),
-								ratio: self.ratio,
-								currency: parseInt(self.groupPrice* self.ratio ) > 1 ? parseInt(self.groupPrice * self.ratio) : 1 ,
-								// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
-								deliveryMethod: self.deliveryMethod,
-								groupPersonNum: self.groupPersonNum,
-								groupAging: 48,
-								status: 1,
-								goodsType: 1,
-							})
-			          .then(res => {
-			            console.log(res)
-									if (res.code == 1) {
-			            	wx.navigateBack()
+						wx.showModal({
+						  title: '确认上架',
+						  content: '',
+						  success: function(res) {
+						    if (res.confirm) {
+									if (self.id) {
+										wxRequest('updateGoodsGroup', {
+											id: self.id,
+											name: self.name,
+											imgUrl: self.logo,
+											explainContent: discountInfo.explainContent,
+											explainImgUrl: JSON.stringify(discountInfo.explainImgUrl),
+											price: parseInt(self.originPrice * 100),
+											groupPrice: parseInt(self.groupPrice * 100),
+											// singlePrice: parseInt(self.onceGroupPrice * 100),
+											ratio: self.ratio,
+											currency: parseInt(self.groupPrice* self.ratio ) > 1 ? parseInt(self.groupPrice * self.ratio) : 1 ,
+											// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
+											deliveryMethod: self.deliveryMethod,
+											groupPersonNum: self.groupPersonNum,
+											groupAging: 48,
+											status: 1,
+											goodsType: 1,
+										})
+						          .then(res => {
+						            console.log(res)
+												if (res.code == 1) {
+						            	wx.navigateBack()
+												} else {
+													wx.showToast({
+														title: res.errorMsg || ' ',
+														icon: 'none',
+														duration: 2000
+													});
+												}
+						            //				that.codeImg = res.value
+						          }).catch(err => {
+						          console.log(err)
+						        });
 									} else {
-										wx.showToast({
-											title: res.errorMsg || ' ',
-											icon: 'none',
-											duration: 2000
-										});
+										wxRequest('createGoodsGroup', {
+											name: self.name,
+											imgUrl: self.logo,
+											explainContent: discountInfo.explainContent,
+											explainImgUrl: JSON.stringify(discountInfo.explainImgUrl),
+											price: parseInt(self.originPrice * 100),
+											groupPrice: parseInt(self.groupPrice * 100),
+											singlePrice: parseInt(self.onceGroupPrice * 100),
+											ratio: self.ratio,
+											currency: parseInt(self.groupPrice* self.ratio ) > 1 ? parseInt(self.groupPrice * self.ratio ) : 1 ,
+											// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
+											deliveryMethod: self.deliveryMethod,
+											groupPersonNum: self.groupPersonNum,
+											groupAging: 48,
+											status: 1,
+											goodsType: 1,
+										})
+						          .then(res => {
+						            console.log(res)
+												if (res.code == 1) {
+						            	wx.navigateBack()
+												} else {
+													wx.showToast({
+														title: res.errorMsg || ' ',
+														icon: 'none',
+														duration: 2000
+													});
+												}
+						            //				that.codeImg = res.value
+						          }).catch(err => {
+						          console.log(err)
+						        });
 									}
-			            //				that.codeImg = res.value
-			          }).catch(err => {
-			          console.log(err)
-			        });
-						} else {
-							wxRequest('createGoodsGroup', {
-								name: self.name,
-								imgUrl: self.logo,
-								explainContent: discountInfo.explainContent,
-								explainImgUrl: JSON.stringify(discountInfo.explainImgUrl),
-								price: parseInt(self.originPrice * 100),
-								groupPrice: parseInt(self.groupPrice * 100),
-								singlePrice: parseInt(self.onceGroupPrice * 100),
-								ratio: self.ratio,
-								currency: parseInt(self.groupPrice* self.ratio ) > 1 ? parseInt(self.groupPrice * self.ratio ) : 1 ,
-								// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
-								deliveryMethod: self.deliveryMethod,
-								groupPersonNum: self.groupPersonNum,
-								groupAging: 48,
-								status: 1,
-								goodsType: 1,
-							})
-			          .then(res => {
-			            console.log(res)
-									if (res.code == 1) {
-			            	wx.navigateBack()
-									} else {
-										wx.showToast({
-											title: res.errorMsg || ' ',
-											icon: 'none',
-											duration: 2000
-										});
-									}
-			            //				that.codeImg = res.value
-			          }).catch(err => {
-			          console.log(err)
-			        });
-						}
+						    } else if (res.cancel) {
+						      console.log('用户点击取消')
+						    }
+						  }
+						})
+
 					} catch (e) {
 					}
 				}
@@ -521,77 +532,88 @@
 						} else {
 							var discountInfo = JSON.parse(wx.getStorageSync("group-info"));
 						}
-						if (self.id) {
-							wxRequest('updateGoodsGroup', {
-								id: self.id,
-								name: self.name,
-								imgUrl: self.logo,
-								explainContent: discountInfo.explainContent,
-								explainImgUrl: JSON.stringify(discountInfo.explainImgUrl),
-								price: parseInt(self.originPrice * 100),
-								groupPrice: parseInt(self.groupPrice * 100),
-								// singlePrice: parseInt(self.onceGroupPrice * 100),
-								ratio: self.ratio,
-								currency: parseInt(self.groupPrice* self.ratio) > 1 ? parseInt(self.groupPrice * self.ratio) : 1 ,
-								// personCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
-								// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
-								deliveryMethod: self.deliveryMethod,
-								groupPersonNum: self.groupPersonNum,
-								groupAging: 48,
-								rule: self.rule,
-								status: 0,
-								goodsType: 1,
-							})
-			          .then(res => {
-			            console.log(res)
-									if (res.code == 1) {
-			            	wx.navigateBack()
+						wx.showModal({
+						  title: '确认保存',
+						  content: '',
+						  success: function(res) {
+						    if (res.confirm) {
+									if (self.id) {
+										wxRequest('updateGoodsGroup', {
+											id: self.id,
+											name: self.name,
+											imgUrl: self.logo,
+											explainContent: discountInfo.explainContent,
+											explainImgUrl: JSON.stringify(discountInfo.explainImgUrl),
+											price: parseInt(self.originPrice * 100),
+											groupPrice: parseInt(self.groupPrice * 100),
+											// singlePrice: parseInt(self.onceGroupPrice * 100),
+											ratio: self.ratio,
+											currency: parseInt(self.groupPrice* self.ratio) > 1 ? parseInt(self.groupPrice * self.ratio) : 1 ,
+											// personCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
+											// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
+											deliveryMethod: self.deliveryMethod,
+											groupPersonNum: self.groupPersonNum,
+											groupAging: 48,
+											rule: self.rule,
+											status: 0,
+											goodsType: 1,
+										})
+						          .then(res => {
+						            console.log(res)
+												if (res.code == 1) {
+						            	wx.navigateBack()
+												} else {
+													wx.showToast({
+														title: res.errorMsg || ' ',
+														icon: 'none',
+														duration: 2000
+													});
+												}
+						            //				that.codeImg = res.value
+						          }).catch(err => {
+						          console.log(err)
+						        });
 									} else {
-										wx.showToast({
-											title: res.errorMsg || ' ',
-											icon: 'none',
-											duration: 2000
-										});
+										wxRequest('createGoodsGroup', {
+											name: self.name,
+											imgUrl: self.logo,
+											explainContent: discountInfo.explainContent,
+											explainImgUrl: JSON.stringify(discountInfo.explainImgUrl),
+											price: parseInt(self.originPrice * 100),
+											groupPrice: parseInt(self.groupPrice * 100),
+											// singlePrice: parseInt(self.onceGroupPrice * 100),
+											ratio: self.ratio,
+											currency: parseInt(self.groupPrice* self.ratio) > 1 ? parseInt(self.groupPrice * self.ratio) : 1 ,
+											// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
+											deliveryMethod: self.deliveryMethod,
+											groupPersonNum: self.groupPersonNum,
+											groupAging: 48,
+											rule: self.rule,
+											status: 0,
+											goodsType: 1,
+										})
+						          .then(res => {
+						            console.log(res)
+												if (res.code == 1) {
+						            	wx.navigateBack()
+												} else {
+													wx.showToast({
+														title: res.errorMsg || ' ',
+														icon: 'none',
+														duration: 2000
+													});
+												}
+						            //				that.codeImg = res.value
+						          }).catch(err => {
+						          console.log(err)
+						        });
 									}
-			            //				that.codeImg = res.value
-			          }).catch(err => {
-			          console.log(err)
-			        });
-						} else {
-							wxRequest('createGoodsGroup', {
-								name: self.name,
-								imgUrl: self.logo,
-								explainContent: discountInfo.explainContent,
-								explainImgUrl: JSON.stringify(discountInfo.explainImgUrl),
-								price: parseInt(self.originPrice * 100),
-								groupPrice: parseInt(self.groupPrice * 100),
-								// singlePrice: parseInt(self.onceGroupPrice * 100),
-								ratio: self.ratio,
-								currency: parseInt(self.groupPrice* self.ratio) > 1 ? parseInt(self.groupPrice * self.ratio) : 1 ,
-								// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
-								deliveryMethod: self.deliveryMethod,
-								groupPersonNum: self.groupPersonNum,
-								groupAging: 48,
-								rule: self.rule,
-								status: 0,
-								goodsType: 1,
-							})
-			          .then(res => {
-			            console.log(res)
-									if (res.code == 1) {
-			            	wx.navigateBack()
-									} else {
-										wx.showToast({
-											title: res.errorMsg || ' ',
-											icon: 'none',
-											duration: 2000
-										});
-									}
-			            //				that.codeImg = res.value
-			          }).catch(err => {
-			          console.log(err)
-			        });
-						}
+						    } else if (res.cancel) {
+
+						    }
+						  }
+						})
+
 					} catch (e) {
 					}
 				}
