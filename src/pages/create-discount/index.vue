@@ -258,24 +258,28 @@
 			 * @return {[type]} [description]
 			 */
 			selectDispatchWay: function() {
-				const that = this;
-				wx.showActionSheet({
-  				itemList: ['邮寄', '到店自提'],
-  				success: function(res) {
-    				console.log(res.tapIndex)
-						if (res.tapIndex == 0) {
-							that.deliveryMethod = 1;
-							that.deliveryMethodDesc = '邮寄';
-						} else if (res.tapIndex == 1) {
-							that.deliveryMethod = 2;
-							that.deliveryMethodDesc = '到店自提';
-						}
-						console.log(that.deliveryMethodDesc);
-  				},
-  				fail: function(res) {
-    				console.log(res.errMsg)
-  				}
-				});
+				if(this.disabled) {
+				} else {
+					const that = this;
+					wx.showActionSheet({
+	  				itemList: ['邮寄', '到店自提'],
+	  				success: function(res) {
+	    				console.log(res.tapIndex)
+							if (res.tapIndex == 0) {
+								that.deliveryMethod = 1;
+								that.deliveryMethodDesc = '邮寄';
+							} else if (res.tapIndex == 1) {
+								that.deliveryMethod = 2;
+								that.deliveryMethodDesc = '到店自提';
+							}
+							console.log(that.deliveryMethodDesc);
+	  				},
+	  				fail: function(res) {
+	    				console.log(res.errMsg)
+	  				}
+					});
+				}
+
 			},
 			/**
 			 * 进入编辑态
