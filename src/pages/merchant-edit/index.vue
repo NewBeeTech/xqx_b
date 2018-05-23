@@ -106,7 +106,7 @@
         <div class="select-line  top sec">
           <div>邮箱</div>
           <div class="input">
-            <input type="text" maxlength="14" placeholder="请输入邮箱" placeholder-style='font-size: 15px' v-model="info.contractEmail">
+            <input type="text" placeholder="请输入邮箱" placeholder-style='font-size: 15px' v-model="info.contractEmail">
           </div>
         </div>
         <div class="select-line">
