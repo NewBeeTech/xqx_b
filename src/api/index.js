@@ -27,7 +27,7 @@ export let api = {
     "queryGoodsGroupOrderState":"xcxm/GoodsGroupOrderController/queryGoodsGroupOrderState",
     "getMerchantMoneyCollectQr":"xcxm/MerchantController/getMerchantMoneyCollectQr",
     "decryptPhoneNumber":"xcxm/AuthorizedController/decryptPhoneNumber",
-    "queryGroupBuy":"xcxm/GroupBuyController/queryGroupBuy",
+    "queryGroupBuy":"xcxm/GoodsGroupOrderController/queryGoodsGroupOrderCount",
 		"getFan":"xcxm/PersonController/fansList",
 		"getGet":"xcxm/GoodsGroupController/viewRevenueStatistics"
 	}
