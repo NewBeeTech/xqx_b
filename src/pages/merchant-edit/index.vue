@@ -2,13 +2,13 @@
   <div class="container">
     <div class="user-from top sec">
       <div class="text">商户名称</div>
-      <div class="input">
+      <div class="input right">
         <input type="text" minlength="1" maxlength="30" placeholder="请输入商户名称" placeholder-style='font-size: 15px' v-model="info.name" @blur="checkName" :value="info.name">
       </div>
     </div>
     <div class="user-from  sec">
       <div class="text">设置登录密码</div>
-      <div class="input">
+      <div class="input right">
         <input @input="bindKeyInput" type="text" maxlength="16" minlength="8" placeholder="请设置登录密码" placeholder-style='font-size: 15px' v-model="info.appPasswd"  @blur="checkPassword" :value="pass">
       </div>
     </div>
@@ -63,21 +63,21 @@
         </picker>
       </div>
 
-      <div class="select-line">
-        <div>详细地址</div>
-        <div class="input">
-          <input type="text" maxlength="50" placeholder="请输入详细地址" placeholder-style='font-size: 15px' v-model="info.detailAddress">
+      <div class="user-from  sec">
+        <div class="text left">详细地址</div>
+        <div class="input right">
+          <input type="text" maxlength="50" placeholder="请输入详细地址" placeholder-style='font-size: 32rpx' v-model="info.detailAddress">
         </div>
       </div>
-      <div class="select-line">
-        <div>地图标记</div>
-        <a href="/pages/set-map/main">
+      <div class="user-from  sec">
+        <div class="text left">地图标记</div>
+        <a class="text-button" href="/pages/set-map/main">
           <div>{{mark!=""?mark:"去标记"}} <img class="right_" src="/static/imgs/right.png" alt=""></div>
         </a>
       </div>
-      <div @click="navGo('/pages/choose-shangq/main')" class="select-line top sec">
-        <div>所属商圈</div>
-        <div>
+      <div @click="navGo('/pages/choose-shangq/main')" class="user-from top sec">
+        <div class="text left">所属商圈</div>
+        <div class="text-button">
           <span style="margin-right: 5px" v-if="info.businessDistrict">{{info.businessDistrict}}</span>
           <span style="margin-right: 5px" v-else>选择商圈</span>
           <img class="right_" src="/static/imgs/right.png"alt="">
@@ -91,52 +91,52 @@
 
     <div class="select-container">
       <div class="select-container">
-        <div class="select-line  top sec">
-          <div>推荐人编号</div>
-          <div class="input">
-            <input type="digit" maxlength="15" placeholder="请输入推荐人编号" placeholder-style='font-size: 15px' v-model="info.counterid">
+        <div class="user-from  top sec">
+          <div class="text left">推荐人编号</div>
+          <div class="input right">
+            <input type="digit" maxlength="15" placeholder="请输入推荐人编号" placeholder-style='font-size: 32rpx' v-model="info.counterid">
           </div>
         </div>
-        <div class="select-line  top sec">
-          <div>客服电话</div>
-          <div class="input">
-            <input type="digit" maxlength="14" placeholder="请输入客服电话" placeholder-style='font-size: 15px' v-model="info.storePhone">
+        <div class="user-from  top sec">
+          <div class="text left">客服电话</div>
+          <div class="input right">
+            <input type="digit" maxlength="14" placeholder="请输入客服电话" placeholder-style='font-size: 32rpx' v-model="info.storePhone">
           </div>
         </div>
-        <div class="select-line  top sec">
-          <div>邮箱</div>
-          <div class="input">
-            <input type="text" placeholder="请输入邮箱" placeholder-style='font-size: 15px' v-model="info.storeEmail">
+        <div class="user-from  top sec">
+          <div class="text left">邮箱</div>
+          <div class="input right">
+            <input type="text" placeholder="请输入邮箱" placeholder-style='font-size: 32rpx' v-model="info.storeEmail">
           </div>
         </div>
-        <div class="select-line">
-          <div>营业时间</div>
-          <div @click="navGo('/pages/time-checked/main')">
+        <div class="user-from sec">
+          <div class="text left">营业时间</div>
+          <div class="text-button" @click="navGo('/pages/time-checked/main')">
             <span v-if="info.businessHours">{{info.businessHours}}</span>
             <span v-else>设置</span>
             <img class="right_" src="/static/imgs/right.png" alt="">
           </div>
         </div>
 
-        <div class="select-line  top sec">
-          <div>联系人</div>
-          <div class="input">
-            <input type="text" maxlength="20" placeholder="请输入联系人姓名" placeholder-style='font-size: 15px' @blur="checklname"
+        <div class="user-from top sec">
+          <div class="text left">联系人</div>
+          <div class="input right">
+            <input type="text" maxlength="20" placeholder="请输入联系人姓名" placeholder-style='font-size: 32rpx' @blur="checklname"
                    v-model="info.personInChargeName" :value="info.personInChargeName">
           </div>
         </div>
-        <div class="select-line">
-          <div>联系人电话</div>
-          <div class="input">
-            <input type="digit" placeholder="请输入联系人电话" placeholder-style='font-size: 15px' @blur="checkphone"
+        <div class="user-from sec">
+          <div class="text left">联系人电话</div>
+          <div class="input right">
+            <input type="digit" placeholder="请输入联系人电话" placeholder-style='font-size: 32rpx' @blur="checkphone"
                    v-model="info.personInChargePhone" :value="info.personInChargePhone">
           </div>
         </div>
-        <div class="select-line">
-          <div>返金设置</div>
+        <div class="user-from sec">
+          <div class="text left">返金设置</div>
           <div class="percent">
             <div class="input">
-              <input type="digit" placeholder="请设置返金比例" placeholder-style='font-size: 15px' @blur="chectratio"
+              <input type="digit" placeholder="请设置返金比例" placeholder-style='font-size: 32rpx' @blur="chectratio"
                      v-model="info.ratio" :value="info.ratio">
             </div>
             <div v-if="ishow" class="danwei">
@@ -939,4 +939,23 @@
     width 80%
     background #2E2E2E
     color #fff
+ .percent
+  display:flex
+  margin-right:30rpx;
+  align-items:center
+  input
+    width:auto !import
+.user-from
+  .percent
+    .input
+       width:auto
+       padding:0
+       input
+        text-align:right
+
+ .right{
+   text-align:right;font-size:32rpx;margin-right:32rpx;
+ }
+ .left{text-indent:10rpx;}
+ .danwei{font-size:32rpx;}
 </style>

@@ -179,9 +179,14 @@
                       wxRequest('getShopInfo',data)
                       .then(res =>{
                         if(res.code==1){
-                          that.getHomeMsg();
-                          that.getFan();
-                          that.getGet();
+                          if(res.value.audit==0){
+                              wx.setStorageSync('phone', res.value.appLoginname);
+                              wx.redirectTo({url: '/pages/merchant-edit/main'})
+                          }else{
+                            that.getHomeMsg();
+                            that.getFan();
+                            that.getGet();
+                          }
                         }
                         if (res.code == 4000) {
                           wx.navigateTo({
@@ -218,10 +223,15 @@
         wxRequest('getShopInfo',data)
         .then(res =>{
           if(res.code==1){
-            that.getHomeMsg();
-            that.getFan();
-            that.getGet();
-            that.getInfo();
+            if(res.value.audit==0){
+                wx.setStorageSync('phone', res.value.appLoginname);
+                wx.redirectTo({url: '/pages/merchant-edit/main'})
+            }else{
+              that.getHomeMsg();
+              that.getFan();
+              that.getGet();
+              that.getInfo();
+            }
           }
           if (res.code == 4000) {
             wx.navigateTo({
