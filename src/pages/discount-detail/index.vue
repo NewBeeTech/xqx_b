@@ -180,7 +180,7 @@
 						self.price= res.value.price / 100;
 						self.groupPrice = res.value.groupPrice / 100;
 						self.onceGroupPrice = res.value.singlePrice / 100;
-						self.infoRatio = res.value.ratio,
+						self.infoRatio = res.value.ratio && Number(res.value.ratio).toFixed(1),
 						self.currency = res.value.currency;
 						self.rule = res.value.rule;
 						self.createTimeDesc = self.timeDesc(res.value.createTime);
