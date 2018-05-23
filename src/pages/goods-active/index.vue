@@ -16,7 +16,7 @@
 					<p>{{item.serialNumber}}</p>
 					<!--<span>发货</span>-->
 					<text @click="fahuoClick(item.id)" class="fahuo" style="color: #fff; width: 100rpx;" v-if="item.orderState==1 && item.deliveryMethod != 2">发货</text>
-					<text @click="fahuoClick(item.id)" v-else="item.orderState==1 && item.deliveryMethod == 2">自提</text>
+					<text @click="fahuoClick(item.id)" v-if="item.orderState==1 && item.deliveryMethod == 2">自提</text>
 					<text v-if="item.orderState==2">已发货</text>
 					<text v-if="item.orderState==3">已完成</text>
 				</div>
