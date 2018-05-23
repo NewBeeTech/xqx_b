@@ -106,7 +106,7 @@
         <div class="select-line  top sec">
           <div>邮箱</div>
           <div class="input">
-            <input type="text" maxlength="14" placeholder="请输入邮箱" placeholder-style='font-size: 15px' v-model="info.contractEmail" @blur="checkemail">
+            <input type="text" maxlength="14" placeholder="请输入邮箱" placeholder-style='font-size: 15px' v-model="info.contractEmail">
           </div>
         </div>
         <div class="select-line">
@@ -748,7 +748,8 @@
         if (!this.info.businessDistrict){message = "请选择商圈"}
         if (!/^[0-9]{1,14}$/.test(this.info.storePhone)){message = "请输入正确的客服电话"}
         if (!this.info.businessHours){message = "请选择营业时间"}
-        if(this.info.contractEmail&&this.info.contractEmail!=this.filteremoji(this.info.contractEmail)){message="邮箱不支持表情符"}
+        if (this.info.contractEmail&&this.info.contractEmail!=this.filteremoji(this.info.contractEmail)){message="邮箱不支持表情符"}
+        if (this.info.contractEmail&&!/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(this.info.contractEmail)){message="邮箱格式不正确"}
         if (!this.info.detailAddress){message='请填写详细地址'}else if(this.info.detailAddress!=this.filteremoji(this.info.detailAddress)){message = "详细地址不支持表情符"}
         if (!this.info.personInChargeName){message = "请输入联系人姓名"}else if(!/^[A-Za-z\u4e00-\u9fa5]+$/.test(this.info.personInChargeName)){message = "联系人姓名只支持汉字和字母"}
         if (!/^[1][3,4,5,7,8][0-9]{9}$/.test(this.info.personInChargePhone)){message="请输入正确的联系人电话"}

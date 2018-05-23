@@ -57,7 +57,9 @@
         token:''
       }
     },
-
+    onShow(){
+      this.btnonoff=true;
+    },
     mounted() {
      this.token=wx.getStorageSync('token')
     },

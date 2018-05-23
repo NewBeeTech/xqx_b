@@ -45,7 +45,8 @@
       return {
         list: [],
         loc: {},
-        btnonoff:true
+        btnonoff:true,
+        mapCtx:''
       }
     },
     onLoad() {
@@ -107,7 +108,6 @@
         console.log(e)
         wx.setStorageSync("chooseAddress",JSON.stringify(e));
         this.btnonoff=false;
-        // wx.navigateBack();
       }
     }
   }
