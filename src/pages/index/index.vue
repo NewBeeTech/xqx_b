@@ -266,7 +266,7 @@
             if(res.code==1){
               let num=0;
               for(var i=0;i<res.value.length;i++){
-                num+=res.value[i].realCharge
+                num+=res.value[i].currency
               }
               num=num/100
               self.getSum=num||0
