@@ -100,7 +100,7 @@
         <div class="select-line  top sec">
           <div>客服电话</div>
           <div class="input">
-            <input type="digit" maxlength="14" placeholder="请输入客服电话" placeholder-style='font-size: 15px' v-model="info.storePhone" @blur="checktel">
+            <input type="digit" maxlength="14" placeholder="请输入客服电话" placeholder-style='font-size: 15px' v-model="info.storePhone">
           </div>
         </div>
         <div class="select-line  top sec">
@@ -746,7 +746,7 @@
         if (!this.region||this.area.shi=='加载中'||this.area.q=='加载中'||!this.area.shi||!this.area.q||!this.area.sheng){message = "请选择所在地区";}else{this.info.businessCityName=this.region;this.info.businessLicenseAreaid=this.area.id}
         if (!this.mark){message = "请选择地图标记";}
         if (!this.info.businessDistrict){message = "请选择商圈"}
-        if (!/^[0-9]{1,14}$/.test(this.info.storePhone)){message = "请输入正确的客服电话"}
+        if (this.info.storePhone&&!/^[0-9]{1,14}$/.test(this.info.storePhone)){message = "请输入正确的客服电话"}
         if (!this.info.businessHours){message = "请选择营业时间"}
         if (this.info.storeEmail&&this.info.storeEmail!=this.filteremoji(this.info.storeEmail)){message="邮箱不支持表情符"}
         if (this.info.storeEmail&&!/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(this.info.storeEmail)){message="邮箱格式不正确"}
