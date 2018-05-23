@@ -251,7 +251,7 @@
           .then(res => {
             console.log(res);
             if(res.code==1){
-              self.fansum=res.value.fansNum
+              self.fanSum=res.value.fansNum
             }
           })
           .catch(err => {
@@ -266,10 +266,10 @@
             if(res.code==1){
               let num=0;
               for(var i=0;i<res.value.length;i++){
-                num+=res.value[i].real_charge
+                num+=res.value[i].realCharge
               }
               num=num/100
-              self.getvalue=num
+              self.getSum=num||0
             }
           })
           .catch(err => {
