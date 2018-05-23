@@ -200,6 +200,8 @@
                     }
                   }else if(res.data.code==4000){
                      wx.redirectTo({url: '/pages/merchant-edit/main'})
+                  }else if(res.data.code==3000){
+                    wx.redirectTo({url: '/pages/merchant-edit/main'})
                   }else{
                     self.btnonoff=true;
                     wx.showToast({
