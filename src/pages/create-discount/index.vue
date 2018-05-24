@@ -444,7 +444,8 @@
 								price: parseInt(self.originPrice * 100),
 								groupPrice: parseInt(self.groupPrice * 100),
 								singlePrice: parseInt(self.onceGroupPrice * 100),
-								ratio: self.ratio,
+								// ratio: self.ratio,
+								ratio: self.ratio && Math.floor(Number(self.ratio)*10)/10,
 								currency: parseInt(self.groupPrice* self.ratio ) > 1 ? parseInt(self.groupPrice * self.ratio) : 1 ,
 								// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
 								deliveryMethod: self.deliveryMethod,
@@ -469,7 +470,8 @@
 								price: parseInt(self.originPrice * 100),
 								groupPrice: parseInt(self.groupPrice * 100),
 								singlePrice: parseInt(self.onceGroupPrice * 100),
-								ratio: self.ratio,
+								// ratio: self.ratio,
+								ratio: self.ratio && Math.floor(Number(self.ratio)*10)/10,
 								currency: parseInt(self.groupPrice* self.ratio ) > 1 ? parseInt(self.groupPrice * self.ratio ) : 1 ,
 								// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
 								deliveryMethod: self.deliveryMethod,
@@ -514,7 +516,8 @@
 								price: parseInt(self.originPrice * 100),
 								groupPrice: parseInt(self.groupPrice * 100),
 								singlePrice: parseInt(self.onceGroupPrice * 100),
-								ratio: self.ratio,
+								// ratio: self.ratio,
+								ratio: self.ratio && Math.floor(Number(self.ratio)*10)/10,
 								currency: parseInt(self.groupPrice* self.ratio) > 1 ? parseInt(self.groupPrice * self.ratio) : 1 ,
 								// personCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
 								// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
@@ -540,7 +543,8 @@
 								price: parseInt(self.originPrice * 100),
 								groupPrice: parseInt(self.groupPrice * 100),
 								singlePrice: parseInt(self.onceGroupPrice * 100),
-								ratio: self.ratio,
+								// ratio: self.ratio,
+								ratio: self.ratio && Math.floor(Number(self.ratio)*10)/10,
 								currency: parseInt(self.groupPrice* self.ratio) > 1 ? parseInt(self.groupPrice * self.ratio) : 1 ,
 								// spreadCurrency: parseInt(self.groupPrice* self.ratio * 0.9) > 1 ? parseInt(self.groupPrice * self.ratio * 0.9) : 1 ,
 								deliveryMethod: self.deliveryMethod,
@@ -733,7 +737,7 @@
 							self.logo = res.value.imgUrl;
 							wx.setStorageSync("discount-info",JSON.stringify({
 								explainContent: res.value.explainContent,
-								explainImgUrl: res.value.explainImgUrl,
+								explainImgUrl: res.value.explainImgUrl && JSON.parse(res.value.explainImgUrl),
 							}));
 							if(res.value.explainContent || res.value.explainImgUrl > 0) {
 								this.goodsInfoDesc = '查看商品说明';
