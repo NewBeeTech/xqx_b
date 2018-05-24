@@ -135,7 +135,7 @@
         <div class="user-from sec">
           <div class="text left">返金设置</div>
           <div class="percent">
-            <div class="input">
+            <div class="input r9s">
               <input type="digit" placeholder="请设置返金比例" placeholder-style='font-size: 32rpx' @blur="chectratio"
                      v-model="info.ratio" :value="info.ratio">
             </div>
@@ -957,5 +957,7 @@
    text-align:right;font-size:32rpx;margin-right:32rpx;
  }
  .left{text-indent:10rpx;}
- .danwei{font-size:32rpx;}
+ .danwei{font-size:32rpx;position:absolute;right:32rpx;}
+ .r9s{position:relative;}
+ .r9s input{margin-right:36rpx;}
 </style>
