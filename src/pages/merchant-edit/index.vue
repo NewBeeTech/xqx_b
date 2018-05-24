@@ -159,6 +159,8 @@
 
 <script>
   import {wxRequest} from '@/api'
+  import {api} from '@/api'
+  console.log(api)
   import {qiniu} from "../../api/qiniuUploader"
   var Default = require("../../api//Default.js");
 
@@ -566,7 +568,7 @@
           this.objectMultiArray=Arraydata
           //currentpage.setData({$root:pagedata.$root})
           that.task=wx.request({
-            url: Default.HOST+'xcxm/UtilsController/getCity', //仅为示例，并非真实的接口地址
+            url: api.HTTP_HOST+'xcxm/UtilsController/getCity', //仅为示例，并非真实的接口地址
             data: {cityKey:this.objectMultiArray[0][e.mp.detail.value].id,token:this.token,sessionKey:this.token},
             method:'POST',
             header: {
@@ -582,7 +584,7 @@
                  //that.multiIndex[1]=0;
                  currentpage.setData({$root:pagedata.$root})
                  that.task=wx.request({
-                   url: Default.HOST+'xcxm/UtilsController/getCounty', //仅为示例，并非真实的接口地址
+                   url: api.HTTP_HOST+'xcxm/UtilsController/getCounty', //仅为示例，并非真实的接口地址
                    data: {countyKey:that.objectMultiArray[1][0].id,token:that.token,sessionKey:that.token},
                    method:'POST',
                    header: {
@@ -645,7 +647,7 @@
           that.multiIndex[2]=0;
           currentpage.setData({$root:pagedata.$root})
           that.task=wx.request({
-            url: Default.HOST+'xcxm/UtilsController/getCounty', //仅为示例，并非真实的接口地址
+            url: +'xcxm/UtilsController/getCounty', //仅为示例，并非真实的接口地址
             data: {countyKey:that.objectMultiArray[1][e.mp.detail.value].id,token:this.token,sessionKey:this.token},
             method:'POST',
             header: {
