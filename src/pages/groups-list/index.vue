@@ -131,7 +131,12 @@ function throttle(fn, gapTime) {
           console.log(res)
           if (res.code == 1) {
 						let result = res.value;
-						result = result.map( item => ({ ...item, createTimeDesc: that.timeDesc(item.createTime), endTimeDesc: that.timeDesc(item.endTime), }));
+						result = result.map( item => ({
+							...item,
+							createTimeDesc: that.timeDesc(item.createTime),
+							endTimeDesc: that.timeDesc(item.endTime),
+							ratio: item.ratio && Number(item.ratio).toFixed(1)
+						}));
 						if (num === 1) {
 							that.list1 = result;
 						} else if (num === 0) {
