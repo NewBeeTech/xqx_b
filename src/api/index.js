@@ -1,6 +1,7 @@
 export let api = {
 	// HTTP_HOST: 'https://bmini.xqx.com/',
-	HTTP_HOST: 'http://wmomo.wicp.net/',
+	// HTTP_HOST: 'http://wmomo.wicp.net/',
+	HTTP_HOST: "http://wind.denong.com/",
 	HTTP_SERVER: {
 		"updateGoodsGroupOrderExpressNumber": "/xcxm/GoodsGroupOrderController/updateGoodsGroupOrderExpressNumber", // 设置订单快递单号接口
 		"useIdQueryGoodsGroup": "/xcxm/GoodsGroupController/useIdQueryGoodsGroup",

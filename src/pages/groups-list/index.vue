@@ -108,8 +108,8 @@ function throttle(fn, gapTime) {
   methods: {
 		timeDesc(time) {
 			const timeObj = new Date(time);
-      const min = timeObj.getMinutes() > 10 ? timeObj.getMinutes() : '0'+timeObj.getMinutes();
-      const hour = timeObj.getHours() > 10 ? timeObj.getHours() : '0'+timeObj.getHours();
+      const min = timeObj.getMinutes() >= 10 ? timeObj.getMinutes() : '0'+timeObj.getMinutes();
+      const hour = timeObj.getHours() >= 10 ? timeObj.getHours() : '0'+timeObj.getHours();
       const month = timeObj.getMonth() + 1;
 			const year = timeObj.getFullYear();
       const day = timeObj.getDate();
