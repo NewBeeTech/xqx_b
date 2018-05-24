@@ -39,10 +39,10 @@
 					</div>
 				</div>
 				<div class="detailRes">
-					<div>
+					<!-- <div>
 						<p>已返金（元）</p>
 						<p>{{yifan?yifan:0}}</p>
-					</div>
+					</div> -->
 					<div>
 						<p>返金比例</p>
 						<p>{{ratio?ratio:0}}%</p>

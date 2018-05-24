@@ -39,10 +39,10 @@
 					</div>
 				</div>
 				<div class="detailRes">
-					<div>
+					<!-- <div>
 						<p>已返佣（元）</p>
 						<p>{{0}}</p>
-					</div>
+					</div> -->
 					<div>
 						<p>返佣比例</p>
 						<p>{{info.ratio?info.ratio:0}}%</p>

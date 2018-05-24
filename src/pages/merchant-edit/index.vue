@@ -132,7 +132,7 @@
                    v-model="info.personInChargePhone" :value="info.personInChargePhone">
           </div>
         </div>
-        <div class="user-from sec">
+        <div class="user-from sec po">
           <div class="text left">返金设置</div>
           <div class="percent">
             <div class="input r9s">
@@ -647,7 +647,7 @@
           that.multiIndex[2]=0;
           currentpage.setData({$root:pagedata.$root})
           that.task=wx.request({
-            url: +'xcxm/UtilsController/getCounty', //仅为示例，并非真实的接口地址
+            url: api.HTTP_HOST+'xcxm/UtilsController/getCounty', //仅为示例，并非真实的接口地址
             data: {countyKey:that.objectMultiArray[1][e.mp.detail.value].id,token:this.token,sessionKey:this.token},
             method:'POST',
             header: {
@@ -958,8 +958,11 @@
  .right{
    text-align:right;font-size:32rpx;margin-right:32rpx;
  }
+ .po{position:relative}
  .left{text-indent:10rpx;}
- .danwei{font-size:32rpx;position:absolute;right:32rpx;}
+ .danwei{font-size:32rpx;position:absolute;right:32rpx;top:0;}
  .r9s{position:relative;}
  .r9s input{margin-right:36rpx;}
+ .picker{white-space:nowrap;overflow:auto;}
+ picker{max-width:480rpx;}
 </style>
