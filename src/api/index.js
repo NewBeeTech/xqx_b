@@ -1,5 +1,6 @@
 export let api = {
 	// HTTP_HOST: 'https://bmini.xqx.com/',
+
 	// HTTP_HOST: 'http://wmomo.wicp.net/',
 	HTTP_HOST: "http://wind.denong.com/",
 	HTTP_SERVER: {

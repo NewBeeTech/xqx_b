@@ -63,9 +63,7 @@ export default {
       this.checkedRight = item
       wx.setStorageSync("hangyeleft",that.leftList[that.checked].name);
       wx.setStorageSync("hangye",JSON.stringify(item));
-      wx.navigateTo({
-        url: '/pages/merchant-edit/main'
-      })
+      wx.navigateBack()
     }
   }
 }

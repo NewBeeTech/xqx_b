@@ -58,7 +58,8 @@ export default {
 			'pages/make-groups/main', // 创建拼团活动
 			'pages/good-remark/main', // 创建拼团活动
       'pages/app-download/main',
-			'pages/preferential-active/main' //设置收款码优惠活动
+			'pages/preferential-active/main', //设置收款码优惠活动
+			'pages/discount-detail/main'
     ],
 		window: {
 			backgroundTextStyle: 'light',
