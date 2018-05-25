@@ -456,7 +456,15 @@
 							})
 			          .then(res => {
 			            console.log(res)
-			            wx.navigateBack()
+									if (res.code == 1) {
+										wx.navigateBack()
+									} else {
+										wx.showToast({
+											title: res.errorMsg || ' ',
+											icon: 'none',
+											duration: 2000
+										});
+									}
 			            //				that.codeImg = res.value
 			          }).catch(err => {
 			          console.log(err)
@@ -482,7 +490,15 @@
 							})
 			          .then(res => {
 			            console.log(res)
-			            wx.navigateBack()
+									if (res.code == 1) {
+										wx.navigateBack()
+									} else {
+										wx.showToast({
+											title: res.errorMsg || ' ',
+											icon: 'none',
+											duration: 2000
+										});
+									}
 			            //				that.codeImg = res.value
 			          }).catch(err => {
 			          console.log(err)
@@ -529,7 +545,15 @@
 							})
 			          .then(res => {
 			            console.log(res)
-			            wx.navigateBack()
+									if (res.code == 1) {
+										wx.navigateBack()
+									} else {
+										wx.showToast({
+											title: res.errorMsg || ' ',
+											icon: 'none',
+											duration: 2000
+										});
+									}
 			            //				that.codeImg = res.value
 			          }).catch(err => {
 			          console.log(err)
@@ -555,7 +579,15 @@
 							})
 			          .then(res => {
 			            console.log(res)
-			            wx.navigateBack()
+									if (res.code == 1) {
+										wx.navigateBack()
+									} else {
+										wx.showToast({
+											title: res.errorMsg || ' ',
+											icon: 'none',
+											duration: 2000
+										});
+									}
 			            //				that.codeImg = res.value
 			          }).catch(err => {
 			          console.log(err)
