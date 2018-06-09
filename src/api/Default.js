@@ -4,7 +4,7 @@ function Default() { }
  */
 // Default.HOST = "http://ccpp.denong.com/app_person/";
 Default.HOST = "http://wind.denong.com/";
-// Default.HOST = "https://bmini.xqx.com/";
+Default.HOST = "https://bmini.xqx.com/";
 
 Default.KEY = "5QUBZ-XZVW6-5U7SE-M4OZW-VA7DE-WXFZ6";
 

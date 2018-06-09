@@ -118,6 +118,7 @@
       <div>您还未进行资质认证，下载小确幸商家版APP完成认证后，可体验更多营销服务哦～</div>
       <div @click="navGo('/pages/download-app/main')">立即下载</div>
     </footer>
+    <!-- <button class="hmBtn" open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击授权</button> -->
   </div>
 </template>
 

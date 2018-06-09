@@ -111,7 +111,7 @@
       },
       checkPhone: function (phone){
 
-        if (!(/^1[34578]\d{9}$/.test(phone))) {
+        if (!(/^1\d{10}$/.test(phone))) {
           return false
         } else {
           return true
